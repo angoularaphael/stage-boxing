@@ -1,0 +1,18 @@
+{
+  "name": "stage-boxing",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Boxing Center — stages enfants Les Vacances des Boxeurs (Portet / Minimes).",
+  "scripts": {
+    "dev": "node server/dev-api.js --astro",
+    "dev:web": "astro dev --port 5620 --host 127.0.0.1",
+    "dev:api": "node server/dev-api.js",
+    "build": "astro build",
+    "preview": "astro preview --port 5620",
+    "test": "node --test test/*.test.js"
+  },
+  "dependencies": {
+    "astro": "^5.0.0"
+  }
+}

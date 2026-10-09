@@ -1,0 +1,393 @@
+Cahier des charges simplifié — Page de vente 
+des stages enfants Boxing Center
+1. Objet du projet
+Créer une page web dédiée à la présentation et à la vente des stages enfants Boxing Center.
+Cette page aura pour objectif de :
+• présenter les stages enfants à venir ;
+• donner envie aux enfants de participer ;
+• rassurer les parents sur le contenu, l’encadrement, la sécurité et le sérieux du stage ;
+• permettre l’achat et l’inscription en ligne ;
+• orienter rapidement les familles vers la bonne salle : Boxing Center Portet-sur-Garonne 
+ou Boxing Center Minimes.
+La page pourra être hébergée sur un sous-domaine Boxing Center, par exemple :
+stages.boxingcenter.fr
+ou tout autre sous-domaine validé par la direction.
+2. Stage concerné
+Le premier stage à intégrer sera :
+Les Vacances des Boxeurs
+Il s’agit d’un stage de boxe anglaise prévu du 26 au 31 octobre 2026, avec 6 jours de stage et 2 
+activités par jour, tous niveaux. Le document fourni mentionne le Boxing Center Portet-sur
+Garonne comme lieu de stage initial.
+Correction importante
+Le document mentionne 11–16 ans, mais cette information est à corriger.
+L’âge à retenir pour la page web sera :
+8 à 16 ans
+Cette correction devra être appliquée partout :
+• page d’accueil ;
+• pages clubs ;
+• tunnel d’inscription ;
+• CGV ;
+• règlement intérieur ;
+• autorisation parentale ;
+• décharge liée à l’état de santé ;
+• e-mails de confirmation.
+3. Salles concernées
+Deux salles accueilleront les stages enfants :
+1. Boxing Center Portet-sur-Garonne
+2. Boxing Center Minimes
+La page d’accueil devra afficher deux blocs de redirection clairs :
+• Stage enfants — BC Portet-sur-Garonne ;
+• Stage enfants — BC Minimes.
+Chaque bloc devra contenir un bouton visible :
+• Voir le stage à Portet
+• Voir le stage aux Minimes
+4. Structure du site
+Page d’accueil
+La page d’accueil devra présenter globalement les stages enfants Boxing Center.
+Elle devra mettre en avant :
+• une semaine 100 % boxe ;
+• un stage ouvert aux filles et garçons de 8 à 16 ans ;
+• des activités encadrées ;
+• des groupes adaptés selon l’âge, le niveau et l’expérience ;
+• une ambiance sportive, éducative et sécurisée ;
+• la présence de coachs et intervenants qualifiés ;
+• la possibilité de réserver directement en ligne.
+Le document source présente le stage comme une semaine axée sur la progression, le dépassement 
+de soi et l’expérience sportive en groupe, avec technique, tactique, préparation physique, assauts, 
+sac, cohésion, analyse vidéo, découverte du haut niveau, bowling et interclub.
+Pages clubs
+Créer deux pages internes personnalisées :
+1. /stage-enfants-portet
+2. /stage-enfants-minimes
+Chaque page club devra contenir :
+• présentation du stage ;
+• dates ;
+• horaires ;
+• programme de la semaine ;
+• équipe encadrante ;
+• tarifs ;
+• infos pratiques ;
+• matériel nécessaire ;
+• bouton d’inscription ;
+• tunnel de paiement et formulaire enfant.
+5. Page Stage enfants — Portet-sur-Garonne
+La page Portet devra reprendre le contenu du document fourni.
+Informations principales
+• Nom du stage : Les Vacances des Boxeurs
+• Dates : du 26 au 31 octobre 2026
+• Public : 8 à 16 ans
+• Lieu : Boxing Center Portet-sur-Garonne
+• Adresse : 61 Route d’Espagne, 31120 Portet-sur-Garonne
+• Format : 6 jours, 2 séances ou activités par jour
+• Tous niveaux : débutants, loisirs, boxe éducative, compétiteurs.
+Le document source précise que le stage est ouvert aux filles et garçons, avec des groupes et 
+oppositions adaptés selon l’âge, le poids, le niveau et l’expérience.
+Programme à présenter
+La page devra valoriser les grands axes du stage :
+• technique et tactique ;
+• préparation physique ;
+• sac ;
+• coordination ;
+• déplacements ;
+• défense ;
+• contre-attaque ;
+• assauts à thème ;
+• analyse vidéo ;
+• immersion haut niveau ;
+• combats tests ;
+• bowling ;
+• interclub.
+Le document présente quatre piliers : Technique & Tactique, Intensité & Physique, Haut Niveau 
+et Cohésion.
+Équipe Portet
+Reprendre le staff indiqué dans le document :
+• Valentin ;
+• Mourad ;
+• Marama ;
+• Anna Boullez.
+Mettre particulièrement en avant la présence d’Anna Boullez, challenger au titre de championne de 
+France professionnelle.
+6. Page Stage enfants — Minimes
+La page Minimes devra reprendre le même contenu que Portet :
+• mêmes dates ;
+• mêmes horaires ;
+• même programme ;
+• mêmes tarifs ;
+• même positionnement ;
+• même public : 8 à 16 ans.
+Seul le staff sera adapté.
+Staff Minimes
+Remplacer les intervenants Portet comme suit :
+• Mehdi remplace Valentin ;
+• Fayez remplace Mourad ;
+• Johnson Suffo remplace Anna Boullez ;
+• Lucas remplace Marama.
+Mettre particulièrement en avant :
+• Johnson Suffo, classé dans le top 100 mondial chez les poids moyens ;
+• la qualité d’encadrement des coachs Boxing Center ;
+• l’expérience des intervenants ;
+• le sérieux de la formation Boxing Center.
+7. Tarifs
+Les tarifs seront identiques sur les deux clubs.
+Tarifs à afficher
+• 80 € adhérent Boxing Center
+• 140 € non-adhérent
+Le document source indique que le tarif comprend l’intégralité du stage : 6 jours et 2 séances ou 
+activités par jour.
+Prévoir deux options d’achat :
+1. Stage enfant — Adhérent : 80 €
+2. Stage enfant — Non-adhérent : 140 €
+8. Parcours d’inscription en ligne
+Le parcours devra être simple, clair et rassurant.
+Étape 1 — Choix du club
+Le parent choisit :
+• Portet-sur-Garonne ;
+• ou Minimes.
+Étape 2 — Choix du tarif
+Le parent choisit :
+• tarif adhérent ;
+• tarif non-adhérent.
+Étape 3 — Ajout au panier
+Le parent ajoute le stage au panier.
+Étape 4 — Paiement
+Le paiement intervient en premier.
+Le parent règle le stage en ligne.
+Étape 5 — Formulaire enfant
+Après paiement, le parent remplit obligatoirement le formulaire d’inscription de l’enfant.
+Étape 6 — Signature des documents
+Le parent finalise l’inscription par validation / signature des documents obligatoires :
+• CGV adaptées au stage enfants ;
+• règlement intérieur du stage ;
+• autorisation parentale ;
+• décharge / déclaration relative à l’état de santé de l’enfant ;
+• autorisation ou refus du droit à l’image ;
+• acceptation des conditions de participation.
+Étape 7 — Confirmation
+Le parent reçoit un e-mail de confirmation avec :
+• récapitulatif du stage ;
+• club choisi ;
+• nom de l’enfant ;
+• dates ;
+• horaires ;
+• matériel à prévoir ;
+• rappel des documents acceptés ;
+• contact utile en cas de question.
+9. Formulaire enfant à créer
+Après paiement, le formulaire devra demander les informations suivantes.
+Informations enfant
+• Nom ;
+• Prénom ;
+• Date de naissance ;
+• Âge calculé automatiquement si possible ;
+• Année de pratique : menu déroulant ;
+• Observations : champ libre.
+Menu déroulant — année de pratique
+Prévoir :
+• Débutant ;
+• 1 an ;
+• 2 ans ;
+• 3 ans ;
+• 4 ans ;
+• 5 ans et plus.
+Informations parent
+• Téléphone parent 1 ;
+• Téléphone parent 2, optionnel ;
+• E-mail parent.
+Observations
+Champ libre pour indiquer :
+• allergies ;
+• traitement médical ;
+• blessure ;
+• problème médical ;
+• information particulière ;
+• niveau de pratique ;
+• demande spécifique.
+Le formulaire papier du document source prévoit déjà les informations participant, expérience en 
+boxe, responsable légal, contact d’urgence, allergies, traitement médical, blessure ou problème 
+médical. Ces éléments devront être adaptés au format numérique.
+10. Documents obligatoires à adapter
+L’équipe devra adapter les documents au public enfants 8 à 16 ans.
+Documents à prévoir :
+1. CGV du stage enfants ;
+2. règlement intérieur du stage ;
+3. autorisation parentale ;
+4. décharge / déclaration sur l’état de santé de l’enfant ;
+5. droit à l’image ;
+6. autorisation de participation ;
+7. conditions liées à la pause du midi.
+Le document source contient une autorisation parentale précisant que le responsable légal autorise 
+l’enfant à participer au stage et certifie avoir communiqué les informations utiles concernant son 
+état de santé et son aptitude à la pratique sportive.
+Ces documents devront être adaptés et validés par la direction avant mise en ligne.
+11. Infos pratiques à afficher
+Chaque page club devra afficher clairement les informations pratiques.
+Repas
+Le repas n’est pas pris en charge.
+Chaque enfant doit prévoir son propre repas.
+Les enfants peuvent rester à la salle sous surveillance pendant la pause du midi, selon l’organisation 
+prévue. Le document source précise que le repas n’est pas pris en charge et que les participants 
+doivent prévoir leur repas.
+Matériel nécessaire
+Prévoir une section “Matériel à prévoir” :
+• gants de boxe ;
+• protège-dents ;
+• casque de boxe ;
+• tenue de sport ;
+• chaussures de sport type baskets ;
+• bouteille d’eau ;
+• tenue de rechange ;
+• serviette si possible.
+Ces éléments sont listés dans le document source comme matériel nécessaire.
+12. Mise en avant commerciale
+La page devra vendre le stage de façon attractive tout en rassurant les parents.
+Messages à faire ressortir
+• Une semaine complète pour progresser en boxe.
+• Un stage encadré par des coachs Boxing Center.
+• Des activités adaptées à l’âge, au poids, au niveau et à l’expérience.
+• Débutants acceptés.
+• Filles et garçons bienvenus.
+• Une approche technique, physique et éducative.
+• Des temps de cohésion pour créer une vraie dynamique de groupe.
+• Une découverte du haut niveau avec des intervenants expérimentés.
+• Un cadre sécurisé et professionnel.
+Exemple de titre principal
+Les Vacances des Boxeurs — Stage enfants 
+Boxing Center 8–16 ans
+Exemple de sous-titre
+Une semaine 100 % boxe pour progresser, se dépasser et vivre une vraie expérience sportive 
+encadrée par l’équipe Boxing Center.
+13. Design attendu
+La page devra reprendre l’identité visuelle Boxing Center :
+• fond sombre ou visuels Boxing Center ;
+• couleurs Boxing Center ;
+• boutons visibles ;
+• photos de cours enfants ;
+• photos de boxe éducative ;
+• visuels dynamiques ;
+• blocs clairs pour les parents ;
+• parcours mobile simple.
+La page devra être optimisée mobile, car une grande partie des parents consultera probablement la 
+page depuis un téléphone.
+14. Boutons d’appel à l’action
+Prévoir des boutons visibles à plusieurs endroits :
+• Choisir mon club ;
+• Inscrire mon enfant à Portet ;
+• Inscrire mon enfant aux Minimes ;
+• Voir le programme ;
+• Réserver la place de mon enfant ;
+• Ajouter au panier ;
+• Finaliser l’inscription.
+15. Gestion des places
+Prévoir une gestion simple des places disponibles.
+À mettre en place si possible :
+• stock par club ;
+• nombre de places limité ;
+• blocage de la place après paiement ;
+• alerte admin en cas de formulaire non complété après paiement ;
+• possibilité de relancer automatiquement le parent si le formulaire reste incomplet.
+Point important :
+Une inscription ne doit être considérée comme 
+complète qu’après paiement, formulaire 
+rempli et documents validés.
+16. E-mails automatiques
+Prévoir des e-mails automatiques.
+E-mail parent après paiement
+Contenu :
+• confirmation du paiement ;
+• lien vers le formulaire enfant si non rempli immédiatement ;
+• rappel que l’inscription doit être finalisée.
+E-mail parent après inscription complète
+Contenu :
+• confirmation d’inscription ;
+• club choisi ;
+• dates ;
+• horaires ;
+• matériel à prévoir ;
+• rappel repas ;
+• documents validés ;
+• contact utile.
+E-mail direction / équipe Boxing Center
+Envoyer une copie ou notification à l’équipe avec :
+• nom de l’enfant ;
+• club choisi ;
+• tarif choisi ;
+• infos parent ;
+• observations ;
+• documents validés.
+17. Administration
+L’équipe Boxing Center devra pouvoir administrer :
+• les stages ;
+• les dates ;
+• les clubs ;
+• les prix ;
+• les stocks ;
+• les inscriptions ;
+• les paiements ;
+• les formulaires enfants ;
+• les documents signés ;
+• les exports.
+Prévoir un export :
+• CSV ;
+• Excel ;
+• PDF si possible.
+Les exports devront permettre de récupérer facilement la liste des enfants inscrits par club.
+18. SEO de la page
+La page devra être optimisée sur les recherches suivantes :
+• stage boxe enfants Toulouse ;
+• stage boxe enfants Portet-sur-Garonne ;
+• stage boxe enfants Minimes ;
+• stage vacances boxe Toulouse ;
+• stage boxe vacances scolaires ;
+• stage boxe anglaise enfants ;
+• stage boxe ados Toulouse ;
+• boxe enfants Toulouse ;
+• boxe éducative Toulouse.
+Title SEO recommandé
+Stage boxe enfants Toulouse — Les Vacances 
+des Boxeurs Boxing Center
+Meta description recommandée
+Inscrivez votre enfant au stage Les Vacances 
+des Boxeurs Boxing Center : 6 jours de boxe 
+anglaise, activités, cohésion et encadrement 
+professionnel pour les 8–16 ans à Portet-sur
+Garonne et aux Minimes.
+19. Points de vigilance
+L’équipe devra veiller à :
+• remplacer partout 11–16 ans par 8–16 ans ;
+• ne pas publier une page Portet avec les coachs des Minimes ;
+• ne pas publier une page Minimes avec les coachs de Portet ;
+• vérifier les liens de paiement ;
+• vérifier les tarifs adhérent / non-adhérent ;
+• rendre le formulaire obligatoire après paiement ;
+• rendre les documents obligatoires avant validation finale ;
+• prévoir une confirmation claire pour les parents ;
+• éviter toute inscription incomplète non suivie.
+20. Livrables attendus
+L’équipe devra livrer :
+1. Page d’accueil des stages enfants.
+2. Deux redirections internes : Portet et Minimes.
+3. Page personnalisée Portet.
+4. Page personnalisée Minimes.
+5. Module panier / paiement.
+6. Formulaire enfant après paiement.
+7. Signature ou validation des documents obligatoires.
+8. CGV adaptées au public 8–16 ans.
+9. Règlement intérieur adapté au stage enfants.
+10.Autorisation parentale.
+11.Déclaration / décharge liée à l’état de santé de l’enfant.
+12.Droit à l’image.
+13.E-mails automatiques.
+14.Interface admin.
+15.Export des inscrits.
+16.Design Boxing Center.
+17.Optimisation mobile.
+18.Optimisation SEO.
+21. Résultat attendu
+La page devra permettre de présenter et vendre efficacement les stages enfants Boxing Center.
+Objectif final :
+permettre aux parents de choisir rapidement le 
+bon club, payer en ligne, inscrire leur enfant et 
+valider tous les documents nécessaires dans un 
+parcours simple, rassurant et professionnel.
+La page devra valoriser la qualité du stage, l’encadrement Boxing Center, la sécurité, la progression 
+sportive et l’expérience positive pour les enfants de 8 à 16 ans.

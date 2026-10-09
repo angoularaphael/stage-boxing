@@ -1,0 +1,97 @@
+---
+import Base from '../layouts/Base.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+---
+<Base
+  title="Stage boxe enfants Portet-sur-Garonne — Les Vacances des Boxeurs"
+  description="Stage boxe enfants Portet-sur-Garonne : Les Vacances des Boxeurs du 26 au 31 octobre 2026, 8-16 ans, encadrement Boxing Center avec Anna Boullez."
+  canonical="https://stages.boxingcenter.fr/stage-enfants-portet"
+  page="club"
+  club="portet"
+>
+  <div class="wrap">
+    <SiteHeader nav="club" club="portet" />
+    <section class="hero">
+      <p class="chip"><strong>Portet-sur-Garonne</strong> · 61 Route d'Espagne</p>
+      <h1>Les Vacances des Boxeurs</h1>
+      <p class="lede">Stage de boxe anglaise du 26 au 31 octobre 2026 — 8 a 16 ans, tous niveaux, filles et garcons.</p>
+      <div class="cta-row">
+        <a class="btn btn-primary" id="cta-inscrire" href="/inscription?club=portet">Inscrire mon enfant a Portet</a>
+        <a class="btn btn-ghost" href="#agenda">Voir le programme</a>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Tarifs</h2>
+      <div class="price-panel">
+        <div class="price-display" id="price-value"><span class="currency">EUR</span> 140</div>
+        <p class="price-label" id="price-label">Tarif non-adherent</p>
+        <label class="member-toggle">
+          <input type="checkbox" id="is-member" />
+          <span>Je suis adherent Boxing Center (tarif 80 EUR)</span>
+        </label>
+        <p class="sub">Le tarif comprend 6 jours et 2 seances ou activites par jour. Paiement : CB (CAWL), PayPal comptant ou PayPal 4x sans frais.</p>
+        <a class="btn btn-primary" href="/inscription?club=portet">Reserver la place</a>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Equipe Portet</h2>
+      <div class="staff-list">
+        <div class="staff"><h3>Valentin</h3><p>Coach</p></div>
+        <div class="staff"><h3>Mourad</h3><p>Coach</p></div>
+        <div class="staff"><h3>Marama</h3><p>Coach</p></div>
+        <div class="staff highlight"><h3>Anna Boullez</h3><p>Challenger au titre de championne de France professionnelle</p></div>
+      </div>
+    </section>
+
+    <section class="section" id="agenda">
+      <h2>Agenda de la semaine</h2>
+      <div class="agenda">
+        <article class="day">
+          <h3>Lundi 26 octobre</h3>
+          <p class="slot"><strong>10h–12h</strong> Lecon collective technique — Coach Valentin</p>
+          <p class="slot"><strong>14h–16h</strong> Boot Camp &amp; cohesion — Marama &amp; Mourad</p>
+        </article>
+        <article class="day">
+          <h3>Mardi 27 octobre</h3>
+          <p class="slot"><strong>10h–12h</strong> Lecon collective — Coach Mourad</p>
+          <p class="slot"><strong>14h–16h</strong> Assauts a theme + sac — Coach Marama</p>
+        </article>
+        <article class="day">
+          <h3>Mercredi 28 octobre</h3>
+          <p class="slot"><strong>11h–13h</strong> Immersion haut niveau (analyse video) — Mourad, Marama, Anna Boullez</p>
+          <p class="slot"><strong>16h–18h</strong> Combats tests</p>
+        </article>
+        <article class="day">
+          <h3>Jeudi 29 octobre</h3>
+          <p class="slot"><strong>10h–12h</strong> Lecon collective technique — Coach Marama</p>
+          <p class="slot"><strong>14h–16h</strong> Seance piste — Coach Mourad</p>
+        </article>
+        <article class="day">
+          <h3>Vendredi 30 octobre</h3>
+          <p class="slot"><strong>10h–12h</strong> Coordination + renforcement — Mourad &amp; Marama</p>
+          <p class="slot"><strong>14h–16h</strong> Lecon + assauts + sac — Coach Valentin</p>
+        </article>
+        <article class="day">
+          <h3>Samedi 31 octobre</h3>
+          <p class="slot"><strong>10h–12h</strong> Bowling — activite cohesion</p>
+          <p class="slot"><strong>A partir de 14h</strong> Interclub — Boxing Center Minimes</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Infos pratiques</h2>
+      <p class="sub">Le repas n'est pas pris en charge. Materiel : gants, protege-dents, casque, tenue de sport, baskets, eau, tenue de rechange, serviette si possible.</p>
+    </section>
+
+    <footer class="site-footer">
+      <p><a href="/">Accueil stages</a> · <a href="/cgv">CGV</a> · <a href="/reglement">Reglement</a></p>
+    </footer>
+  </div>
+  <script>
+    import { bootClubPage } from '../scripts/club-page.js';
+    bootClubPage();
+  </script>
+</Base>

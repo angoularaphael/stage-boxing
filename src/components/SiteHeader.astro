@@ -1,0 +1,21 @@
+---
+interface Props {
+  nav?: 'home' | 'club' | 'simple';
+  club?: 'portet' | 'minimes' | '';
+}
+const { nav = 'home', club = '' } = Astro.props;
+---
+<header class="site-header">
+  <a class="brand" href="/">Boxing <span>Center</span> Stages</a>
+  {nav === 'simple' ? (
+    <nav class="nav"><a href="/">Accueil</a></nav>
+  ) : (
+    <nav class="nav" aria-label="Navigation">
+      <a href="/stage-enfants-portet">Portet</a>
+      <a href="/stage-enfants-minimes">Minimes</a>
+      <a href={club ? `/inscription?club=${club}` : '/inscription'}>
+        {nav === 'club' ? 'Inscrire' : 'Inscrire mon enfant'}
+      </a>
+    </nav>
+  )}
+</header>

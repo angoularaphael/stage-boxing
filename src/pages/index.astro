@@ -1,0 +1,115 @@
+---
+import Base from '../layouts/Base.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'SportsOrganization',
+      '@id': 'https://stages.boxingcenter.fr/#org',
+      name: 'Boxing Center',
+      url: 'https://boxingcenter.fr/',
+      logo: 'https://stages.boxingcenter.fr/favicon-192.png',
+      knowsAbout: [
+        'stage boxe enfants Toulouse',
+        'stage boxe vacances scolaires',
+        'boxe educative Toulouse',
+        'boxe anglaise enfants',
+        'stage boxe Portet-sur-Garonne',
+        'stage boxe Minimes',
+      ],
+    },
+    {
+      '@type': 'WebSite',
+      '@id': 'https://stages.boxingcenter.fr/#website',
+      url: 'https://stages.boxingcenter.fr/',
+      name: 'Stages enfants Boxing Center',
+      inLanguage: 'fr-FR',
+      publisher: { '@id': 'https://stages.boxingcenter.fr/#org' },
+      potentialAction: {
+        '@type': 'SearchAction',
+        target: 'https://stages.boxingcenter.fr/?q={search_term_string}',
+        'query-input': 'required name=search_term_string',
+      },
+    },
+  ],
+};
+---
+<Base
+  title="Stage boxe enfants Toulouse — Les Vacances des Boxeurs Boxing Center"
+  description="Inscrivez votre enfant au stage Les Vacances des Boxeurs Boxing Center : 6 jours de boxe anglaise, activites, cohesion et encadrement professionnel pour les 8-16 ans a Portet-sur-Garonne et aux Minimes."
+  canonical="https://stages.boxingcenter.fr/"
+  ogTitle="Les Vacances des Boxeurs — Stage enfants 8-16 ans"
+  ogDescription="Une semaine 100 % boxe a Portet-sur-Garonne ou aux Minimes. Inscription et paiement en ligne."
+  jsonLd={jsonLd}
+>
+  <div class="wrap">
+    <SiteHeader />
+    <section class="hero">
+      <p class="chip"><strong>26–31 octobre 2026</strong> · 8 a 16 ans · Filles et garcons</p>
+      <h1>Les Vacances des Boxeurs</h1>
+      <p class="lede">Une semaine 100 % boxe pour progresser, se depasser et vivre une vraie experience sportive encadree par l'equipe Boxing Center.</p>
+      <div class="meta-row">
+        <span class="chip">6 jours · 2 activites / jour</span>
+        <span class="chip">Tous niveaux</span>
+        <span class="chip">80 EUR adherent · 140 EUR non-adherent</span>
+      </div>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="#clubs">Choisir mon club</a>
+        <a class="btn btn-ghost" href="#programme">Voir le programme</a>
+      </div>
+    </section>
+
+    <section class="section" id="clubs">
+      <h2>Choisir mon club</h2>
+      <p class="sub">Deux salles, meme stage, meme exigence. Orientez-vous vers la salle la plus pratique pour votre famille.</p>
+      <div class="club-grid">
+        <article class="club-card">
+          <h3>BC Portet-sur-Garonne</h3>
+          <p>61 Route d'Espagne, 31120 Portet-sur-Garonne. Staff avec Anna Boullez.</p>
+          <a class="btn btn-primary block" href="/stage-enfants-portet">Voir le stage a Portet</a>
+        </article>
+        <article class="club-card">
+          <h3>BC Minimes</h3>
+          <p>12 rue de Fenouillet, 31200 Toulouse. Staff avec Johnson Suffo.</p>
+          <a class="btn btn-primary block" href="/stage-enfants-minimes">Voir le stage aux Minimes</a>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="programme">
+      <h2>Une semaine pour progresser</h2>
+      <p class="sub">Technique, intensite, haut niveau et cohesion : quatre piliers pour une experience complete.</p>
+      <div class="pillars">
+        <div class="pillar">
+          <h3>Technique &amp; Tactique</h3>
+          <p>Lecons collectives, deplacements, enchainements, defense et contre-attaque.</p>
+        </div>
+        <div class="pillar">
+          <h3>Intensite &amp; Physique</h3>
+          <p>Sac, renforcement, coordination, piste, explosivite et Boot Camp.</p>
+        </div>
+        <div class="pillar">
+          <h3>Haut Niveau</h3>
+          <p>Analyse video, echanges avec des boxeurs experimentes et combats tests.</p>
+        </div>
+        <div class="pillar">
+          <h3>Cohesion</h3>
+          <p>Defis collectifs, bowling et interclub pour finir la semaine ensemble.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Parents : cadre clair</h2>
+      <p class="sub">Repas non pris en charge. Materiel a prevoir : gants, protege-dents, casque, tenue et baskets, eau, tenue de rechange. Inscription complete apres paiement, formulaire enfant et documents valides.</p>
+      <a class="btn btn-primary" href="/inscription">Reserver la place de mon enfant</a>
+    </section>
+
+    <footer class="site-footer">
+      <p>Boxing Center — stages enfants · <a href="/cgv">CGV</a> · <a href="/reglement">Reglement interieur</a></p>
+      <p>stage boxe enfants Toulouse · Portet-sur-Garonne · Minimes · vacances scolaires</p>
+    </footer>
+  </div>
+</Base>

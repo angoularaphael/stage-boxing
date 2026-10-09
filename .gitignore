@@ -1,0 +1,9 @@
+node_modules/
+dist/
+.astro/
+.env
+.env.local
+.env.production
+data/orders.json
+.DS_Store
+*.log

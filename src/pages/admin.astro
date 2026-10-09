@@ -1,0 +1,38 @@
+---
+import Base from '../layouts/Base.astro';
+---
+<Base
+  title="Studio — Stages Boxing Center"
+  description="Backoffice studio mode stages enfants."
+  canonical="https://stages.boxingcenter.fr/admin"
+  robots="noindex, nofollow"
+>
+  <div class="wrap">
+    <header class="site-header">
+      <a class="brand" href="/">Boxing <span>Center</span> Stages</a>
+    </header>
+    <section class="section">
+      <h2>Mode studio</h2>
+      <p class="sub">Active le mode studio pour utiliser les cles TEST (PayPal sandbox, PayPlug test, CAWL preprod). Un seul usage : basculer les paiements hors live.</p>
+      <div id="alert" class="alert alert-error" hidden></div>
+      <div class="price-panel" style="margin-bottom:1.25rem">
+        <p class="price-label" id="studio-state">Statut : inconnu</p>
+        <p id="studio-detail" class="sub"></p>
+      </div>
+      <div class="form-grid">
+        <label class="field full">
+          Token admin
+          <input id="admin-token" type="password" autocomplete="off" />
+        </label>
+      </div>
+      <div class="cta-row" style="margin-top:1rem">
+        <button class="btn btn-primary" type="button" id="studio-on">Activer studio</button>
+        <button class="btn btn-ghost" type="button" id="studio-off">Desactiver studio</button>
+        <button class="btn btn-ghost" type="button" id="studio-refresh">Rafraichir</button>
+      </div>
+    </section>
+  </div>
+  <script>
+    import '../scripts/admin-studio.js';
+  </script>
+</Base>

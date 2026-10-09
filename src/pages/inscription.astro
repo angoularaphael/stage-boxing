@@ -1,0 +1,142 @@
+---
+import Base from '../layouts/Base.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+---
+<Base
+  title="Inscription stage enfants — Boxing Center"
+  description="Inscription et paiement en ligne au stage Les Vacances des Boxeurs Boxing Center (8-16 ans)."
+  canonical="https://stages.boxingcenter.fr/inscription"
+  robots="noindex, follow"
+  page="inscription"
+>
+  <div class="wrap">
+    <SiteHeader nav="simple" />
+    <section class="hero" style="padding-bottom:1rem">
+      <h1>Inscription</h1>
+      <p class="lede">Paiement d'abord, puis formulaire enfant et documents. Place complete uniquement apres ces trois etapes.</p>
+      <div class="steps">
+        <span class="step" data-step="pay">1. Paiement</span>
+        <span class="step" data-step="child">2. Enfant</span>
+        <span class="step" data-step="docs">3. Documents</span>
+        <span class="step" data-step="done">4. Confirme</span>
+      </div>
+      <div id="alert" class="alert alert-error" hidden></div>
+    </section>
+
+    <section class="section" data-panel="wait" hidden>
+      <p>Confirmation du paiement en cours…</p>
+    </section>
+
+    <section class="section" data-panel="pay">
+      <h2>Payer le stage</h2>
+      <form id="pay-form">
+        <div class="price-panel" style="margin-bottom:1.25rem">
+          <div class="price-display" id="price-value"><span class="currency">EUR</span> 140</div>
+          <p class="price-label" id="price-label">Tarif non-adherent</p>
+          <label class="member-toggle">
+            <input type="checkbox" id="is-member" name="is_member" />
+            <span>Je suis adherent Boxing Center</span>
+          </label>
+          <label class="field" id="member-declare" hidden>
+            <span>
+              <input type="checkbox" name="member_declare" value="1" />
+              Je declare etre adherent Boxing Center et beneficie du tarif 80 EUR.
+            </span>
+          </label>
+          <p id="stock" class="sub"></p>
+        </div>
+
+        <div class="form-grid two">
+          <label class="field full">
+            Club
+            <select id="club" name="club" required>
+              <option value="portet">Portet-sur-Garonne</option>
+              <option value="minimes">Minimes</option>
+            </select>
+          </label>
+          <label class="field">
+            Prenom parent
+            <input name="parent_first_name" required autocomplete="given-name" />
+          </label>
+          <label class="field">
+            Nom parent
+            <input name="parent_last_name" required autocomplete="family-name" />
+          </label>
+          <label class="field">
+            E-mail parent
+            <input type="email" name="parent_email" required autocomplete="email" />
+          </label>
+          <label class="field">
+            Telephone parent
+            <input type="tel" name="parent_phone" required autocomplete="tel" />
+          </label>
+        </div>
+
+        <h3 style="margin-top:1.25rem">Moyen de paiement</h3>
+        <div class="pay-methods" id="pay-methods"></div>
+        <button class="btn btn-primary block" type="submit">Payer et continuer</button>
+      </form>
+    </section>
+
+    <section class="section" data-panel="child" hidden>
+      <h2>Formulaire enfant</h2>
+      <form id="child-form">
+        <div class="form-grid two">
+          <label class="field"><span>Prenom</span><input name="first_name" required /></label>
+          <label class="field"><span>Nom</span><input name="last_name" required /></label>
+          <label class="field"><span>Date de naissance</span><input type="date" name="birthdate" required min="2009-10-01" max="2018-10-31" /></label>
+          <label class="field">
+            Annee de pratique
+            <select name="practice_years" required>
+              <option value="Debutant">Debutant</option>
+              <option value="1 an">1 an</option>
+              <option value="2 ans">2 ans</option>
+              <option value="3 ans">3 ans</option>
+              <option value="4 ans">4 ans</option>
+              <option value="5 ans et plus">5 ans et plus</option>
+            </select>
+          </label>
+          <label class="field"><span>Telephone parent 1</span><input type="tel" name="parent_phone" required /></label>
+          <label class="field"><span>Telephone parent 2 (optionnel)</span><input type="tel" name="parent_phone_2" /></label>
+          <label class="field full"><span>E-mail parent</span><input type="email" name="parent_email" required /></label>
+          <label class="field full">
+            Observations (allergies, traitement, blessure…)
+            <textarea name="notes" placeholder="Informations utiles pour l'encadrement"></textarea>
+          </label>
+        </div>
+        <button class="btn btn-primary block" type="submit" style="margin-top:1rem">Continuer vers les documents</button>
+      </form>
+    </section>
+
+    <section class="section" data-panel="docs" hidden>
+      <h2>Documents obligatoires</h2>
+      <p class="sub">Public 8 a 16 ans. Brochures legales a valider par la direction avant production.</p>
+      <form id="docs-form">
+        <div class="check-list">
+          <label><input type="checkbox" name="cgv" required /> J'accepte les <a href="/cgv" target="_blank" rel="noopener">CGV du stage enfants</a>.</label>
+          <label><input type="checkbox" name="reglement" required /> J'accepte le <a href="/reglement" target="_blank" rel="noopener">reglement interieur</a>.</label>
+          <label><input type="checkbox" name="parental" required /> J'autorise mon enfant a participer au stage (autorisation parentale).</label>
+          <label><input type="checkbox" name="health" required /> Je declare avoir communique l'etat de sante et l'aptitude sportive de l'enfant.</label>
+          <label><input type="checkbox" name="participation" required /> J'accepte les conditions de participation et la pause du midi (repas non pris en charge).</label>
+          <label><input type="checkbox" name="image_rights" /> J'autorise le droit a l'image (optionnel : decocher = refus).</label>
+        </div>
+        <button class="btn btn-primary block" type="submit">Finaliser l'inscription</button>
+      </form>
+    </section>
+
+    <section class="section" data-panel="done" hidden>
+      <h2>Inscription confirmee</h2>
+      <p class="sub" id="done-summary"></p>
+      <p>Vous recevrez un e-mail de confirmation avec le rappel du materiel et des dates.</p>
+      <a class="btn btn-ghost" href="/">Retour a l'accueil</a>
+    </section>
+
+    <footer class="site-footer">
+      <p>Boxing Center Stages</p>
+    </footer>
+  </div>
+  <script>
+    import { bootInscription } from '../scripts/inscription.js';
+    bootInscription().catch((err) => console.error(err));
+  </script>
+</Base>
