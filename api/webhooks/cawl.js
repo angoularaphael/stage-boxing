@@ -1,5 +1,6 @@
 import '../../lib/load-env.js';
 import { publicUrl } from '../../lib/config.js';
+import { getHostedCheckout, isCawlCheckoutPaid } from '../../lib/cawl.js';
 import { json, methodOf, readBody } from '../../lib/http.js';
 import { sendPaymentReceived } from '../../lib/mail.js';
 import { getOrder, listOrders, markPaid, saveOrder } from '../../lib/orders.js';
@@ -22,18 +23,19 @@ export default async function handler(req, res) {
     if (!order) return json(res, 200, { ok: true, unknown_order: true });
     if (order.payment?.status === 'paid') return json(res, 200, { ok: true, already: true });
 
-    const status = String(
-      body?.payment?.status || body?.createdPaymentOutput?.payment?.status || body?.status || ''
-    ).toUpperCase();
-    const ok =
-      ['CAPTURED', 'PAID', 'PAYMENT_CREATED'].includes(status) ||
-      String(body?.paymentStatusCategory || '').toUpperCase() === 'SUCCESSFUL';
-    if (!ok) return json(res, 200, { ok: true, pending: true });
+    const providerId = order.payment?.provider_id || hostedId;
+    if (!providerId) return json(res, 200, { ok: true, pending: true });
+
+    // Ne pas faire confiance au body : relire l'etat chez CAWL
+    const checkout = await getHostedCheckout(providerId);
+    if (!isCawlCheckoutPaid(checkout)) {
+      return json(res, 200, { ok: true, pending: true });
+    }
 
     markPaid(order, {
       method: 'cawl_card',
       provider: 'cawl',
-      provider_id: order.payment?.provider_id || hostedId,
+      provider_id: providerId,
     });
     await saveOrder(order);
     const formUrl = `${publicUrl()}/inscription?order=${order.id}&token=${order.access_token}`;

@@ -1,14 +1,10 @@
 import '../../lib/load-env.js';
 import { json, methodOf, queryFromUrl } from '../../lib/http.js';
 import { listOrders } from '../../lib/orders.js';
+import { adminAuthorized } from '../../lib/studio.js';
 
 function authorized(req) {
-  const token = process.env.ADMIN_TOKEN || '';
-  if (!token) return false;
-  const header = String(req.headers.authorization || '');
-  if (header === `Bearer ${token}`) return true;
-  const q = queryFromUrl(req);
-  return q.token === token;
+  return adminAuthorized(req);
 }
 
 function toCsv(rows) {
@@ -24,6 +20,7 @@ function toCsv(rows) {
     'child_last_name',
     'child_birthdate',
     'practice_years',
+    'notes',
     'paid_at',
     'created_at',
   ];
@@ -43,6 +40,7 @@ function toCsv(rows) {
         o.child?.last_name,
         o.child?.birthdate,
         o.child?.practice_years,
+        o.child?.notes,
         o.payment?.paid_at,
         o.created_at,
       ]

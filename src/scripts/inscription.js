@@ -131,8 +131,10 @@ export async function bootInscription() {
     setStep('pay');
   }
 
+  let paying = false;
   document.querySelector('#pay-form')?.addEventListener('submit', async (ev) => {
     ev.preventDefault();
+    if (paying) return;
     showAlert(alertEl, '');
     const fd = new FormData(ev.target);
     const isMember = Boolean(toggleEl?.checked);
@@ -140,6 +142,9 @@ export async function bootInscription() {
       showAlert(alertEl, 'Cochez la declaration adherent pour beneficier du tarif 80 EUR.');
       return;
     }
+    paying = true;
+    const submitBtn = ev.target.querySelector('[type="submit"]');
+    if (submitBtn) submitBtn.disabled = true;
     try {
       const result = await api('/api/checkout', {
         method: 'POST',
@@ -156,6 +161,8 @@ export async function bootInscription() {
       });
       window.location.href = result.redirect_url;
     } catch (e) {
+      paying = false;
+      if (submitBtn) submitBtn.disabled = false;
       showAlert(alertEl, e.message);
     }
   });
@@ -174,7 +181,16 @@ export async function bootInscription() {
           last_name: fd.get('last_name'),
           birthdate: fd.get('birthdate'),
           practice_years: fd.get('practice_years'),
-          notes: fd.get('notes'),
+          notes: buildChildNotes(fd),
+          weight: fd.get('weight'),
+          level: fd.get('level'),
+          fights_count: fd.get('fights_count'),
+          emergency_name: fd.get('emergency_name'),
+          emergency_phone: fd.get('emergency_phone'),
+          allergies: fd.get('allergies'),
+          treatment: fd.get('treatment'),
+          injury: fd.get('injury'),
+          lunch_break: fd.get('lunch_break'),
           parent_phone: fd.get('parent_phone'),
           parent_phone_2: fd.get('parent_phone_2'),
           parent_email: fd.get('parent_email'),
@@ -231,6 +247,23 @@ function fillParentFromOrder(order) {
   }
 }
 
-if (document.documentElement.dataset.page === 'inscription') {
-  bootInscription().catch((err) => console.error(err));
+function buildChildNotes(fd) {
+  const lines = [];
+  const pairs = [
+    ['Poids (kg)', fd.get('weight')],
+    ['Niveau', fd.get('level')],
+    ['Assauts / combats', fd.get('fights_count')],
+    ['Contact urgence', fd.get('emergency_name')],
+    ['Telephone urgence', fd.get('emergency_phone')],
+    ['Allergies', fd.get('allergies')],
+    ['Traitement', fd.get('treatment')],
+    ['Blessure', fd.get('injury')],
+    ['Pause midi', fd.get('lunch_break')],
+    ['Observations', fd.get('notes')],
+  ];
+  for (const [label, value] of pairs) {
+    const v = String(value || '').trim();
+    if (v) lines.push(`${label} : ${v}`);
+  }
+  return lines.join('\n');
 }

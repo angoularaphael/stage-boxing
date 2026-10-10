@@ -24,7 +24,3 @@ export function bootClubPage() {
   toggleEl?.addEventListener('change', syncCta);
   syncCta();
 }
-
-if (document.documentElement.dataset.page === 'club') {
-  bootClubPage();
-}

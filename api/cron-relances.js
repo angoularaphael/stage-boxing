@@ -6,11 +6,10 @@ import { listOrders, saveOrder } from '../lib/orders.js';
 
 export default async function handler(req, res) {
   const q = queryFromUrl(req);
+  const secret = String(process.env.CRON_SECRET || '').trim();
+  if (!secret) return json(res, 503, { ok: false, error: 'CRON_SECRET manquant' });
   const auth = String(req.headers.authorization || '');
-  const cronOk =
-    auth === `Bearer ${process.env.CRON_SECRET}` ||
-    q.secret === process.env.CRON_SECRET ||
-    req.headers['x-vercel-cron'] === '1';
+  const cronOk = auth === `Bearer ${secret}` || q.secret === secret;
   if (!cronOk) return json(res, 401, { ok: false });
   if (methodOf(req) !== 'GET' && methodOf(req) !== 'POST') {
     return json(res, 405, { ok: false });
@@ -25,7 +24,8 @@ export default async function handler(req, res) {
     const last = order.last_reminder_at ? Date.parse(order.last_reminder_at) : 0;
     if (last && now - last < 24 * 3600 * 1000) continue;
     const formUrl = `${publicUrl()}/inscription?order=${order.id}&token=${order.access_token}`;
-    await sendFormReminder(order, { formUrl });
+    const result = await sendFormReminder(order, { formUrl });
+    if (!result?.sent) continue;
     order.reminders_sent = (order.reminders_sent || 0) + 1;
     order.last_reminder_at = new Date().toISOString();
     await saveOrder(order);

@@ -84,7 +84,7 @@ import SiteHeader from '../components/SiteHeader.astro';
         <div class="form-grid two">
           <label class="field"><span>Prenom</span><input name="first_name" required /></label>
           <label class="field"><span>Nom</span><input name="last_name" required /></label>
-          <label class="field"><span>Date de naissance</span><input type="date" name="birthdate" required min="2009-10-01" max="2018-10-31" /></label>
+          <label class="field"><span>Date de naissance</span><input type="date" name="birthdate" required min="2009-10-27" max="2018-10-26" /></label>
           <label class="field">
             Annee de pratique
             <select name="practice_years" required>
@@ -96,11 +96,36 @@ import SiteHeader from '../components/SiteHeader.astro';
               <option value="5 ans et plus">5 ans et plus</option>
             </select>
           </label>
+          <label class="field"><span>Poids (kg)</span><input name="weight" inputmode="decimal" placeholder="ex. 42" /></label>
+          <label class="field">
+            Niveau
+            <select name="level">
+              <option value="">—</option>
+              <option value="Debutant">Debutant</option>
+              <option value="Loisir">Loisir</option>
+              <option value="Educative">Educative</option>
+              <option value="Competiteur">Competiteur</option>
+            </select>
+          </label>
+          <label class="field"><span>Nombre d'assauts ou combats</span><input name="fights_count" inputmode="numeric" /></label>
+          <label class="field">
+            Pause du midi
+            <select name="lunch_break">
+              <option value="Repas apporte">Repas apporte (non pris en charge)</option>
+              <option value="Recupere par un parent">Recupere par un parent</option>
+              <option value="Autre">Autre (preciser en observations)</option>
+            </select>
+          </label>
+          <label class="field"><span>Contact d'urgence</span><input name="emergency_name" required /></label>
+          <label class="field"><span>Telephone urgence</span><input type="tel" name="emergency_phone" required /></label>
           <label class="field"><span>Telephone parent 1</span><input type="tel" name="parent_phone" required /></label>
           <label class="field"><span>Telephone parent 2 (optionnel)</span><input type="tel" name="parent_phone_2" /></label>
           <label class="field full"><span>E-mail parent</span><input type="email" name="parent_email" required /></label>
+          <label class="field full"><span>Allergies</span><input name="allergies" placeholder="Aucune si neant" /></label>
+          <label class="field full"><span>Traitement en cours</span><input name="treatment" /></label>
+          <label class="field full"><span>Blessure / contre-indication</span><input name="injury" /></label>
           <label class="field full">
-            Observations (allergies, traitement, blessure…)
+            Observations
             <textarea name="notes" placeholder="Informations utiles pour l'encadrement"></textarea>
           </label>
         </div>
