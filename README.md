@@ -26,3 +26,17 @@ Tarifs : `PRICE_GUEST_CENTS=14000`, `PRICE_MEMBER_CENTS=8000`.
 
 Page `/admin` : avec `ADMIN_TOKEN`, activer ou desactiver le **mode studio** (cookie `stg_studio`).
 En studio, les paiements passent par les cles `*_TEST_*` (PayPal sandbox, PayPlug test, CAWL preprod).
+
+## Deploy Vercel
+
+```bash
+# 1. Connexion CLI (une fois)
+npx vercel@latest login
+
+# 2. Lier le projet + deployer
+npx vercel@latest link --yes --project stage-boxing
+npm run env:push
+npm run deploy
+```
+
+Repo : https://github.com/angoularaphael/stage-boxing

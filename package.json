@@ -10,7 +10,13 @@
     "dev:api": "node server/dev-api.js",
     "build": "astro build",
     "preview": "astro preview --port 5620",
-    "test": "node --test test/*.test.js"
+    "test": "node --test test/*.test.js",
+    "env:make": "node scripts/make-env.mjs",
+    "env:push": "node scripts/push-vercel-env.mjs",
+    "deploy": "vercel --prod --yes"
+  },
+  "engines": {
+    "node": ">=22.12.0"
   },
   "dependencies": {
     "astro": "^5.0.0"
