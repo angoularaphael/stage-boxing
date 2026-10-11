@@ -1,0 +1,21 @@
+---
+import Base from '../layouts/Base.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import { CLUBS } from '../data/clubs.js';
+---
+<Base title="Page introuvable — Les Vacances des Boxeurs" description="Cette page n’existe pas. Retrouvez le stage enfants Boxing Center à Portet ou aux Minimes." path="/404" robots="noindex, follow" page="legal">
+  <SiteHeader mode="simple" />
+  <main id="contenu" class="legal">
+    <div class="wrap legal__in">
+      <p class="eyebrow">Erreur 404</p>
+      <h1>Hors du ring</h1>
+      <p>Cette page n’existe pas, ou plus. Le stage, lui, est bien là : du lundi 26 au samedi 31 octobre 2026.</p>
+      <p class="hero__cta" style="margin-top:1.6rem">
+        <a class="btn btn--rouge" href={CLUBS.portet.path}>{CLUBS.portet.cta}</a>
+        <a class="btn btn--rouge" href={CLUBS.minimes.path}>{CLUBS.minimes.cta}</a>
+      </p>
+    </div>
+  </main>
+  <SiteFooter />
+</Base>

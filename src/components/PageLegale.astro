@@ -1,0 +1,45 @@
+---
+import Base from '../layouts/Base.astro';
+import SiteHeader from './SiteHeader.astro';
+import SiteFooter from './SiteFooter.astro';
+import { VERSION_DOCUMENTS } from '../data/documents.js';
+
+interface Props {
+  title: string;
+  description: string;
+  path: string;
+  eyebrow: string;
+  titre: string;
+  docs: any[];
+  ogImage: string;
+}
+const { title, description, path, eyebrow, titre, docs, ogImage } = Astro.props;
+---
+<Base title={title} description={description} path={path} ogImage={ogImage} page="legal">
+  <SiteHeader mode="simple" />
+  <main id="contenu" class="legal">
+    <div class="wrap legal__in">
+      <p class="eyebrow">{eyebrow}</p>
+      <h1>{titre}</h1>
+      <p class="legal__version">Stage enfants « Les Vacances des Boxeurs », 8–16 ans · version du {VERSION_DOCUMENTS}.</p>
+      {docs.length > 1 && (
+        <nav class="legal__sommaire" aria-label="Documents">
+          {docs.map((d) => <a class="puce" href={`#${d.id}`}>{d.titre}</a>)}
+        </nav>
+      )}
+      {docs.map((d) => (
+        <section id={d.id} aria-labelledby={`t-${d.id}`}>
+          {docs.length > 1 && <h2 id={`t-${d.id}`} style="font-size:1.5rem;margin-top:3rem">{d.titre}</h2>}
+          {d.sections.map((s: any) => (
+            <>
+              {s.h && <h2>{s.h}</h2>}
+              {s.p.map((x: string) => <p>{x}</p>)}
+            </>
+          ))}
+        </section>
+      ))}
+      <p style="margin-top:2.4rem"><a class="btn btn--rouge" href="/choisir-mon-club">Choisir mon club</a></p>
+    </div>
+  </main>
+  <SiteFooter />
+</Base>

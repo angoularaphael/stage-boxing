@@ -1,0 +1,67 @@
+---
+/**
+ * La fiche d'un intervenant : sa carte, ses titres, son bilan s'il est professionnel, et
+ * surtout SA semaine — les créneaux qu'il anime, lus dans le programme (donc dans les PDF).
+ * Le parent sait avec qui son enfant sera, et quand.
+ */
+import Carte from './Carte.astro';
+import { INTERVENANTS, CLUBS } from '../data/clubs.js';
+import { seancesDe, creneau } from '../data/stage.js';
+
+interface Props {
+  id: string;
+  club: 'portet' | 'minimes';
+  inverse?: boolean;
+}
+const { id, club, inverse = false } = Astro.props;
+const p = INTERVENANTS[id];
+const c = CLUBS[club];
+const semaine = seancesDe(id);
+// le bilan chiffré remplace la ligne « Professionnel : 10 victoires… » : on ne dit pas deux fois la même chose
+const titres = p.bilan ? p.titres.filter((t: string) => !/^Professionnel(le)? :/.test(t)) : p.titres;
+---
+<article
+  class:list={['fiche', `fiche--${club}`, { 'fiche--inverse': inverse, 'fiche--vedette': !!p.vedette }]}
+  id={`fiche-${id}`}
+  style={`--pc:var(--${club});--pc-clair:var(--${club}-clair)`}
+  aria-labelledby={`nom-${id}`}
+>
+  <div class="fiche__carte">
+    <Carte id={id} club={club} sizes="(min-width: 1000px) 360px, 72vw" />
+  </div>
+  <div class="fiche__corps" data-rev>
+    <p class="fiche__role">{p.role}</p>
+    <h3 class="fiche__nom" id={`nom-${id}`}>{p.nom}</h3>
+    {p.vedette && <p class="fiche__vedette">{p.vedette}</p>}
+    {p.bilan && <p class="bilan__titre" id={`bilan-${id}`}>Bilan chez les professionnels</p>}
+    {p.bilan && (
+      <dl class="bilan" aria-labelledby={`bilan-${id}`}>
+        {p.bilan.map(([n, l]: [number, string]) => (
+          <div>
+            <dt>{l}</dt>
+            <dd>{n}</dd>
+          </div>
+        ))}
+      </dl>
+    )}
+    {titres.length > 0 && (
+      <ul class="fiche__titres">
+        {titres.map((t: string) => <li>{t}</li>)}
+      </ul>
+    )}
+    <p class="fiche__texte">{p.texte}</p>
+    {semaine.length > 0 && (
+      <div class="fiche__semaine">
+        <p class="eyebrow">Sa semaine au stage, {c.a}</p>
+        <ol>
+          {semaine.map(({ jour, seance, titre }) => (
+            <li>
+              <time datetime={`${jour.date}T${seance.debut}`}>{jour.court} {jour.num} · {creneau(seance)}</time>
+              <a href={`/programme?club=${club}#jour-${jour.date}`}>{titre}</a>
+            </li>
+          ))}
+        </ol>
+      </div>
+    )}
+  </div>
+</article>

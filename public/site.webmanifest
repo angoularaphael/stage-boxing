@@ -1,0 +1,13 @@
+{
+  "name": "Les Vacances des Boxeurs — stages enfants Boxing Center",
+  "short_name": "Stage boxe",
+  "lang": "fr-FR",
+  "start_url": "/",
+  "display": "browser",
+  "background_color": "#080808",
+  "theme_color": "#080808",
+  "icons": [
+    { "src": "/favicon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/favicon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}

@@ -1,0 +1,25 @@
+---
+import { STAGE } from '../data/stage.js';
+
+interface Props {
+  intro?: string;
+  titre?: string;
+}
+const { intro = STAGE.public, titre = 'Une semaine<br /><em>pour progresser</em>' } = Astro.props;
+---
+<section class="sec" aria-labelledby="titre-semaine-intro">
+  <div class="wrap">
+    <div class="sec__head" data-rev>
+      <p class="eyebrow">{STAGE.vacances}</p>
+      <h2 class="sec__title" id="titre-semaine-intro" set:html={titre} />
+      <p class="sec__lede">{intro}</p>
+    </div>
+    <div class="chiffres">
+      <p class="chiffre" data-rev><b data-compteur="6">6</b><span>jours de stage, du lundi au samedi</span></p>
+      <p class="chiffre" data-rev style="--d:.06s"><b data-compteur="12">12</b><span>séances ou activités, deux par jour</span></p>
+      <p class="chiffre" data-rev style="--d:.12s"><b>8–16</b><span>ans, filles et garçons</span></p>
+      <p class="chiffre" data-rev style="--d:.18s"><b>4</b><span>niveaux accueillis, des débutants aux compétiteurs</span></p>
+    </div>
+    <slot />
+  </div>
+</section>

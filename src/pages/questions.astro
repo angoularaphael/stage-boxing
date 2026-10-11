@@ -1,0 +1,96 @@
+---
+/**
+ * /questions — « Et si… ? ». Toutes les réponses, classées par thème, filtrables et
+ * cherchables (sans se soucier des accents). Balisées FAQPage, une seule fois chacune.
+ */
+import Base from '../layouts/Base.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import PageTete from '../components/PageTete.astro';
+import Suite from '../components/Suite.astro';
+import Barre from '../components/Barre.astro';
+import { THEMES, toutesQuestions } from '../data/faq.js';
+import { CLUBS, CLUB_IDS } from '../data/clubs.js';
+import { graphe, organisation, faq, fil } from '../data/schema.js';
+import { precharge } from '../data/precharge.js';
+
+const items = toutesQuestions();
+const groupes = THEMES.map((t) => ({ ...t, items: items.filter((it) => it.theme === t.id) })).filter((g) => g.items.length);
+const jsonLd = graphe(organisation(), faq(items), fil([['Stages enfants Boxing Center', '/'], ['Questions', '/questions']]));
+---
+<Base
+  title="Questions sur le stage boxe enfants Toulouse — Boxing Center"
+  description="Âge, niveau, sécurité, horaires, repas, matériel, prix, paiement en 4 fois, documents : toutes les réponses sur le stage de boxe 8–16 ans du 26 au 31 octobre."
+  path="/questions"
+  ogTitle="Stage enfants Boxing Center : toutes vos questions"
+  ogDescription="Débutant ? Sécurité ? Repas ? Paiement ? Les réponses, classées par thème."
+  ogImage="/img/og/questions.jpg"
+  ogAlt="Questions fréquentes sur le stage enfants Les Vacances des Boxeurs"
+  page="questions"
+  jsonLd={jsonLd}
+  preload={[precharge('minimes-coaching', '100vw')]}
+>
+  <SiteHeader actif="questions" />
+  <main id="contenu">
+    <PageTete
+      photo="minimes-coaching"
+      eyebrow="Questions fréquentes"
+      titre="Vos questions,<br /><em>nos réponses</em>"
+      lede={`${items.length} réponses sur le stage, classées par thème. Une autre question ? Le club vous répond directement.`}
+      courant="Questions"
+    />
+
+    <section class="sec questions" data-questions aria-label="Toutes les questions">
+      <div class="wrap questions__in">
+        <div class="questions__outils" data-rev>
+          <label class="sr-only" for="q-saisie">Chercher une question</label>
+          <input id="q-saisie" class="questions__saisie" type="search" placeholder="Chercher : repas, casque, 4 fois…" autocomplete="off" spellcheck="false" data-q-saisie />
+          <div class="questions__themes" role="group" aria-label="Thèmes">
+            <button type="button" class="questions__puce" aria-pressed="true" data-q-theme="tout">Tout <span>{items.length}</span></button>
+            {groupes.map((g) => (
+              <button type="button" class="questions__puce" aria-pressed="false" data-q-theme={g.id}>{g.nom} <span>{g.items.length}</span></button>
+            ))}
+          </div>
+          <p class="questions__compte" data-q-compte aria-live="polite"></p>
+        </div>
+
+        <div class="questions__liste">
+          {groupes.map((g) => (
+            <section class="questions__groupe" data-q-groupe={g.id} aria-labelledby={`q-${g.id}`}>
+              <h2 class="questions__titre" id={`q-${g.id}`}>{g.nom}</h2>
+              <div class="faq">
+                {g.items.map((it) => (
+                  <details data-q-item>
+                    <summary>{it.q}</summary>
+                    <p class="faq__r">{it.r}</p>
+                  </details>
+                ))}
+              </div>
+            </section>
+          ))}
+          <div class="questions__vide" data-q-vide hidden>
+            <p><b>Aucune question ne correspond.</b> Posez-la directement au club : il vous répond.</p>
+          </div>
+        </div>
+
+        <aside class="questions__contact" aria-label="Contacter un club">
+          <p class="eyebrow">Toujours une question ?</p>
+          {CLUB_IDS.map((id) => {
+            const c = CLUBS[id];
+            return (
+              <div class:list={['questions__club', `questions__club--${id}`]}>
+                <p class="questions__club-nom">{c.court}</p>
+                <a href={`tel:${c.telHref}`}>{c.tel}</a>
+                <a href={`mailto:${c.email}`}>{c.email}</a>
+              </div>
+            );
+          })}
+        </aside>
+      </div>
+    </section>
+
+    <Suite pages={['parents', 'tarifs', 'choisir']} />
+  </main>
+  <SiteFooter />
+  <Barre />
+</Base>

@@ -1,0 +1,34 @@
+---
+/**
+ * Les parents, en quatre faits, sur l'accueil : la page bascule un instant dans le clair
+ * (cahier §13), puis renvoie vers la page parents complète.
+ */
+const faits = [
+  { t: 'Des coachs Boxing Center', d: 'Dans chaque salle, les coachs du club encadrent les enfants toute la semaine.' },
+  { t: 'Des groupes adaptés', d: 'Selon l’âge, le poids, le niveau et l’expérience. Les débutants sont acceptés.' },
+  { t: 'Protégés pendant les assauts', d: 'Gants, casque, protège-dents. En boxe éducative, on touche, on ne frappe pas.' },
+  { t: 'Le midi, sous surveillance', d: 'Chacun apporte son repas ; les enfants peuvent rester à la salle pendant la pause.' },
+];
+---
+<section class="sec clair parents-bref" id="parents" aria-labelledby="titre-parents">
+  <div class="wrap">
+    <div class="sec__head" data-rev>
+      <p class="eyebrow">Pour les parents</p>
+      <h2 class="sec__title" id="titre-parents">Un cadre <em>clair</em>,<br />du lundi au samedi</h2>
+      <p class="sec__lede">Tout ce qu’il faut savoir avant d’inscrire votre enfant, sans petites lignes.</p>
+    </div>
+    <ol class="bref">
+      {faits.map((f, i) => (
+        <li data-rev style={`--d:${i * 0.05}s`}>
+          <span class="bref__n">0{i + 1}</span>
+          <b>{f.t}</b>
+          <span class="bref__d">{f.d}</span>
+        </li>
+      ))}
+    </ol>
+    <div class="sec__plus" data-rev>
+      <a class="btn btn--rouge" href="/choisir-mon-club">Choisir mon club <span class="fleche" aria-hidden="true">→</span></a>
+      <a class="btn btn--ghost" href="/parents">Tout pour les parents</a>
+    </div>
+  </div>
+</section>

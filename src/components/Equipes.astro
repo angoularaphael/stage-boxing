@@ -1,0 +1,49 @@
+---
+import Carte from './Carte.astro';
+import { CLUBS } from '../data/clubs.js';
+
+interface Props {
+  clubs?: ('portet' | 'minimes')[];
+  titre?: string;
+  /** chaque carte mène à sa fiche ; « page » : sur la page équipe elle-même */
+  liens?: 'page' | 'site' | '';
+  plus?: boolean;
+}
+const { clubs = ['portet', 'minimes'], titre, liens = 'site', plus = false } = Astro.props;
+const lienDe = (pid: string) => (liens === 'page' ? `#fiche-${pid}` : liens === 'site' ? `/equipe#fiche-${pid}` : undefined);
+const seul = clubs.length === 1;
+---
+<section class="sec" id="equipe" aria-labelledby="titre-equipe">
+  <div class="wrap">
+    <div class="sec__head" data-rev>
+      <p class="eyebrow">{seul ? 'L’équipe de la semaine' : 'Les intervenants'}</p>
+      <h2 class="sec__title" id="titre-equipe" set:html={titre ?? 'Des champions<br />pour <em>les encadrer</em>'} />
+      <p class="sec__lede">
+        {seul
+          ? 'Les coachs du club et un boxeur professionnel, toute la semaine avec les enfants.'
+          : 'Dans chaque salle, les coachs Boxing Center et un boxeur professionnel. Le programme est le même ; l’équipe est celle du club.'}
+      </p>
+    </div>
+    <div class="paquets">
+      {clubs.map((id) => {
+        const c = CLUBS[id];
+        return (
+          <div class:list={['paquet', `paquet--${id}`]}>
+            {!seul && (
+              <div class="paquet__tete" data-rev>
+                <h3>Équipe <span>{c.court}</span></h3>
+                <a class="lien" href={c.path}>{c.cta}</a>
+              </div>
+            )}
+            <div class="cartes" data-cartes>
+              {c.equipe.map((pid, i) => <Carte id={pid} club={id} delai={i * 0.08} lien={lienDe(pid)} />)}
+            </div>
+          </div>
+        );
+      })}
+    </div>
+    {plus && (
+      <p class="sec__plus" data-rev><a class="btn btn--ghost" href="/equipe">Toute l’équipe, et leurs créneaux <span class="fleche" aria-hidden="true">→</span></a></p>
+    )}
+  </div>
+</section>

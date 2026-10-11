@@ -1,0 +1,100 @@
+---
+/**
+ * La carte qui se gagne, montrée AVANT l'inscription. En descendant, la carte se remplit
+ * comme elle se remplira vraiment : le paiement la fait apparaître, la fiche y écrit, chaque
+ * document y appose son tampon, puis le sceau tombe et elle rejoint le paquet des coachs.
+ * C'est un exemple : aucune donnée d'enfant, le prénom reste « Son prénom ».
+ */
+import { DOCUMENTS } from '../data/documents.js';
+import { CLUBS, CLUB_IDS, INTERVENANTS, listeNoms } from '../data/clubs.js';
+import manifest from '../data/photos.json';
+
+const etapes = [
+  { t: 'Vous payez en ligne', d: 'La place est réservée. Sa carte apparaît, aux couleurs du club choisi.' },
+  { t: 'Vous remplissez sa fiche', d: 'Son prénom et son niveau s’écrivent sur la carte, avec ses coachs de la semaine.' },
+  { t: 'Vous validez les documents', d: 'Chaque document validé appose son tampon : autorisation, santé, règlement, CGV, participation.' },
+  { t: 'Sa carte est validée', d: 'Le sceau tombe et la carte rejoint le paquet de ses coachs. Elle se télécharge, et l’agenda des 12 séances avec.' },
+];
+const salles = Object.fromEntries(
+  CLUB_IDS.map((id) => [
+    id,
+    {
+      court: CLUBS[id].court,
+      coachs: `Avec ${listeNoms(CLUBS[id].equipe)}`,
+      visages: CLUBS[id].equipe.map((pid) => {
+        const p = INTERVENANTS[pid];
+        const m = p.photo ? (manifest.coachs as Record<string, any>)[p.photo] : null;
+        return { src: m ? `/img/coachs/${p.photo}-${m.widths[0]}.webp` : '', init: p.court.charAt(0), nom: p.nom };
+      }),
+    },
+  ]),
+);
+const s0 = salles.portet;
+---
+<section class="sec apercu" id="carte" data-apercu data-salles={JSON.stringify(salles)} aria-labelledby="titre-apercu">
+  <div class="wrap apercu__intro">
+    <div class="sec__head" data-rev>
+      <p class="eyebrow">L’inscription en trois temps</p>
+      <h2 class="sec__title" id="titre-apercu">Sa carte<br /><em>se gagne</em></h2>
+      <p class="sec__lede">Après le paiement, la fiche et les documents restent à faire. Pour que personne ne s’arrête en route, chaque étape construit la carte de boxeur de votre enfant. Faites défiler pour la voir se remplir.</p>
+    </div>
+  </div>
+  <div class="apercu__piste">
+    <div class="apercu__colle">
+      <div class="wrap apercu__in">
+        <ol class="apercu__etapes">
+          {etapes.map((e, i) => (
+            <li class:list={['apercu__etape', { 'is-actif': i === 0 }]} data-apercu-etape={i}>
+              <span class="apercu__n">{i + 1}</span>
+              <b>{e.t}</b>
+              <span class="apercu__d">{e.d}</span>
+            </li>
+          ))}
+        </ol>
+        <div class="apercu__points" aria-hidden="true">
+          {etapes.map((_, i) => <span class:list={{ 'is-actif': i === 0 }} data-apercu-point={i}></span>)}
+        </div>
+        <div class="apercu__scene">
+          <div class="apercu__pile">
+          <div class="apercu__paquet" aria-hidden="true" data-apercu-paquet>
+            {s0.visages.map((v, i) => (
+              <span class="apercu__dos" style={`--i:${i}`}>
+                {v.src ? <img src={v.src} alt="" width="72" height="100" loading="lazy" /> : <b>{v.init}</b>}
+              </span>
+            ))}
+          </div>
+          <div class="carte carte--enfant carte--apercu" data-carte data-apercu-carte style="--cc:var(--portet);--cc-clair:var(--portet-clair)" aria-label="Exemple de carte de boxeur">
+            <div class="carte__face">
+              <span class="carte__mono" aria-hidden="true">?</span>
+              <div class="carte__haut">
+                <span>Les Vacances<br />des Boxeurs</span>
+                <span class="carte__club" data-apercu-club>{s0.court}</span>
+              </div>
+              <div class="tampons" aria-hidden="true">
+                {DOCUMENTS.map((d) => <span class="tampon" data-tampon={d.cle}>{d.tampon}</span>)}
+              </div>
+              <div class="carte__bas">
+                <span class="carte__role">Boxeur du stage</span>
+                <p class="carte__nom">Son prénom</p>
+                <ul class="carte__titres">
+                  <li>8–16 ans · tous niveaux</li>
+                  <li data-apercu-coachs>{s0.coachs}</li>
+                </ul>
+                <p class="carte__serie"><span>N° ····</span><span>26–31 oct. 2026</span></p>
+              </div>
+              <span class="sceau" aria-hidden="true">Validée</span>
+              <span class="carte__cadre" aria-hidden="true"></span>
+            </div>
+            <span class="carte__holo" aria-hidden="true"></span>
+          </div>
+          </div>
+          <div class="apercu__salle" role="group" aria-label="Couleur du club sur la carte">
+            {CLUB_IDS.map((id, i) => (
+              <button type="button" aria-pressed={i === 0 ? 'true' : 'false'} data-apercu-salle={id} style={`--c:var(--${id})`}>{CLUBS[id].court}</button>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

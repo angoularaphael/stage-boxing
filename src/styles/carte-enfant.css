@@ -1,0 +1,155 @@
+/* ==========================================================================
+   La carte de l'enfant — partagée par le tunnel (où elle se construit) et la page
+   tarifs (où on la montre avant l'inscription). Tampons : un par document validé.
+   ========================================================================== */
+.carte--enfant {
+  --cc: var(--club);
+  --cc-clair: var(--club-clair);
+  width: min(100%, 320px);
+}
+.carte--enfant .carte__face {
+  background:
+    radial-gradient(110% 70% at 50% 0%, color-mix(in srgb, var(--cc) 62%, #05060a), #05060a 72%),
+    #05060a;
+}
+.carte--enfant .carte__face::after {
+  /* le grain d'un vrai papier de licence */
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: url("/img/grain.png");
+  background-size: 120px;
+  opacity: 0.12;
+  mix-blend-mode: overlay;
+}
+.carte--enfant .carte__mono {
+  inset: 9% 0 auto;
+  font-size: clamp(7rem, 26vw, 9.4rem);
+  letter-spacing: 0.02em;
+  transition: color 0.4s;
+}
+.carte--enfant .carte__nom {
+  font-size: clamp(2rem, 7vw, 2.8rem);
+  min-height: 0.86em;
+}
+.carte__serie {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0.35rem;
+  padding-top: 0.4rem;
+  border-top: 1px dashed rgba(255, 255, 255, 0.24);
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.62);
+  font-variant-numeric: tabular-nums;
+}
+.carte__serie span:first-child {
+  color: var(--cc-clair);
+}
+.carte.is-ecrit .carte__nom {
+  animation: frappe 0.32s var(--ease);
+}
+@keyframes frappe {
+  from {
+    transform: translateY(2px);
+    opacity: 0.6;
+  }
+}
+
+/* les tampons : un par document validé */
+.tampons {
+  position: absolute;
+  top: 38%;
+  right: 0.7rem;
+  display: grid;
+  justify-items: end;
+  gap: 4px;
+}
+.tampon {
+  padding: 2px 6px;
+  border: 1.5px dashed rgba(255, 255, 255, 0.18);
+  border-radius: 6px;
+  font-size: 0.5rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.24);
+  transform: rotate(-6deg);
+  transition: color 0.3s, border-color 0.3s, background-color 0.3s;
+}
+.tampon:nth-child(even) {
+  transform: rotate(4deg);
+}
+.tampon.is-pose {
+  border-style: solid;
+  border-color: var(--cc-clair);
+  color: #05060a;
+  background: var(--cc-clair);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .tampon.is-pose {
+    animation: tampon 0.45s var(--ease) both;
+  }
+}
+@keyframes tampon {
+  0% {
+    transform: scale(2.4) rotate(-14deg);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(0.92) rotate(-5deg);
+    opacity: 1;
+  }
+}
+.sceau {
+  position: absolute;
+  top: 56%;
+  left: 27%;
+  display: grid;
+  place-items: center;
+  width: 32%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  border: 3px double var(--rouge);
+  color: var(--rouge);
+  background: rgba(255, 255, 255, 0.92);
+  font-family: var(--f-display);
+  font-size: clamp(1.4rem, 5vw, 2rem);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transform: translate(-50%, -50%) rotate(-12deg) scale(0);
+  opacity: 0;
+  box-shadow: 0 10px 30px -8px rgba(0, 0, 0, 0.6);
+  pointer-events: none;
+}
+.carte.is-scelle .sceau {
+  opacity: 1;
+  transform: translate(-50%, -50%) rotate(-12deg) scale(1);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .carte.is-scelle .sceau {
+    animation: sceau 0.7s var(--ease) both;
+  }
+  .carte.is-scelle {
+    animation: secousse 0.5s var(--ease) 0.18s;
+  }
+}
+@keyframes sceau {
+  0% {
+    transform: translate(-50%, -50%) rotate(-30deg) scale(2.6);
+    opacity: 0;
+  }
+  55% {
+    transform: translate(-50%, -50%) rotate(-10deg) scale(0.94);
+    opacity: 1;
+  }
+}
+@keyframes secousse {
+  30% {
+    transform: rotateX(var(--rx)) rotateY(var(--ry)) translateY(5px) scale(0.985);
+  }
+}
+

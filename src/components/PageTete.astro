@@ -1,0 +1,33 @@
+---
+/**
+ * L'en-tête d'une page intérieure : une vraie photo du réseau, le fil d'Ariane, le titre
+ * de la page et la réponse en une phrase. Les puces (dates, compte à rebours…) passent
+ * par le slot.
+ */
+import Photo from './Photo.astro';
+
+interface Props {
+  photo: string;
+  eyebrow: string;
+  titre: string;
+  lede: string;
+  courant: string;
+  sizes?: string;
+}
+const { photo, eyebrow, titre, lede, courant, sizes = '100vw' } = Astro.props;
+---
+<section class="tete" data-hero aria-labelledby="titre-page">
+  <Photo name={photo} class="tete__img" sizes={sizes} eager decorative />
+  <div class="wrap tete__in">
+    <nav aria-label="Fil d’Ariane">
+      <ol class="fil">
+        <li><a href="/">Stages enfants</a></li>
+        <li aria-current="page">{courant}</li>
+      </ol>
+    </nav>
+    <p class="eyebrow">{eyebrow}</p>
+    <h1 class="tete__titre display" id="titre-page" set:html={titre} />
+    <p class="tete__lede">{lede}</p>
+    {Astro.slots.has('default') && <div class="tete__puces"><slot /></div>}
+  </div>
+</section>

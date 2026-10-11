@@ -1,64 +1,105 @@
 ---
 import '../styles/main.css';
+import '../styles/pages.css';
+import { SITE_URL } from '../data/site.js';
 
 interface Props {
   title: string;
   description: string;
-  canonical?: string;
+  path?: string;
   robots?: string;
   ogTitle?: string;
   ogDescription?: string;
+  ogImage?: string;
+  ogAlt?: string;
   page?: string;
   club?: string;
-  jsonLd?: object | null;
+  jsonLd?: object | object[] | null;
+  /** images du héros : même srcset/sizes que l'<img>, sinon le téléphone charge deux fichiers */
+  preload?: { srcset: string; sizes: string; src: string }[];
 }
 
 const {
   title,
   description,
-  canonical = 'https://stages.boxingcenter.fr/',
+  path = '/',
   robots = 'index, follow, max-image-preview:large',
   ogTitle = title,
   ogDescription = description,
+  ogImage = '/img/og/accueil.jpg',
+  ogAlt = 'Les Vacances des Boxeurs — stage de boxe enfants Boxing Center, 8–16 ans',
   page = '',
   club = '',
   jsonLd = null,
+  preload = [],
 } = Astro.props;
+
+const canonical = `${SITE_URL}${path === '/' ? '/' : path}`;
+const ogUrl = ogImage.startsWith('http') ? ogImage : `${SITE_URL}${ogImage}`;
+const graphes = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [];
+const noindex = robots.includes('noindex');
 ---
 <!doctype html>
 <html lang="fr-FR" data-page={page || undefined} data-club={club || undefined}>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <script is:inline>
+      document.documentElement.classList.add('js');
+      // arrivée par une transition de page : le héros a déjà bougé avec elle, il ne rejoue pas son entrée
+      addEventListener('pagereveal', function (e) {
+        if (e.viewTransition) document.documentElement.classList.add('vt-entree');
+      });
+    </script>
+    {!noindex && (
+      <script type="speculationrules" is:inline set:html={JSON.stringify({
+        prerender: [{
+          where: { and: [{ href_matches: '/*' }, { not: { href_matches: ['/inscription*', '/admin*', '/api/*'] } }] },
+          eagerness: 'moderate',
+        }],
+      })} />
+    )}
     <title>{title}</title>
     <meta name="description" content={description} />
     <meta name="robots" content={robots} />
-    <meta name="googlebot" content={robots.includes('noindex') ? 'noindex, nofollow' : 'index, follow'} />
-    <meta http-equiv="content-language" content="fr-FR" />
-    <link rel="canonical" href={canonical} />
-    <link rel="alternate" hreflang="fr-FR" href={canonical} />
-    <link rel="alternate" hreflang="x-default" href={canonical} />
-    <link rel="sitemap" type="application/xml" href="/sitemap.xml" />
+    {!noindex && <link rel="canonical" href={canonical} />}
+    {!noindex && <link rel="alternate" hreflang="fr-FR" href={canonical} />}
     <meta name="theme-color" content="#080808" />
+    <meta name="color-scheme" content="dark" />
+    <meta name="format-detection" content="telephone=no" />
+
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="fr_FR" />
-    <meta property="og:site_name" content="Boxing Center Stages" />
+    <meta property="og:site_name" content="Boxing Center — Les Vacances des Boxeurs" />
     <meta property="og:url" content={canonical} />
     <meta property="og:title" content={ogTitle} />
     <meta property="og:description" content={ogDescription} />
+    <meta property="og:image" content={ogUrl} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={ogAlt} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={ogTitle} />
+    <meta name="twitter:description" content={ogDescription} />
+    <meta name="twitter:image" content={ogUrl} />
+
     <link rel="icon" href="/favicon.ico" sizes="48x48" />
-    <link rel="shortcut icon" href="/favicon.ico" />
-    <link rel="icon" href="/favicon-48x48.png" type="image/png" sizes="48x48" />
-    <link rel="icon" href="/favicon-96x96.png" type="image/png" sizes="96x96" />
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet" />
-    {jsonLd && (
-      <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
-    )}
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <link rel="sitemap" type="application/xml" href="/sitemap.xml" />
+
+    <link rel="preload" href="/fonts/bebas-neue-400-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/montserrat-latin.woff2" as="font" type="font/woff2" crossorigin />
+    {preload.map((p) => <link rel="preload" as="image" href={p.src} imagesrcset={p.srcset} imagesizes={p.sizes} fetchpriority="high" />)}
+
+    {graphes.map((g) => <script type="application/ld+json" set:html={JSON.stringify(g)} />)}
   </head>
   <body>
+    <a class="saut" href="#contenu">Aller au contenu</a>
     <slot />
+    <script>
+      import '../scripts/boot.js';
+    </script>
   </body>
 </html>

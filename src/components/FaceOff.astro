@@ -1,0 +1,44 @@
+---
+/**
+ * Le face-à-face. Comme sur une affiche de gala, les deux salles se font face ;
+ * chaque moitié EST le bloc de redirection demandé par le cahier (§3), et la couture
+ * annonce l'interclub du samedi, où les deux stages se retrouvent.
+ */
+import Photo from './Photo.astro';
+import { CLUBS } from '../data/clubs.js';
+import { STAGE } from '../data/stage.js';
+const p = CLUBS.portet;
+const m = CLUBS.minimes;
+---
+<section class="fo" data-fo aria-labelledby="titre-stage">
+  <div class="fo__tete">
+    <h1 class="fo__titre" id="titre-stage">
+      <span class="fo__t1 display"><span class="l">Les Vacances</span><span class="l">des Boxeurs</span></span>
+      <span class="fo__t2">Stage enfants Boxing Center<span class="fo__sep"> · </span><span class="insecable">8–16 ans</span></span>
+    </h1>
+    <div class="fo__puces">
+      <span class="puce"><span class="puce__point" aria-hidden="true"></span>{STAGE.datesCourt}</span>
+      <span class="puce puce--large">Boxe anglaise · tous niveaux</span>
+      <span class="puce" data-compte-court hidden></span>
+    </div>
+  </div>
+  <div class="fo__duo">
+    <a class="fo__cote fo__cote--portet" href={p.path} data-suivi aria-label={`${p.cta} : stage enfants au Boxing Center Portet-sur-Garonne`}>
+      <Photo name={p.hero} class="fo__img" sizes="(min-width: 900px) 60vw, 50vw" eager decorative />
+      <span class="fo__eyebrow">{p.bloc}</span>
+      <span class="fo__nom">{p.court}</span>
+      <span class="fo__infos">61 Route d’Espagne<br />avec <strong>Valentin Tapia</strong> et <strong>Anna Boullez</strong></span>
+      <span class="btn fo__btn">{p.cta} <span class="fleche" aria-hidden="true">→</span></span>
+      <span class="fo__places" data-places="portet" aria-live="polite"></span>
+    </a>
+    <a class="fo__cote fo__cote--minimes" href={m.path} data-suivi aria-label={`${m.cta} : stage enfants au Boxing Center Minimes, Toulouse`}>
+      <Photo name={m.hero} class="fo__img" sizes="(min-width: 900px) 60vw, 50vw" eager decorative />
+      <span class="fo__eyebrow">{m.bloc}</span>
+      <span class="fo__nom">{m.court}</span>
+      <span class="fo__infos">12 rue de Fenouillet · métro B<br />avec <strong>Mehdi</strong> et <strong>Johnson Suffo</strong></span>
+      <span class="btn fo__btn">{m.cta} <span class="fleche" aria-hidden="true">→</span></span>
+      <span class="fo__places" data-places="minimes" aria-live="polite"></span>
+    </a>
+    <div class="fo__couture" aria-hidden="true"><span><span class="fo__couture-long">Samedi 31 · interclub Portet × Minimes</span><span class="fo__couture-court">Interclub · samedi 31</span></span></div>
+  </div>
+</section>

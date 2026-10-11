@@ -1,0 +1,11 @@
+---
+/** Les données de l'agenda .ics (semaine + adresses), lues par scripts/agenda.js. */
+import { SEMAINE } from '../data/stage.js';
+import { CLUBS, CLUB_IDS, adresseLigne } from '../data/clubs.js';
+
+const donnees = {
+  semaine: SEMAINE,
+  clubs: Object.fromEntries(CLUB_IDS.map((id) => [id, { nom: CLUBS[id].nom, adresse: adresseLigne(CLUBS[id]) }])),
+};
+---
+<script type="application/json" id="donnees-agenda" set:html={JSON.stringify(donnees)} />

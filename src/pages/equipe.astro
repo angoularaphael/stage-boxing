@@ -1,0 +1,105 @@
+---
+/**
+ * /equipe — « Avec qui ? ». Les deux mains de cartes en héros (on les distribue à
+ * l'arrivée), puis une fiche par intervenant : titres, bilan des pros, et sa semaine au
+ * stage, créneau par créneau. Portet d'abord, les Minimes ensuite, jamais mélangés (cahier §19).
+ */
+import Base from '../layouts/Base.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import FicheCoach from '../components/FicheCoach.astro';
+import Suite from '../components/Suite.astro';
+import Final from '../components/Final.astro';
+import Barre from '../components/Barre.astro';
+import { CLUBS, CLUB_IDS, INTERVENANTS } from '../data/clubs.js';
+import { graphe, organisation, lieu, personnes, fil } from '../data/schema.js';
+import manifest from '../data/photos.json';
+
+const visage = (pid: string) => {
+  const p = INTERVENANTS[pid];
+  const m = p.photo ? (manifest.coachs as Record<string, any>)[p.photo] : null;
+  return m ? `/img/coachs/${p.photo}-${m.widths[0]}.webp` : null;
+};
+const jsonLd = graphe(organisation(), lieu('portet'), lieu('minimes'), ...personnes(), fil([['Stages enfants Boxing Center', '/'], ['Équipe', '/equipe']]));
+---
+<Base
+  title="L’équipe du stage boxe enfants : coachs et pros — Boxing Center"
+  description="Valentin Tapia, Mourad Berraho, Marama Mercier, Anna Boullez à Portet ; Mehdi, Fayez, Lucas, Johnson Suffo aux Minimes : titres et séances du stage."
+  path="/equipe"
+  ogTitle="Les coachs et les pros des Vacances des Boxeurs"
+  ogDescription="Anna Boullez à Portet, Johnson Suffo aux Minimes, et les coachs Boxing Center toute la semaine."
+  ogImage="/img/og/equipe.jpg"
+  ogAlt="Les cartes des intervenants du stage enfants Boxing Center"
+  page="equipe"
+  jsonLd={jsonLd}
+>
+  <SiteHeader actif="equipe" />
+  <main id="contenu">
+    <section class="eq" data-hero aria-labelledby="titre-page">
+      <div class="wrap eq__in">
+        <nav aria-label="Fil d’Ariane">
+          <ol class="fil">
+            <li><a href="/">Stages enfants</a></li>
+            <li aria-current="page">Équipe</li>
+          </ol>
+        </nav>
+        <p class="eyebrow">L’équipe</p>
+        <h1 class="tete__titre display" id="titre-page">Huit cartes,<br /><em>deux salles</em></h1>
+        <p class="tete__lede">Dans chaque salle, les coachs du club et un boxeur professionnel. Leurs titres, et les séances qu’ils animent pendant la semaine.</p>
+      </div>
+      <div class="eventail">
+        {CLUB_IDS.map((id) => (
+          <nav class:list={['eventail__main', `eventail__main--${id}`]} style={`--c:var(--${id});--c-clair:var(--${id}-clair)`} aria-label={`L’équipe ${CLUBS[id].court === 'Portet' ? 'de Portet' : 'des Minimes'}`}>
+            <p class="eventail__club">{CLUBS[id].court}</p>
+            <ul class="eventail__cartes">
+              {CLUBS[id].equipe.map((pid, i) => {
+                const src = visage(pid);
+                const p = INTERVENANTS[pid];
+                return (
+                  <li style={`--i:${i}`}>
+                    <a class:list={['eventail__carte', { 'eventail__carte--vedette': !!p.vedette }]} href={`#fiche-${pid}`}>
+                      {src ? <img src={src} alt="" width="120" height="168" /> : <b aria-hidden="true">{p.court.charAt(0)}</b>}
+                      <span>{p.court}</span>
+                    </a>
+                  </li>
+                );
+              })}
+            </ul>
+          </nav>
+        ))}
+      </div>
+    </section>
+
+    {CLUB_IDS.map((id) => {
+      const c = CLUBS[id];
+      return (
+        <section class:list={['sec', 'equipe-club', `equipe-club--${id}`]} id={`equipe-${id}`} style={`--pc:var(--${id})`} aria-labelledby={`titre-equipe-${id}`}>
+          <div class="wrap">
+            <div class="equipe-club__tete" data-rev>
+              <p class="eyebrow">{c.bloc}</p>
+              <h2 class="sec__title" id={`titre-equipe-${id}`}>Équipe<br /><em>{c.court}</em></h2>
+              <a class="lien" href={c.path}>{c.cta}</a>
+            </div>
+            <div class="fiches">
+              {c.equipe.map((pid, i) => <FicheCoach id={pid} club={id} inverse={i % 2 === 1} />)}
+            </div>
+          </div>
+        </section>
+      );
+    })}
+
+    <section class="sec" aria-labelledby="titre-rejoint">
+      <div class="wrap rejoint" data-rev>
+        <p class="eyebrow">À la fin de l’inscription</p>
+        <h2 class="sec__title" id="titre-rejoint">Sa carte rejoint<br /><em>le paquet</em></h2>
+        <p class="sec__lede">Quand la fiche et les documents sont validés, votre enfant reçoit sa propre carte de boxeur, au même format que celles de ses coachs.</p>
+        <p class="sec__plus"><a class="btn btn--ghost" href="/tarifs#carte">Voir comment elle se gagne <span class="fleche" aria-hidden="true">→</span></a></p>
+      </div>
+    </section>
+
+    <Suite pages={['programme', 'parents', 'choisir']} />
+    <Final />
+  </main>
+  <SiteFooter />
+  <Barre />
+</Base>

@@ -1,0 +1,60 @@
+---
+/**
+ * /tarifs — « Combien, et comment payer ? ». Le prix en un geste (140 → 80 €), ce qui est
+ * compris, les moyens de paiement réellement ouverts dans chaque salle, les places en
+ * direct, et la carte qui se gagne : l'inscription expliquée par ce qu'elle rapporte.
+ */
+import Base from '../layouts/Base.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import PageTete from '../components/PageTete.astro';
+import Tarif from '../components/Tarif.astro';
+import Paiement from '../components/Paiement.astro';
+import CarteApercu from '../components/CarteApercu.astro';
+import Faq from '../components/Faq.astro';
+import Suite from '../components/Suite.astro';
+import Final from '../components/Final.astro';
+import Barre from '../components/Barre.astro';
+import { STAGE, euros } from '../data/stage.js';
+import { toutesQuestions } from '../data/faq.js';
+import { graphe, organisation, evenement, fil } from '../data/schema.js';
+import { precharge } from '../data/precharge.js';
+import '../styles/carte-enfant.css';
+
+const questions = toutesQuestions().filter((q) => q.theme === 'inscription');
+const jsonLd = graphe(organisation(), evenement('portet'), evenement('minimes'), fil([['Stages enfants Boxing Center', '/'], ['Tarifs', '/tarifs']]));
+---
+<Base
+  title="Tarifs du stage boxe enfants : 80 € ou 140 € — Boxing Center"
+  description="Stage de boxe 8–16 ans, 26–31 octobre : 80 € adhérent Boxing Center, 140 € sinon, tout compris. Paiement en ligne, en 4 fois avec PayPal si éligible."
+  path="/tarifs"
+  ogTitle="Les Vacances des Boxeurs : 80 € adhérent, 140 € non-adhérent"
+  ogDescription="Six jours, douze séances, tout compris. Paiement en ligne, comptant ou en 4 fois."
+  ogImage="/img/og/tarifs.jpg"
+  ogAlt="Les tarifs du stage enfants Boxing Center : 80 € et 140 €"
+  page="tarifs"
+  jsonLd={jsonLd}
+  preload={[precharge('portet-ecole-nb', '100vw')]}
+>
+  <SiteHeader actif="tarifs" />
+  <main id="contenu">
+    <PageTete
+      photo="portet-ecole-nb"
+      eyebrow="Tarifs"
+      titre="Un prix,<br /><em>tout compris</em>"
+      lede={`${euros(STAGE.prix.adherent)} pour un adhérent Boxing Center, ${euros(STAGE.prix.nonAdherent)} sinon, pour les 6 jours et les 12 séances ou activités. Les mêmes tarifs à Portet et aux Minimes.`}
+      courant="Tarifs"
+    >
+      <span class="puce"><span class="puce__point" aria-hidden="true"></span>Paiement en ligne</span>
+      <span class="puce">En 4 fois avec PayPal, si éligible</span>
+    </PageTete>
+    <Tarif tete={false} />
+    <Paiement />
+    <CarteApercu />
+    <Faq items={questions} titre="Prix, paiement,<br /><em>inscription</em>" />
+    <Suite pages={['choisir', 'parents', 'questions']} />
+    <Final />
+  </main>
+  <SiteFooter />
+  <Barre />
+</Base>

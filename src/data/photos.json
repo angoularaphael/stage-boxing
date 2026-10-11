@@ -1,0 +1,190 @@
+{
+  "photos": {
+    "portet-walkout": {
+      "w": 1536,
+      "h": 2048,
+      "widths": [
+        640,
+        1024,
+        1536
+      ],
+      "focal": "50% 30%",
+      "credit": "Boxing Center Portet",
+      "alt": "Une jeune boxeuse de l’école de boxe fait son entrée sous les projecteurs bleus du Boxing Center Portet"
+    },
+    "portet-educative": {
+      "w": 1122,
+      "h": 1402,
+      "widths": [
+        640,
+        1122
+      ],
+      "focal": "45% 40%",
+      "credit": "Boxing Center Portet",
+      "alt": "Des enfants casqués et gantés, alignés face à leur coach pendant un cours de boxe éducative à Portet"
+    },
+    "portet-ecole-nb": {
+      "w": 1536,
+      "h": 2048,
+      "widths": [
+        640,
+        1024,
+        1536
+      ],
+      "focal": "50% 35%",
+      "credit": "Boxing Center Portet",
+      "alt": "Les jeunes de l’école de boxe de Portet saluent, gants levés, devant les fresques de la salle"
+    },
+    "portet-podium": {
+      "w": 1536,
+      "h": 2048,
+      "widths": [
+        640,
+        1024,
+        1536
+      ],
+      "focal": "50% 30%",
+      "credit": "Boxing Center Portet",
+      "alt": "Deux jeunes boxeurs du club sur le podium d’une compétition de la Fédération française de boxe"
+    },
+    "portet-pads": {
+      "w": 2048,
+      "h": 1366,
+      "widths": [
+        640,
+        1024,
+        1600
+      ],
+      "focal": "55% 45%",
+      "credit": "Boxing Center Portet",
+      "alt": "Valentin Tapia tient les pattes d’ours pour Marama Mercier à l’entraînement"
+    },
+    "portet-anna": {
+      "w": 2048,
+      "h": 1536,
+      "widths": [
+        640,
+        1024,
+        1600
+      ],
+      "focal": "60% 40%",
+      "credit": "Boxing Center Portet",
+      "alt": "Anna Boullez à l’entraînement, gants rouges levés"
+    },
+    "minimes-ados": {
+      "w": 2000,
+      "h": 1331,
+      "widths": [
+        640,
+        1024,
+        1600,
+        2000
+      ],
+      "focal": "30% 55%",
+      "credit": "Boxing Center Minimes",
+      "alt": "Des jeunes boxeurs casqués s’entraînent en même temps dans la grande salle des Minimes"
+    },
+    "minimes-jumps": {
+      "w": 2000,
+      "h": 1331,
+      "widths": [
+        640,
+        1024,
+        1600
+      ],
+      "focal": "50% 45%",
+      "credit": "Boxing Center Minimes",
+      "alt": "Préparation physique aux Minimes : sauts sur caisses et gainage entre les sacs de frappe"
+    },
+    "minimes-coaching": {
+      "w": 1600,
+      "h": 960,
+      "widths": [
+        640,
+        1024,
+        1600
+      ],
+      "focal": "40% 40%",
+      "credit": "Boxing Center Minimes",
+      "alt": "Un coach des Minimes conseille un boxeur casqué au coin du ring, devant la fresque"
+    },
+    "minimes-graff": {
+      "w": 2000,
+      "h": 1272,
+      "widths": [
+        640,
+        1024,
+        1600,
+        2000
+      ],
+      "focal": "45% 50%",
+      "credit": "Boxing Center Minimes",
+      "alt": "Assaut sur le ring des Minimes, devant les fresques et l’affiche du gala de Johnson Suffo"
+    },
+    "minimes-cercle": {
+      "w": 2000,
+      "h": 1331,
+      "widths": [
+        640,
+        1024,
+        1600
+      ],
+      "focal": "50% 50%",
+      "credit": "Boxing Center Minimes",
+      "alt": "Un cours collectif dans l’allée centrale de la salle des Minimes, sous les drapeaux"
+    }
+  },
+  "coachs": {
+    "valentin": {
+      "w": 514,
+      "h": 719,
+      "widths": [
+        360,
+        514
+      ],
+      "source": "carte officielle"
+    },
+    "mourad": {
+      "w": 353,
+      "h": 495,
+      "widths": [
+        353
+      ],
+      "source": "carte officielle"
+    },
+    "marama": {
+      "w": 995,
+      "h": 1393,
+      "widths": [
+        360,
+        600
+      ]
+    },
+    "anna": {
+      "w": 1257,
+      "h": 1761,
+      "widths": [
+        360,
+        600
+      ]
+    },
+    "mehdi": {
+      "w": 585,
+      "h": 820,
+      "widths": [
+        360,
+        585
+      ],
+      "source": "carte officielle"
+    },
+    "johnson": {
+      "w": 525,
+      "h": 736,
+      "widths": [
+        360,
+        525
+      ],
+      "source": "carte officielle"
+    }
+  }
+}

@@ -1,0 +1,61 @@
+---
+/**
+ * Le prix, en un geste : 140 € non-adhérent par défaut, 80 € pour un adhérent.
+ * Le chiffre défile de l'un à l'autre ; l'arithmétique affichée est exacte.
+ */
+import { STAGE, euros } from '../data/stage.js';
+import { CLUBS } from '../data/clubs.js';
+
+interface Props {
+  club?: 'portet' | 'minimes' | '';
+  /** la page tarifs porte déjà le titre : la section commence directement par le prix */
+  tete?: boolean;
+  plus?: boolean;
+}
+const { club = '', tete = true, plus = false } = Astro.props;
+const c = club ? CLUBS[club] : null;
+const { adherent, nonAdherent } = STAGE.prix;
+const parActivite = (n: number) => (n / STAGE.activites).toLocaleString('fr-FR', { maximumFractionDigits: 2 });
+const quart = (n: number) => euros(n / 4);
+const coche = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.2 4L19 7" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+---
+<section class="sec" id="tarifs" aria-labelledby={tete ? 'titre-tarifs' : undefined} aria-label={tete ? undefined : 'Le prix du stage'}>
+  <div class="wrap">
+    {tete && (
+      <div class="sec__head" data-rev>
+        <p class="eyebrow">Tarifs</p>
+        <h2 class="sec__title" id="titre-tarifs">Tout compris,<br /><em>6 jours</em></h2>
+        <p class="sec__lede">Les mêmes tarifs à Portet et aux Minimes. {STAGE.inclus}</p>
+      </div>
+    )}
+    <div class="tarif">
+      <div class="tarif__prix" data-tarif data-guest={nonAdherent} data-member={adherent} data-rev>
+        <div class="bascule" role="group" aria-label="Choisir le tarif" data-etat="non-adherent">
+          <span class="bascule__curseur" aria-hidden="true"></span>
+          <button type="button" aria-pressed="true" data-tarif-choix="non-adherent">Non-adhérent</button>
+          <button type="button" aria-pressed="false" data-tarif-choix="adherent">Adhérent Boxing Center</button>
+        </div>
+        <p class="tarif__montant" aria-live="polite">
+          <span class="prix-chiffre" data-tarif-montant>{nonAdherent}</span><small>€</small>
+        </p>
+        <div>
+          <p class="tarif__libelle" data-tarif-libelle>Tarif non-adhérent · le stage complet</p>
+          <p class="tarif__sous" data-tarif-sous>Soit {parActivite(nonAdherent)} € par séance ou activité · paiement en 4 fois possible avec PayPal (4 × {quart(nonAdherent)}), si vous y êtes éligible</p>
+        </div>
+        <a class="btn btn--rouge btn--plein" href={c ? `/inscription?club=${c.id}` : '/choisir-mon-club'} data-tarif-cta data-base={c ? `/inscription?club=${c.id}` : ''}>
+          Réserver la place de mon enfant <span class="fleche" aria-hidden="true">→</span>
+        </a>
+      </div>
+      <ul class="tarif__lignes">
+        <li data-rev><span class="coche" set:html={coche} /><span><b>12 séances ou activités</b> encadrées, du lundi 26 au samedi 31 octobre.</span></li>
+        <li data-rev style="--d:.05s"><span class="coche" set:html={coche} /><span><b>Les coachs du club</b> et un boxeur professionnel pour l’immersion dans le haut niveau.</span></li>
+        <li data-rev style="--d:.1s"><span class="coche" set:html={coche} /><span><b>Le bowling et l’interclub</b> du samedi pour finir la semaine ensemble.</span></li>
+        <li data-rev style="--d:.15s"><span class="coche" set:html={coche} /><span><b>Paiement en ligne</b> par carte ou PayPal, comptant ou en 4 fois si vous y êtes éligible{c?.id === 'minimes' ? ', ou avec Scalapay' : ''}.</span></li>
+        <li data-rev style="--d:.2s"><span class="coche" set:html={coche} /><span><b>Repas non compris</b> : chaque enfant apporte le sien, il peut rester à la salle sous surveillance.</span></li>
+        {plus && (
+          <li data-rev style="--d:.25s"><span class="coche" set:html={coche} /><span><a class="lien" href="/tarifs">Moyens de paiement, places en direct et la carte qui se gagne</a></span></li>
+        )}
+      </ul>
+    </div>
+  </div>
+</section>

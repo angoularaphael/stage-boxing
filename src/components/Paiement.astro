@@ -1,0 +1,54 @@
+---
+/**
+ * Payer en ligne, salle par salle. La liste suit la configuration du tunnel (lib/clubs.js,
+ * Raphaël) ; au chargement, l'API du stage dit ce qui est réellement ouvert, et un moyen
+ * absent de sa réponse disparaît de la liste. Les places sont lues au même endroit.
+ */
+import { CLUBS, CLUB_IDS } from '../data/clubs.js';
+import { STAGE, euros } from '../data/stage.js';
+
+const METHODES = {
+  portet: [
+    { id: 'cawl_card', nom: 'Carte bancaire', note: 'Paiement comptant' },
+    { id: 'paypal_once', nom: 'PayPal', note: 'Paiement comptant' },
+    { id: 'paypal_4x', nom: 'PayPal en 4 fois', note: `Dès 4 × ${euros(STAGE.prix.adherent / 4)}, selon votre éligibilité chez PayPal` },
+  ],
+  minimes: [
+    { id: 'payplug_card', nom: 'Carte bancaire', note: 'Paiement comptant' },
+    { id: 'paypal_once', nom: 'PayPal', note: 'Paiement comptant' },
+    { id: 'paypal_4x', nom: 'PayPal en 4 fois', note: `Dès 4 × ${euros(STAGE.prix.adherent / 4)}, selon votre éligibilité chez PayPal` },
+    { id: 'scalapay', nom: 'Scalapay', note: 'Paiement en plusieurs fois' },
+  ],
+};
+---
+<section class="sec" id="paiement" aria-labelledby="titre-paiement">
+  <div class="wrap">
+    <div class="sec__head" data-rev>
+      <p class="eyebrow">Payer en ligne</p>
+      <h2 class="sec__title" id="titre-paiement">Comptant<br /><em>ou en 4 fois</em></h2>
+      <p class="sec__lede">Le paiement réserve la place, au moment de l’inscription. Le paiement en plusieurs fois dépend de votre éligibilité auprès du prestataire.</p>
+    </div>
+    <div class="paiement">
+      {CLUB_IDS.map((id, i) => {
+        const c = CLUBS[id];
+        return (
+          <article class:list={['paiement__club', `paiement__club--${id}`]} style={`--c:var(--${id});--c-clair:var(--${id}-clair);--d:${i * 0.08}s`} data-rev>
+            <div class="paiement__tete">
+              <h3>{c.court}</h3>
+              <p class="paiement__places" data-places={id} aria-live="polite" hidden></p>
+            </div>
+            <ul class="paiement__liste">
+              {METHODES[id].map((m) => (
+                <li data-methode={m.id} data-methode-club={id}>
+                  <b>{m.nom}</b>
+                  <span>{m.note}</span>
+                </li>
+              ))}
+            </ul>
+            <a class="btn btn--salle" href={`/inscription?club=${id}`}>{c.inscrire} <span class="fleche" aria-hidden="true">→</span></a>
+          </article>
+        );
+      })}
+    </div>
+  </div>
+</section>

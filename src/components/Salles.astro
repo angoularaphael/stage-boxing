@@ -1,0 +1,47 @@
+---
+/** Choisir mon club — les deux blocs de redirection du cahier (§3), avec les places vraies. */
+import Photo from './Photo.astro';
+import { CLUBS, INTERVENANTS, adresseLigne } from '../data/clubs.js';
+import manifest from '../data/photos.json';
+
+interface Props {
+  titre?: string;
+}
+const { titre = 'Choisir<br /><em>mon club</em>' } = Astro.props;
+const salles = [CLUBS.portet, CLUBS.minimes];
+const visage = (id: string) => {
+  const p = INTERVENANTS[id];
+  const m = p.photo ? (manifest.coachs as Record<string, any>)[p.photo] : null;
+  return { nom: p.nom, src: m ? `/img/coachs/${p.photo}-${m.widths[0]}.webp` : null, init: p.court.charAt(0) };
+};
+---
+<section class="sec" id="clubs" aria-labelledby="titre-clubs">
+  <div class="wrap">
+    <div class="sec__head" data-rev>
+      <p class="eyebrow">Deux salles, le même stage</p>
+      <h2 class="sec__title" id="titre-clubs" set:html={titre} />
+      <p class="sec__lede">Mêmes dates, mêmes horaires, même programme, mêmes tarifs. Choisissez la salle la plus pratique pour votre famille : les deux groupes se retrouvent le samedi.</p>
+    </div>
+    <div class="salles">
+      {salles.map((c, i) => (
+        <article class:list={['salle', `salle--${c.id}`]} data-rev style={`--d:${i * 0.08}s`}>
+          <Photo name={c.photos[0]} sizes="(min-width: 900px) 50vw, 100vw" decorative />
+          <p class="salle__bloc">{c.bloc}</p>
+          <h3>{c.court}</h3>
+          <p>{adresseLigne(c)}. {c.acces}</p>
+          <div class="salle__equipe">
+            <span class="salle__visages">
+              {c.equipe.map((id) => {
+                const v = visage(id);
+                return v.src ? <img src={v.src} alt="" width="36" height="50" loading="lazy" /> : <span aria-hidden="true">{v.init}</span>;
+              })}
+            </span>
+            <span>Avec {c.equipe.map((id) => INTERVENANTS[id].court).join(', ').replace(/, ([^,]*)$/, ' et $1')}</span>
+          </div>
+          <p class="fo__places" data-places={c.id} aria-live="polite"></p>
+          <a class="btn" href={c.path}>{c.cta} <span class="fleche" aria-hidden="true">→</span></a>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>

@@ -1,115 +1,71 @@
 ---
+/**
+ * L'accueil : le face-à-face des deux salles (cahier §3), puis une porte vers chaque page
+ * du site. Chaque section dit l'essentiel et mène plus loin : la semaine (programme),
+ * l'équipe, les parents, le prix, la salle la plus proche, les questions.
+ */
 import Base from '../layouts/Base.astro';
 import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import FaceOff from '../components/FaceOff.astro';
+import Chiffres from '../components/Chiffres.astro';
+import SemaineMini from '../components/SemaineMini.astro';
+import Piliers from '../components/Piliers.astro';
+import Equipes from '../components/Equipes.astro';
+import ParentsBref from '../components/ParentsBref.astro';
+import Tarif from '../components/Tarif.astro';
+import Trouveur from '../components/Trouveur.astro';
+import Faq from '../components/Faq.astro';
+import Final from '../components/Final.astro';
+import Barre from '../components/Barre.astro';
+import { STAGE } from '../data/stage.js';
+import { FAQ_COURTE } from '../data/faq.js';
+import { graphe, organisation, siteWeb, evenement, faq } from '../data/schema.js';
+import { precharge } from '../data/precharge.js';
 
-const jsonLd = {
-  '@context': 'https://schema.org',
-  '@graph': [
-    {
-      '@type': 'SportsOrganization',
-      '@id': 'https://stages.boxingcenter.fr/#org',
-      name: 'Boxing Center',
-      url: 'https://boxingcenter.fr/',
-      logo: 'https://stages.boxingcenter.fr/favicon-192.png',
-      knowsAbout: [
-        'stage boxe enfants Toulouse',
-        'stage boxe vacances scolaires',
-        'boxe educative Toulouse',
-        'boxe anglaise enfants',
-        'stage boxe Portet-sur-Garonne',
-        'stage boxe Minimes',
-      ],
-    },
-    {
-      '@type': 'WebSite',
-      '@id': 'https://stages.boxingcenter.fr/#website',
-      url: 'https://stages.boxingcenter.fr/',
-      name: 'Stages enfants Boxing Center',
-      inLanguage: 'fr-FR',
-      publisher: { '@id': 'https://stages.boxingcenter.fr/#org' },
-      potentialAction: {
-        '@type': 'SearchAction',
-        target: 'https://stages.boxingcenter.fr/?q={search_term_string}',
-        'query-input': 'required name=search_term_string',
-      },
-    },
-  ],
-};
+const jsonLd = graphe(organisation(), siteWeb(), evenement('portet'), evenement('minimes'), faq(FAQ_COURTE));
 ---
 <Base
   title="Stage boxe enfants Toulouse — Les Vacances des Boxeurs Boxing Center"
-  description="Inscrivez votre enfant au stage Les Vacances des Boxeurs Boxing Center : 6 jours de boxe anglaise, activites, cohesion et encadrement professionnel pour les 8-16 ans a Portet-sur-Garonne et aux Minimes."
-  canonical="https://stages.boxingcenter.fr/"
-  ogTitle="Les Vacances des Boxeurs — Stage enfants 8-16 ans"
-  ogDescription="Une semaine 100 % boxe a Portet-sur-Garonne ou aux Minimes. Inscription et paiement en ligne."
+  description="Inscrivez votre enfant au stage Les Vacances des Boxeurs Boxing Center : 6 jours de boxe anglaise, activités, cohésion et encadrement professionnel pour les 8–16 ans à Portet-sur-Garonne et aux Minimes."
+  path="/"
+  ogTitle="Les Vacances des Boxeurs — stage de boxe enfants 8–16 ans, du 26 au 31 octobre"
+  ogDescription="Une semaine 100 % boxe à Portet-sur-Garonne ou aux Minimes : 12 séances, des champions pour encadrer, inscription en ligne."
+  ogImage="/img/og/accueil.jpg"
+  ogAlt="Les deux salles du stage face à face : Portet-sur-Garonne et les Minimes"
+  page="accueil"
   jsonLd={jsonLd}
+  preload={[precharge('portet-walkout', '(min-width: 900px) 60vw, 50vw')]}
 >
-  <div class="wrap">
-    <SiteHeader />
-    <section class="hero">
-      <p class="chip"><strong>26–31 octobre 2026</strong> · 8 a 16 ans · Filles et garcons</p>
-      <h1>Les Vacances des Boxeurs</h1>
-      <p class="lede">Une semaine 100 % boxe pour progresser, se depasser et vivre une vraie experience sportive encadree par l'equipe Boxing Center.</p>
-      <div class="meta-row">
-        <span class="chip">6 jours · 2 activites / jour</span>
-        <span class="chip">Tous niveaux</span>
-        <span class="chip">80 EUR adherent · 140 EUR non-adherent</span>
+  <SiteHeader mode="accueil" />
+  <main id="contenu">
+    <FaceOff />
+    <Chiffres titre="Une semaine<br /><em>100&#8239;% boxe</em>" intro={`${STAGE.accroche} ${STAGE.public}`}>
+      <div class="sem-accueil" data-rev>
+        <SemaineMini />
       </div>
-      <div class="cta-row">
-        <a class="btn btn-primary" href="#clubs">Choisir mon club</a>
-        <a class="btn btn-ghost" href="#programme">Voir le programme</a>
-      </div>
-    </section>
-
-    <section class="section" id="clubs">
-      <h2>Choisir mon club</h2>
-      <p class="sub">Deux salles, meme stage, meme exigence. Orientez-vous vers la salle la plus pratique pour votre famille.</p>
-      <div class="club-grid">
-        <article class="club-card">
-          <h3>BC Portet-sur-Garonne</h3>
-          <p>61 Route d'Espagne, 31120 Portet-sur-Garonne. Staff avec Anna Boullez.</p>
-          <a class="btn btn-primary block" href="/stage-enfants-portet">Voir le stage a Portet</a>
-        </article>
-        <article class="club-card">
-          <h3>BC Minimes</h3>
-          <p>12 rue de Fenouillet, 31200 Toulouse. Staff avec Johnson Suffo.</p>
-          <a class="btn btn-primary block" href="/stage-enfants-minimes">Voir le stage aux Minimes</a>
-        </article>
+      <p class="sec__plus" data-rev>
+        <a class="btn btn--ghost" href="/programme">Voir le programme <span class="fleche" aria-hidden="true">→</span></a>
+      </p>
+    </Chiffres>
+    <Piliers club="mix" lien />
+    <Equipes plus />
+    <ParentsBref />
+    <Tarif plus />
+    <section class="sec" id="clubs" aria-labelledby="titre-clubs">
+      <div class="wrap">
+        <div class="sec__head" data-rev>
+          <p class="eyebrow">Deux salles, le même stage</p>
+          <h2 class="sec__title" id="titre-clubs">La plus proche<br /><em>de chez vous</em></h2>
+          <p class="sec__lede">Mêmes dates, mêmes horaires, même programme, mêmes tarifs. Choisissez la salle la plus pratique pour votre famille : les deux groupes se retrouvent le samedi.</p>
+        </div>
+        <Trouveur compact />
+        <p class="sec__plus" data-rev><a class="btn btn--ghost" href="/choisir-mon-club">Comparer les deux salles <span class="fleche" aria-hidden="true">→</span></a></p>
       </div>
     </section>
-
-    <section class="section" id="programme">
-      <h2>Une semaine pour progresser</h2>
-      <p class="sub">Technique, intensite, haut niveau et cohesion : quatre piliers pour une experience complete.</p>
-      <div class="pillars">
-        <div class="pillar">
-          <h3>Technique &amp; Tactique</h3>
-          <p>Lecons collectives, deplacements, enchainements, defense et contre-attaque.</p>
-        </div>
-        <div class="pillar">
-          <h3>Intensite &amp; Physique</h3>
-          <p>Sac, renforcement, coordination, piste, explosivite et Boot Camp.</p>
-        </div>
-        <div class="pillar">
-          <h3>Haut Niveau</h3>
-          <p>Analyse video, echanges avec des boxeurs experimentes et combats tests.</p>
-        </div>
-        <div class="pillar">
-          <h3>Cohesion</h3>
-          <p>Defis collectifs, bowling et interclub pour finir la semaine ensemble.</p>
-        </div>
-      </div>
-    </section>
-
-    <section class="section">
-      <h2>Parents : cadre clair</h2>
-      <p class="sub">Repas non pris en charge. Materiel a prevoir : gants, protege-dents, casque, tenue et baskets, eau, tenue de rechange. Inscription complete apres paiement, formulaire enfant et documents valides.</p>
-      <a class="btn btn-primary" href="/inscription">Reserver la place de mon enfant</a>
-    </section>
-
-    <footer class="site-footer">
-      <p>Boxing Center — stages enfants · <a href="/cgv">CGV</a> · <a href="/reglement">Reglement interieur</a></p>
-      <p>stage boxe enfants Toulouse · Portet-sur-Garonne · Minimes · vacances scolaires</p>
-    </footer>
-  </div>
+    <Faq items={FAQ_COURTE} plus />
+    <Final />
+  </main>
+  <SiteFooter />
+  <Barre />
 </Base>

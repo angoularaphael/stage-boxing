@@ -1,0 +1,30 @@
+---
+/** « Et ensuite » : chaque page mène à trois autres, jamais à une impasse. */
+import { PAGES } from '../data/site.js';
+
+interface Props {
+  pages: (keyof typeof PAGES)[];
+  titre?: string;
+}
+const { pages, titre = 'La suite,<br /><em>en un clic</em>' } = Astro.props;
+---
+<section class="sec sec--suite" aria-labelledby="titre-suite">
+  <div class="wrap">
+    <div class="sec__head" data-rev>
+      <p class="eyebrow">Et ensuite</p>
+      <h2 class="sec__title" id="titre-suite" set:html={titre} />
+    </div>
+    <nav class="suite" aria-label="Autres pages du stage">
+      {pages.map((id, i) => {
+        const p = PAGES[id];
+        return (
+          <a href={p.href} data-rev style={`--d:${i * 0.06}s`}>
+            <small>{p.eyebrow}</small>
+            <b>{p.titre} <span class="fleche" aria-hidden="true">→</span></b>
+            <span>{p.texte}</span>
+          </a>
+        );
+      })}
+    </nav>
+  </div>
+</section>

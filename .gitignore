@@ -7,3 +7,7 @@ dist/
 data/orders.json
 .DS_Store
 *.log
+
+# Documents internes (cahier des charges, flyers source) et notes de recherche : jamais sur GitHub
+brief/
+.research/

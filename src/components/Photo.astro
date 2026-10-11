@@ -1,0 +1,39 @@
+---
+/**
+ * Une photo réelle du réseau, servie en WebP responsive depuis public/img/photos.
+ * Le manifeste (dimensions, largeurs, point focal, texte alternatif) est écrit par
+ * l'outil d'images ; l'alt par défaut décrit vraiment la photo.
+ */
+import manifest from '../data/photos.json';
+
+interface Props {
+  name: string;
+  sizes?: string;
+  class?: string;
+  alt?: string;
+  eager?: boolean;
+  decorative?: boolean;
+}
+
+const { name, sizes = '100vw', class: cls = '', alt, eager = false, decorative = false } = Astro.props;
+const m = (manifest.photos as Record<string, any>)[name];
+if (!m) throw new Error(`Photo inconnue : ${name}`);
+const srcset = m.widths.map((w: number) => `/img/photos/${name}-${w}.webp ${w}w`).join(', ');
+const fallbackW = m.widths.find((w: number) => w >= 1024) ?? m.widths[m.widths.length - 1];
+const src = `/img/photos/${name}-${fallbackW}.webp`;
+const h = Math.round((m.h * fallbackW) / m.w);
+---
+<img
+  class={cls}
+  sizes={sizes}
+  srcset={srcset}
+  src={src}
+  width={fallbackW}
+  height={h}
+  alt={decorative ? '' : alt ?? m.alt}
+  aria-hidden={decorative ? 'true' : undefined}
+  loading={eager ? 'eager' : 'lazy'}
+  decoding={eager ? 'sync' : 'async'}
+  fetchpriority={eager ? 'high' : undefined}
+  style={`object-position:${m.focal}`}
+/>

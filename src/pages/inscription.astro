@@ -1,167 +1,503 @@
 ---
+/**
+ * Le tunnel d'inscription (cahier §8) : club → tarif → panier → paiement → fiche enfant →
+ * documents → confirmation. Il parle à l'API existante sans la modifier.
+ * Le +1 : la carte de l'enfant se construit pendant qu'on remplit sa fiche, reçoit un tampon
+ * par document validé, puis rejoint le paquet de ses coachs.
+ */
 import Base from '../layouts/Base.astro';
 import SiteHeader from '../components/SiteHeader.astro';
+import Photo from '../components/Photo.astro';
+import '../styles/tunnel.css';
+import '../styles/carte-enfant.css';
+import { CLUBS, INTERVENANTS, adresseLigne } from '../data/clubs.js';
+import { STAGE, MATERIEL, SEMAINE, euros } from '../data/stage.js';
+import { DOCUMENTS, DROIT_IMAGE, VERSION_DOCUMENTS } from '../data/documents.js';
+import manifest from '../data/photos.json';
+
+const P = STAGE.prix;
+const etapes = [
+  ['club', 'Club'],
+  ['tarif', 'Tarif'],
+  ['panier', 'Panier'],
+  ['paiement', 'Paiement'],
+  ['enfant', 'Enfant'],
+  ['documents', 'Documents'],
+  ['fin', 'Confirmé'],
+];
+const pratique = ['Débutant', '1 an', '2 ans', '3 ans', '4 ans', '5 ans et plus'];
+// données du tunnel côté navigateur : uniquement des faits publics
+const donnees = {
+  clubs: Object.fromEntries(
+    Object.values(CLUBS).map((c) => [
+      c.id,
+      {
+        id: c.id,
+        nom: c.nom,
+        court: c.court,
+        a: c.a,
+        path: c.path,
+        adresse: adresseLigne(c),
+        tel: c.tel,
+        telHref: c.telHref,
+        email: c.email,
+        coachs: c.equipe.map((id) => INTERVENANTS[id].court),
+        accent: c.id === 'portet' ? '#3d6bff' : '#7cc64a',
+      },
+    ]),
+  ),
+  prix: P,
+  semaine: SEMAINE.map((j) => ({
+    date: j.date,
+    jour: j.jour,
+    seances: j.seances.map((s) => ({ debut: s.debut, fin: s.fin, titre: s.titre, titreClub: s.titreClub || null })),
+  })),
+  materiel: MATERIEL.map((m) => m.nom + (m.note ? ` (${m.note})` : '')),
+  docs: DOCUMENTS.map((d) => ({ cle: d.cle, titre: d.titre, tampon: d.tampon })),
+};
+const visages = (club: 'portet' | 'minimes') =>
+  CLUBS[club].equipe.map((id) => {
+    const p = INTERVENANTS[id];
+    const m = p.photo ? (manifest.coachs as Record<string, any>)[p.photo] : null;
+    return { id, court: p.court, nom: p.nom, src: m ? `/img/coachs/${p.photo}-${m.widths[0]}.webp` : null };
+  });
 ---
 <Base
-  title="Inscription stage enfants — Boxing Center"
-  description="Inscription et paiement en ligne au stage Les Vacances des Boxeurs Boxing Center (8-16 ans)."
-  canonical="https://stages.boxingcenter.fr/inscription"
+  title="Inscrire mon enfant au stage — Les Vacances des Boxeurs"
+  description="Inscrivez votre enfant au stage Les Vacances des Boxeurs (8–16 ans, du 26 au 31 octobre 2026) : choix du club, paiement en ligne, fiche enfant et documents."
+  path="/inscription"
   robots="noindex, follow"
+  ogImage="/img/og/inscription.jpg"
+  ogTitle="Inscrire mon enfant — Les Vacances des Boxeurs"
+  ogDescription="Choisir le club, payer en ligne, remplir la fiche et valider les documents : l’inscription au stage en quelques minutes."
   page="inscription"
 >
-  <div class="wrap">
-    <SiteHeader nav="simple" />
-    <section class="hero" style="padding-bottom:1rem">
-      <h1>Inscription</h1>
-      <p class="lede">Paiement d'abord, puis formulaire enfant et documents. Place complete uniquement apres ces trois etapes.</p>
-      <div class="steps">
-        <span class="step" data-step="pay">1. Paiement</span>
-        <span class="step" data-step="child">2. Enfant</span>
-        <span class="step" data-step="docs">3. Documents</span>
-        <span class="step" data-step="done">4. Confirme</span>
+  <SiteHeader mode="tunnel" />
+  <main id="contenu" class="tunnel" data-tunnel>
+    <script type="application/json" id="donnees-tunnel" set:html={JSON.stringify(donnees)} />
+
+    <aside class="tunnel__cote" aria-label="Récapitulatif">
+      <div class="recap-carte" data-recap>
+        <p class="eyebrow">Votre inscription</p>
+        <div class="carte carte--enfant" data-carte-enfant data-club="" aria-label="Carte de boxeur de votre enfant">
+          <div class="carte__face">
+            <span class="carte__mono" data-c-initiales aria-hidden="true">?</span>
+            <div class="carte__haut">
+              <span>Les Vacances<br />des Boxeurs</span>
+              <span class="carte__club" data-c-club>Club</span>
+            </div>
+            <div class="tampons" aria-hidden="true">
+              {DOCUMENTS.map((d) => <span class="tampon" data-tampon={d.cle}>{d.tampon}</span>)}
+            </div>
+            <div class="carte__bas">
+              <span class="carte__role" data-c-niveau>Boxeur du stage</span>
+              <h2 class="carte__nom" data-c-prenom>Son prénom</h2>
+              <ul class="carte__titres">
+                <li data-c-age>8–16 ans</li>
+                <li data-c-coachs>Ses coachs pour la semaine</li>
+              </ul>
+              <p class="carte__serie"><span data-c-serie>N° ····</span><span>26–31 oct. 2026</span></p>
+            </div>
+            <span class="sceau" data-sceau aria-hidden="true">Validée</span>
+            <span class="carte__cadre" aria-hidden="true"></span>
+          </div>
+          <span class="carte__holo" aria-hidden="true"></span>
+        </div>
+        <p class="recap-carte__aide" data-carte-aide>La carte de votre enfant se construit pendant que vous remplissez sa fiche, après le paiement.</p>
+        <button class="btn btn--ghost recap-carte__gyro" type="button" data-gyro hidden>Inclinez votre téléphone</button>
+        <dl class="recap" data-recap-liste>
+          <div><dt>Stage</dt><dd>{STAGE.nom}<br /><span>{STAGE.dates}</span></dd></div>
+          <div><dt>Club</dt><dd data-r-club>—</dd></div>
+          <div><dt>Tarif</dt><dd data-r-tarif>—</dd></div>
+        </dl>
       </div>
-      <div id="alert" class="alert alert-error" hidden></div>
-    </section>
+    </aside>
 
-    <section class="section" data-panel="wait" hidden>
-      <p>Confirmation du paiement en cours…</p>
-    </section>
+    <div class="tunnel__main">
+      <nav class="etapes" aria-label="Étapes de l’inscription">
+        <p class="etapes__texte" data-etape-texte aria-live="polite">Étape 1 sur 7 · Club</p>
+        <ol class="etapes__liste">
+          {etapes.map(([id, nom], i) => (
+            <li class="etapes__item" data-etape-pastille={id}><span class="etapes__num">{i + 1}</span><span class="etapes__nom">{nom}</span></li>
+          ))}
+        </ol>
+        <div class="etapes__barre" aria-hidden="true"><span data-etape-barre></span></div>
+      </nav>
 
-    <section class="section" data-panel="pay">
-      <h2>Payer le stage</h2>
-      <form id="pay-form">
-        <div class="price-panel" style="margin-bottom:1.25rem">
-          <div class="price-display" id="price-value"><span class="currency">EUR</span> 140</div>
-          <p class="price-label" id="price-label">Tarif non-adherent</p>
-          <label class="member-toggle">
-            <input type="checkbox" id="is-member" name="is_member" />
-            <span>Je suis adherent Boxing Center</span>
-          </label>
-          <label class="field" id="member-declare" hidden>
-            <span>
-              <input type="checkbox" name="member_declare" value="1" />
-              Je declare etre adherent Boxing Center et beneficie du tarif 80 EUR.
+      <div class="alerte" data-alerte role="alert" hidden></div>
+
+      <!-- 1. Club -->
+      <section class="panneau" data-panneau="club" aria-labelledby="q-club">
+        <h1 class="panneau__q" id="q-club">Dans quel club votre enfant fera-t-il le stage ?</h1>
+        <p class="panneau__aide">Même stage, mêmes horaires, même tarif dans les deux salles. Les deux groupes se retrouvent le samedi pour l’interclub.</p>
+        <div class="options">
+          {(['portet', 'minimes'] as const).map((id) => {
+            const c = CLUBS[id];
+            return (
+              <button class:list={['option', 'option--club', `option--${id}`]} type="button" data-choix-club={id} aria-pressed="false">
+                <Photo name={c.photos[0]} sizes="(min-width: 900px) 320px, 90vw" decorative class="option__photo" />
+                <span class="option__corps">
+                  <span class="option__titre">{c.court === 'Portet' ? 'Portet-sur-Garonne' : 'Minimes — Toulouse'}</span>
+                  <span class="option__texte">{adresseLigne(c)}</span>
+                  <span class="option__texte">Avec {c.equipe.map((pid) => INTERVENANTS[pid].court).join(', ').replace(/, ([^,]*)$/, ' et $1')}</span>
+                  <span class="option__places" data-places-club={id}></span>
+                </span>
+                <span class="option__coche" aria-hidden="true"></span>
+              </button>
+            );
+          })}
+        </div>
+      </section>
+
+      <!-- 2. Tarif -->
+      <section class="panneau" data-panneau="tarif" aria-labelledby="q-tarif" hidden>
+        <h1 class="panneau__q" id="q-tarif">Votre enfant est-il adhérent Boxing Center ?</h1>
+        <p class="panneau__aide">{STAGE.inclus}</p>
+        <div class="options options--tarif">
+          <button class="option option--tarif" type="button" data-choix-tarif="non-adherent" aria-pressed="false">
+            <span class="option__corps">
+              <span class="option__titre">Non-adhérent</span>
+              <span class="option__texte">Le stage complet, ouvert à tous</span>
             </span>
-          </label>
-          <p id="stock" class="sub"></p>
+            <span class="option__prix"><span class="prix-chiffre">{P.nonAdherent}</span> €</span>
+            <span class="option__coche" aria-hidden="true"></span>
+          </button>
+          <button class="option option--tarif" type="button" data-choix-tarif="adherent" aria-pressed="false">
+            <span class="option__corps">
+              <span class="option__titre">Adhérent Boxing Center</span>
+              <span class="option__texte">Votre enfant est déjà inscrit au club</span>
+            </span>
+            <span class="option__prix"><span class="prix-chiffre">{P.adherent}</span> €</span>
+            <span class="option__coche" aria-hidden="true"></span>
+          </button>
         </div>
-
-        <div class="form-grid two">
-          <label class="field full">
-            Club
-            <select id="club" name="club" required>
-              <option value="portet">Portet-sur-Garonne</option>
-              <option value="minimes">Minimes</option>
-            </select>
-          </label>
-          <label class="field">
-            Prenom parent
-            <input name="parent_first_name" required autocomplete="given-name" />
-          </label>
-          <label class="field">
-            Nom parent
-            <input name="parent_last_name" required autocomplete="family-name" />
-          </label>
-          <label class="field">
-            E-mail parent
-            <input type="email" name="parent_email" required autocomplete="email" />
-          </label>
-          <label class="field">
-            Telephone parent
-            <input type="tel" name="parent_phone" required autocomplete="tel" />
-          </label>
+        <label class="declaration" data-declaration hidden>
+          <input type="checkbox" data-declare />
+          <span class="case" aria-hidden="true"></span>
+          <span>Je déclare que mon enfant est adhérent Boxing Center et bénéficie du tarif à {euros(P.adherent)}.</span>
+        </label>
+        <div class="panneau__actions">
+          <button class="btn btn--ghost" type="button" data-retour="club">← Club</button>
+          <button class="btn btn--rouge" type="button" data-suite="panier" disabled>Continuer <span class="fleche" aria-hidden="true">→</span></button>
         </div>
+      </section>
 
-        <h3 style="margin-top:1.25rem">Moyen de paiement</h3>
-        <div class="pay-methods" id="pay-methods"></div>
-        <button class="btn btn-primary block" type="submit">Payer et continuer</button>
-      </form>
-    </section>
-
-    <section class="section" data-panel="child" hidden>
-      <h2>Formulaire enfant</h2>
-      <form id="child-form">
-        <div class="form-grid two">
-          <label class="field"><span>Prenom</span><input name="first_name" required /></label>
-          <label class="field"><span>Nom</span><input name="last_name" required /></label>
-          <label class="field"><span>Date de naissance</span><input type="date" name="birthdate" required min="2009-10-27" max="2018-10-26" /></label>
-          <label class="field">
-            Annee de pratique
-            <select name="practice_years" required>
-              <option value="Debutant">Debutant</option>
-              <option value="1 an">1 an</option>
-              <option value="2 ans">2 ans</option>
-              <option value="3 ans">3 ans</option>
-              <option value="4 ans">4 ans</option>
-              <option value="5 ans et plus">5 ans et plus</option>
-            </select>
-          </label>
-          <label class="field"><span>Poids (kg)</span><input name="weight" inputmode="decimal" placeholder="ex. 42" /></label>
-          <label class="field">
-            Niveau
-            <select name="level">
-              <option value="">—</option>
-              <option value="Debutant">Debutant</option>
-              <option value="Loisir">Loisir</option>
-              <option value="Educative">Educative</option>
-              <option value="Competiteur">Competiteur</option>
-            </select>
-          </label>
-          <label class="field"><span>Nombre d'assauts ou combats</span><input name="fights_count" inputmode="numeric" /></label>
-          <label class="field">
-            Pause du midi
-            <select name="lunch_break">
-              <option value="Repas apporte">Repas apporte (non pris en charge)</option>
-              <option value="Recupere par un parent">Recupere par un parent</option>
-              <option value="Autre">Autre (preciser en observations)</option>
-            </select>
-          </label>
-          <label class="field"><span>Contact d'urgence</span><input name="emergency_name" required /></label>
-          <label class="field"><span>Telephone urgence</span><input type="tel" name="emergency_phone" required /></label>
-          <label class="field"><span>Telephone parent 1</span><input type="tel" name="parent_phone" required /></label>
-          <label class="field"><span>Telephone parent 2 (optionnel)</span><input type="tel" name="parent_phone_2" /></label>
-          <label class="field full"><span>E-mail parent</span><input type="email" name="parent_email" required /></label>
-          <label class="field full"><span>Allergies</span><input name="allergies" placeholder="Aucune si neant" /></label>
-          <label class="field full"><span>Traitement en cours</span><input name="treatment" /></label>
-          <label class="field full"><span>Blessure / contre-indication</span><input name="injury" /></label>
-          <label class="field full">
-            Observations
-            <textarea name="notes" placeholder="Informations utiles pour l'encadrement"></textarea>
-          </label>
+      <!-- 3. Panier -->
+      <section class="panneau" data-panneau="panier" aria-labelledby="q-panier" hidden>
+        <h1 class="panneau__q" id="q-panier">Votre panier</h1>
+        <div class="panier" data-panier>
+          <div class="panier__ligne">
+            <div>
+              <p class="panier__nom" data-p-nom>Stage enfant</p>
+              <p class="panier__detail">{STAGE.nom} · {STAGE.dates}</p>
+              <p class="panier__detail" data-p-club></p>
+            </div>
+            <p class="panier__prix"><span class="prix-chiffre" data-p-prix>—</span> €</p>
+          </div>
+          <ul class="panier__inclus">
+            <li>12 séances ou activités encadrées</li>
+            <li>Bowling et interclub du samedi</li>
+            <li>Repas non compris</li>
+          </ul>
+          <div class="panier__total"><span>Total</span><span><span class="prix-chiffre" data-p-total>—</span> €</span></div>
+          <p class="panier__4x" data-p-4x></p>
         </div>
-        <button class="btn btn-primary block" type="submit" style="margin-top:1rem">Continuer vers les documents</button>
-      </form>
-    </section>
-
-    <section class="section" data-panel="docs" hidden>
-      <h2>Documents obligatoires</h2>
-      <p class="sub">Public 8 a 16 ans. Brochures legales a valider par la direction avant production.</p>
-      <form id="docs-form">
-        <div class="check-list">
-          <label><input type="checkbox" name="cgv" required /> J'accepte les <a href="/cgv" target="_blank" rel="noopener">CGV du stage enfants</a>.</label>
-          <label><input type="checkbox" name="reglement" required /> J'accepte le <a href="/reglement" target="_blank" rel="noopener">reglement interieur</a>.</label>
-          <label><input type="checkbox" name="parental" required /> J'autorise mon enfant a participer au stage (autorisation parentale).</label>
-          <label><input type="checkbox" name="health" required /> Je declare avoir communique l'etat de sante et l'aptitude sportive de l'enfant.</label>
-          <label><input type="checkbox" name="participation" required /> J'accepte les conditions de participation et la pause du midi (repas non pris en charge).</label>
-          <label><input type="checkbox" name="image_rights" /> J'autorise le droit a l'image (optionnel : decocher = refus).</label>
+        <div class="panneau__actions">
+          <button class="btn btn--ghost" type="button" data-retour="tarif">← Tarif</button>
+          <button class="btn btn--rouge" type="button" data-ajouter>Ajouter au panier</button>
         </div>
-        <button class="btn btn-primary block" type="submit">Finaliser l'inscription</button>
-      </form>
-    </section>
+      </section>
 
-    <section class="section" data-panel="done" hidden>
-      <h2>Inscription confirmee</h2>
-      <p class="sub" id="done-summary"></p>
-      <p>Vous recevrez un e-mail de confirmation avec le rappel du materiel et des dates.</p>
-      <a class="btn btn-ghost" href="/">Retour a l'accueil</a>
-    </section>
+      <!-- 4. Paiement -->
+      <section class="panneau" data-panneau="paiement" aria-labelledby="q-paiement" hidden>
+        <h1 class="panneau__q" id="q-paiement">Vos coordonnées et le paiement</h1>
+        <p class="panneau__aide">Le paiement réserve la place. Juste après, vous remplissez la fiche de votre enfant et validez les documents.</p>
+        <form class="form" data-form-paiement novalidate>
+          <fieldset class="groupe">
+            <legend>Le responsable légal</legend>
+            <div class="grille-2">
+              <div class="champ">
+                <label for="p-prenom">Prénom</label>
+                <input id="p-prenom" name="parent_first_name" autocomplete="given-name" required />
+                <p class="champ__erreur" data-erreur-pour="p-prenom"></p>
+              </div>
+              <div class="champ">
+                <label for="p-nom">Nom</label>
+                <input id="p-nom" name="parent_last_name" autocomplete="family-name" required />
+                <p class="champ__erreur" data-erreur-pour="p-nom"></p>
+              </div>
+            </div>
+            <div class="champ">
+              <label for="p-email">E-mail</label>
+              <p class="champ__aide" id="p-email-aide">Pour la confirmation et le lien qui permet de reprendre l’inscription.</p>
+              <input id="p-email" name="parent_email" type="email" inputmode="email" autocomplete="email" required aria-describedby="p-email-aide" />
+              <p class="champ__erreur" data-erreur-pour="p-email"></p>
+            </div>
+            <div class="champ">
+              <label for="p-tel">Téléphone</label>
+              <p class="champ__aide" id="p-tel-aide">Le club vous appelle seulement si besoin pendant le stage.</p>
+              <input id="p-tel" name="parent_phone" type="tel" inputmode="tel" autocomplete="tel" required aria-describedby="p-tel-aide" />
+              <p class="champ__erreur" data-erreur-pour="p-tel"></p>
+            </div>
+          </fieldset>
+          <fieldset class="groupe">
+            <legend>Moyen de paiement</legend>
+            <div class="methodes" data-methodes role="radiogroup" aria-label="Moyen de paiement">
+              <p class="champ__aide">Chargement des moyens de paiement…</p>
+            </div>
+            <p class="champ__erreur" data-erreur-pour="methode"></p>
+          </fieldset>
+          <p class="cgv-note">En payant, vous acceptez les <a class="lien" href="/cgv" target="_blank" rel="noopener">conditions générales de vente</a> du stage. Paiement sécurisé chez le prestataire choisi : vous quittez un instant le site, puis vous revenez ici pour la fiche de votre enfant.</p>
+          <div class="panneau__actions">
+            <button class="btn btn--ghost" type="button" data-retour="panier">← Panier</button>
+            <button class="btn btn--rouge" type="submit" data-payer>Payer <span data-payer-montant></span> <span class="fleche" aria-hidden="true">→</span></button>
+          </div>
+        </form>
+      </section>
 
-    <footer class="site-footer">
-      <p>Boxing Center Stages</p>
-    </footer>
-  </div>
-  <script>
-    import { bootInscription } from '../scripts/inscription.js';
-    bootInscription().catch((err) => console.error(err));
-  </script>
+      <!-- Retour du prestataire -->
+      <section class="panneau panneau--attente" data-panneau="attente" aria-labelledby="q-attente" hidden>
+        <span class="chargeur" aria-hidden="true"></span>
+        <h1 class="panneau__q" id="q-attente">Confirmation de votre paiement…</h1>
+        <p class="panneau__aide" data-attente-texte>Quelques secondes : nous vérifions le paiement auprès du prestataire.</p>
+        <div class="panneau__actions" data-attente-actions hidden>
+          <button class="btn btn--rouge" type="button" data-reessayer>Vérifier à nouveau</button>
+        </div>
+      </section>
+
+      <!-- 5. Fiche enfant -->
+      <section class="panneau" data-panneau="enfant" aria-labelledby="q-enfant" hidden>
+        <p class="ok-paye" data-ok-paye hidden>Paiement confirmé. La place est réservée.</p>
+        <h1 class="panneau__q" id="q-enfant">La fiche de votre enfant</h1>
+        <p class="panneau__aide">Ces informations restent au club et servent à composer les groupes et à encadrer votre enfant en sécurité.</p>
+        <form class="form" data-form-enfant novalidate>
+          <fieldset class="groupe">
+            <legend>L’enfant</legend>
+            <div class="grille-2">
+              <div class="champ">
+                <label for="e-prenom">Prénom</label>
+                <input id="e-prenom" name="first_name" autocomplete="off" required data-vers-carte="prenom" />
+                <p class="champ__erreur" data-erreur-pour="e-prenom"></p>
+              </div>
+              <div class="champ">
+                <label for="e-nom">Nom</label>
+                <input id="e-nom" name="last_name" autocomplete="off" required data-vers-carte="nom" />
+                <p class="champ__erreur" data-erreur-pour="e-nom"></p>
+              </div>
+            </div>
+            <fieldset class="champ date" aria-describedby="e-date-aide">
+              <legend>Date de naissance</legend>
+              <p class="champ__aide" id="e-date-aide">Par exemple 14 3 2014. Le stage accueille les 8 à 16 ans au 26 octobre 2026.</p>
+              <div class="date__champs">
+                <div><label for="e-jour">Jour</label><input id="e-jour" inputmode="numeric" pattern="[0-9]*" maxlength="2" autocomplete="off" data-date="jour" /></div>
+                <div><label for="e-mois">Mois</label><input id="e-mois" inputmode="numeric" pattern="[0-9]*" maxlength="2" autocomplete="off" data-date="mois" /></div>
+                <div class="date__annee"><label for="e-annee">Année</label><input id="e-annee" inputmode="numeric" pattern="[0-9]*" maxlength="4" autocomplete="off" data-date="annee" /></div>
+              </div>
+              <p class="date__age" data-age aria-live="polite"></p>
+              <p class="champ__erreur" data-erreur-pour="e-date"></p>
+            </fieldset>
+            <div class="grille-2">
+              <div class="champ">
+                <label for="e-poids">Poids (kg)</label>
+                <p class="champ__aide">Pour composer les oppositions entre enfants de poids proches.</p>
+                <input id="e-poids" name="poids" inputmode="decimal" autocomplete="off" required />
+                <p class="champ__erreur" data-erreur-pour="e-poids"></p>
+              </div>
+              <div class="champ">
+                <label for="e-pratique">Années de pratique</label>
+                <p class="champ__aide">En boxe, tous clubs confondus.</p>
+                <select id="e-pratique" name="practice_years" required data-vers-carte="pratique">
+                  <option value="">Choisir</option>
+                  {pratique.map((p) => <option value={p}>{p}</option>)}
+                </select>
+                <p class="champ__erreur" data-erreur-pour="e-pratique"></p>
+              </div>
+            </div>
+            <fieldset class="champ">
+              <legend>Niveau</legend>
+              <div class="segments" role="radiogroup">
+                {STAGE.niveaux.map((n, i) => (
+                  <label class="segment"><input type="radio" name="niveau" value={n} required={i === 0} data-vers-carte="niveau" /><span>{n}</span></label>
+                ))}
+              </div>
+              <p class="champ__erreur" data-erreur-pour="e-niveau"></p>
+            </fieldset>
+            <div class="champ">
+              <label for="e-combats">Nombre d’assauts ou de combats disputés <span class="facultatif">facultatif</span></label>
+              <input id="e-combats" name="combats" inputmode="numeric" autocomplete="off" />
+            </div>
+          </fieldset>
+
+          <fieldset class="groupe">
+            <legend>Les parents</legend>
+            <div class="grille-2">
+              <div class="champ">
+                <label for="e-tel1">Téléphone parent 1</label>
+                <input id="e-tel1" name="parent_phone" type="tel" inputmode="tel" autocomplete="tel" required />
+                <p class="champ__erreur" data-erreur-pour="e-tel1"></p>
+              </div>
+              <div class="champ">
+                <label for="e-tel2">Téléphone parent 2 <span class="facultatif">facultatif</span></label>
+                <input id="e-tel2" name="parent_phone_2" type="tel" inputmode="tel" autocomplete="off" />
+              </div>
+            </div>
+            <div class="champ">
+              <label for="e-email">E-mail parent</label>
+              <input id="e-email" name="parent_email" type="email" inputmode="email" autocomplete="email" required />
+              <p class="champ__erreur" data-erreur-pour="e-email"></p>
+            </div>
+            <div class="grille-2">
+              <div class="champ">
+                <label for="e-urgence">Personne à contacter en cas d’urgence</label>
+                <input id="e-urgence" name="urgence_nom" autocomplete="off" required />
+                <p class="champ__erreur" data-erreur-pour="e-urgence"></p>
+              </div>
+              <div class="champ">
+                <label for="e-urgence-tel">Son téléphone</label>
+                <input id="e-urgence-tel" name="urgence_tel" type="tel" inputmode="tel" autocomplete="off" required />
+                <p class="champ__erreur" data-erreur-pour="e-urgence-tel"></p>
+              </div>
+            </div>
+          </fieldset>
+
+          <fieldset class="groupe">
+            <legend>Santé</legend>
+            <p class="champ__aide">Laissez vide s’il n’y a rien à signaler.</p>
+            <div class="champ">
+              <label for="e-allergies">Allergies</label>
+              <input id="e-allergies" name="allergies" autocomplete="off" />
+            </div>
+            <div class="champ">
+              <label for="e-traitement">Traitement médical</label>
+              <input id="e-traitement" name="traitement" autocomplete="off" />
+            </div>
+            <div class="champ">
+              <label for="e-blessure">Blessure, problème médical ou information particulière</label>
+              <textarea id="e-blessure" name="blessure" rows="2"></textarea>
+            </div>
+          </fieldset>
+
+          <fieldset class="groupe">
+            <legend>Pause du midi</legend>
+            <p class="champ__aide">{STAGE.repas}</p>
+            <div class="radios">
+              <label class="radio"><input type="radio" name="midi" value="reste à la salle sous surveillance" required /><span class="radio__rond" aria-hidden="true"></span><span>J’autorise mon enfant à rester à la salle sous surveillance pendant la pause du midi.</span></label>
+              <label class="radio"><input type="radio" name="midi" value="quitte la structure" /><span class="radio__rond" aria-hidden="true"></span><span>Mon enfant quittera la structure pendant la pause du midi.</span></label>
+            </div>
+            <p class="champ__erreur" data-erreur-pour="e-midi"></p>
+          </fieldset>
+
+          <div class="champ">
+            <label for="e-notes">Observations ou demande particulière <span class="facultatif">facultatif</span></label>
+            <textarea id="e-notes" name="notes_libres" rows="3"></textarea>
+          </div>
+
+          <div class="panneau__actions">
+            <button class="btn btn--rouge btn--plein" type="submit" data-valider-enfant>Continuer vers les documents <span class="fleche" aria-hidden="true">→</span></button>
+          </div>
+        </form>
+      </section>
+
+      <!-- 6. Documents -->
+      <section class="panneau" data-panneau="documents" aria-labelledby="q-docs" hidden>
+        <h1 class="panneau__q" id="q-docs">Les documents à valider</h1>
+        <p class="panneau__aide">Adaptés aux 8–16 ans. Chaque document validé appose son tampon sur la carte de votre enfant. Version du {VERSION_DOCUMENTS}.</p>
+        <form class="form" data-form-docs novalidate>
+          <div class="docs">
+            {DOCUMENTS.map((d) => (
+              <div class="doc" data-doc={d.cle}>
+                <details class="doc__texte">
+                  <summary><span class="doc__titre">{d.titre}</span><span class="doc__lire">Lire</span></summary>
+                  <div class="doc__corps">
+                    {d.sections.map((s) => (
+                      <>
+                        {s.h && <h3>{s.h}</h3>}
+                        {s.p.map((x) => <p>{x}</p>)}
+                      </>
+                    ))}
+                  </div>
+                </details>
+                <label class="declaration">
+                  <input type="checkbox" name={d.cle} required />
+                  <span class="case" aria-hidden="true"></span>
+                  <span>{d.accord}</span>
+                </label>
+              </div>
+            ))}
+            <fieldset class="doc">
+              <legend class="doc__titre">{DROIT_IMAGE.titre}</legend>
+              <div class="radios">
+                <label class="radio"><input type="radio" name="image_rights" value="oui" required /><span class="radio__rond" aria-hidden="true"></span><span>{DROIT_IMAGE.oui}</span></label>
+                <label class="radio"><input type="radio" name="image_rights" value="non" /><span class="radio__rond" aria-hidden="true"></span><span>{DROIT_IMAGE.non}</span></label>
+              </div>
+              <p class="champ__erreur" data-erreur-pour="image"></p>
+            </fieldset>
+          </div>
+
+          <fieldset class="groupe signature">
+            <legend>Signature du responsable légal</legend>
+            <div class="grille-2">
+              <div class="champ">
+                <label for="s-nom">Nom et prénom</label>
+                <input id="s-nom" name="signataire" autocomplete="name" required />
+                <p class="champ__erreur" data-erreur-pour="s-nom"></p>
+              </div>
+              <div class="champ">
+                <label for="s-lieu">Fait à</label>
+                <input id="s-lieu" name="lieu" autocomplete="address-level2" required />
+                <p class="champ__erreur" data-erreur-pour="s-lieu"></p>
+              </div>
+            </div>
+            <div class="pad">
+              <canvas class="pad__toile" data-pad width="640" height="220" aria-label="Zone de signature : signez avec le doigt ou la souris" role="img"></canvas>
+              <p class="pad__vide" data-pad-vide aria-hidden="true">Signez ici, avec le doigt ou la souris</p>
+              <button class="pad__effacer" type="button" data-pad-effacer>Effacer</button>
+            </div>
+            <p class="champ__erreur" data-erreur-pour="signature"></p>
+          </fieldset>
+
+          <div class="panneau__actions">
+            <button class="btn btn--ghost" type="button" data-retour="enfant">← Fiche</button>
+            <button class="btn btn--rouge" type="submit" data-finaliser>Finaliser l’inscription <span class="fleche" aria-hidden="true">→</span></button>
+          </div>
+        </form>
+      </section>
+
+      <!-- 7. Confirmé -->
+      <section class="panneau panneau--fin" data-panneau="fin" aria-labelledby="q-fin" hidden>
+        <p class="eyebrow">Inscription complète</p>
+        <h1 class="panneau__q panneau__q--fin" id="q-fin"><span data-f-prenom>Votre enfant</span> rejoint l’équipe</h1>
+        <div class="fin__scene" data-fin-scene></div>
+        <div class="paquet-fin" data-paquet-fin>
+          {(['portet', 'minimes'] as const).map((club) => (
+            <div class="paquet-fin__coachs" data-paquet-club={club} hidden>
+              {visages(club).map((v, i) => (
+                <span class="mini-carte" style={`--i:${i}`}>
+                  {v.src ? <img src={v.src} alt="" width="120" height="168" loading="lazy" /> : <b>{v.court.charAt(0)}</b>}
+                  <span>{v.court}</span>
+                </span>
+              ))}
+            </div>
+          ))}
+        </div>
+        <div class="fin__actions">
+          <button class="btn btn--rouge" type="button" data-telecharger>Télécharger sa carte</button>
+          <button class="btn btn--ghost" type="button" data-partager hidden>Partager</button>
+          <button class="btn btn--ghost" type="button" data-agenda>Ajouter les séances à mon agenda</button>
+        </div>
+        <dl class="recap recap--fin" data-recap-fin></dl>
+        <div class="fin__bloc">
+          <h2>Dans son sac lundi matin</h2>
+          <ul class="fin__liste">
+            {MATERIEL.map((m) => <li>{m.nom}{m.note && <small> — {m.note}</small>}</li>)}
+          </ul>
+        </div>
+        <div class="fin__bloc" data-f-contact></div>
+        <div class="fin__actions">
+          <a class="btn btn--ghost" href="/inscription" data-autre-enfant>Inscrire un autre enfant</a>
+          <a class="btn btn--ghost" href="/" data-retour-stage>Retour au stage</a>
+        </div>
+      </section>
+    </div>
+  </main>
 </Base>

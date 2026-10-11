@@ -1,25 +1,32 @@
 ---
-import Base from '../layouts/Base.astro';
+import PageLegale from '../components/PageLegale.astro';
+import { DOCUMENTS, DROIT_IMAGE } from '../data/documents.js';
+// le règlement d'abord, puis les documents à valider lors de l'inscription
+const ordre = ['reglement', 'autorisation', 'sante', 'participation'];
+const docs = [
+  ...ordre.map((id) => DOCUMENTS.find((d) => d.id === id)).filter(Boolean),
+  // le droit à l'image n'est pas un accord obligatoire : on le lit ici, on le choisit dans le tunnel
+  {
+    id: 'droit-image',
+    titre: DROIT_IMAGE.titre,
+    sections: [
+      {
+        p: [
+          'Lors de l’inscription, vous choisissez l’une des deux réponses ci-dessous. Les deux sont acceptées : votre choix ne conditionne pas l’inscription de votre enfant.',
+          `Oui : « ${DROIT_IMAGE.oui} »`,
+          `Non : « ${DROIT_IMAGE.non} »`,
+        ],
+      },
+    ],
+  },
+];
 ---
-<Base
-  title="Reglement interieur stage enfants — Boxing Center"
-  description="Reglement interieur du stage enfants Les Vacances des Boxeurs Boxing Center (8-16 ans)."
-  canonical="https://stages.boxingcenter.fr/reglement"
->
-  <div class="wrap legal">
-    <header class="site-header">
-      <a class="brand" href="/">Boxing <span>Center</span> Stages</a>
-    </header>
-    <h1>Reglement interieur du stage</h1>
-    <p>Brouillon adapte 8-16 ans — validation direction requise avant publication definitive.</p>
-    <h2>Comportement</h2>
-    <p>Respect des coachs, des autres participants et du materiel. Les oppositions sont adaptees a l'age, au poids, au niveau et a l'experience.</p>
-    <h2>Securite</h2>
-    <p>Port du materiel de protection requis. Signaler toute blessure ou malaise immediatement.</p>
-    <h2>Repas</h2>
-    <p>Le repas n'est pas pris en charge. Les enfants peuvent rester sous surveillance pendant la pause du midi selon l'organisation prevue.</p>
-    <h2>Horaires</h2>
-    <p>Respecter les horaires indiques sur la fiche club. En cas de retard, prevenir la salle.</p>
-    <p><a href="/">Retour</a></p>
-  </div>
-</Base>
+<PageLegale
+  title="Règlement intérieur et documents du stage enfants — Boxing Center"
+  description="Règlement intérieur du stage Les Vacances des Boxeurs (8–16 ans), autorisation parentale, déclaration sur l’état de santé, pause du midi et droit à l’image."
+  path="/reglement"
+  eyebrow="Les Vacances des Boxeurs"
+  titre="Règlement et documents du stage"
+  docs={docs}
+  ogImage="/img/og/reglement.jpg"
+/>

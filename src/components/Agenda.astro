@@ -1,0 +1,26 @@
+---
+/**
+ * Les 12 séances dans l'agenda du téléphone : un fichier .ics par salle, fabriqué dans le
+ * navigateur avec le même générateur que la carte de l'enfant (aucune donnée envoyée).
+ */
+import DonneesAgenda from './DonneesAgenda.astro';
+import { CLUBS, CLUB_IDS } from '../data/clubs.js';
+---
+<section class="sec agenda" id="agenda" aria-labelledby="titre-agenda">
+  <div class="wrap agenda__in">
+    <div class="sec__head" data-rev>
+      <p class="eyebrow">Dans votre agenda</p>
+      <h2 class="sec__title" id="titre-agenda">Les 12 séances,<br /><em>en un geste</em></h2>
+      <p class="sec__lede">Un fichier d’agenda par salle, pour Google Agenda, le Calendrier d’Apple ou Outlook : chaque séance à son heure, avec l’adresse du club.</p>
+    </div>
+    <div class="agenda__boutons" data-rev>
+      {CLUB_IDS.map((id) => (
+        <button class="btn btn--salle" type="button" data-agenda={id} style={`--c:var(--${id})`}>
+          Agenda {CLUBS[id].court} <span class="agenda__ext">.ics</span>
+        </button>
+      ))}
+      <p class="agenda__note" data-agenda-note aria-live="polite">Le fichier est fabriqué sur votre appareil.</p>
+    </div>
+  </div>
+  <DonneesAgenda />
+</section>

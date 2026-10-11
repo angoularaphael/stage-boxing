@@ -1,0 +1,35 @@
+---
+/**
+ * La salle, en photos : celles du club seulement (jamais une photo de l'autre salle sur
+ * sa page), légendées par ce qu'elles montrent vraiment.
+ */
+import Photo from './Photo.astro';
+import { CLUBS, adresseLigne } from '../data/clubs.js';
+import manifest from '../data/photos.json';
+
+interface Props {
+  club: 'portet' | 'minimes';
+}
+const { club } = Astro.props;
+const c = CLUBS[club];
+const alt = (n: string) => (manifest.photos as Record<string, any>)[n].alt;
+---
+<section class="sec galerie" id="salle" aria-labelledby="titre-salle">
+  <div class="wrap">
+    <div class="sec__head" data-rev>
+      <p class="eyebrow">La salle</p>
+      <h2 class="sec__title" id="titre-salle">{club === 'portet' ? 'Portet,' : 'Les Minimes,'}<br /><em>en vrai</em></h2>
+      <p class="sec__lede">{c.nom}, {adresseLigne(c)}. {c.acces}</p>
+    </div>
+    <ul class="galerie__liste">
+      {c.photos.map((n, i) => (
+        <li data-rev style={`--d:${i * 0.06}s`}>
+          <figure>
+            <Photo name={n} sizes="(min-width: 1000px) 30vw, 78vw" />
+            <figcaption>{alt(n)}</figcaption>
+          </figure>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>

@@ -1,0 +1,28 @@
+---
+interface Props {
+  items: { q: string; r: string }[];
+  titre?: string;
+  /** l'accueil n'en garde que quelques-unes : un lien mène à toutes */
+  plus?: boolean;
+}
+const { items, titre = 'Vos questions,<br /><em>nos réponses</em>', plus = false } = Astro.props;
+---
+<section class="sec" id="faq" aria-labelledby="titre-faq">
+  <div class="wrap">
+    <div class="sec__head" data-rev>
+      <p class="eyebrow">Questions fréquentes</p>
+      <h2 class="sec__title" id="titre-faq" set:html={titre} />
+    </div>
+    <div class="faq" data-rev>
+      {items.map((it, i) => (
+        <details open={i === 0}>
+          <summary>{it.q}</summary>
+          <p class="faq__r">{it.r}</p>
+        </details>
+      ))}
+    </div>
+    {plus && (
+      <p class="sec__plus" data-rev><a class="btn btn--ghost" href="/questions">Toutes les questions <span class="fleche" aria-hidden="true">→</span></a></p>
+    )}
+  </div>
+</section>

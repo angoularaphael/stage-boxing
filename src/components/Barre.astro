@@ -1,0 +1,18 @@
+---
+/** La barre collée en bas sur téléphone : l'inscription toujours sous le pouce. */
+import { CLUBS } from '../data/clubs.js';
+import { STAGE, euros } from '../data/stage.js';
+
+interface Props {
+  club?: 'portet' | 'minimes' | '';
+}
+const { club = '' } = Astro.props;
+const c = club ? CLUBS[club] : null;
+---
+<div class="barre" data-barre aria-hidden="true">
+  <div class="barre__txt">
+    <b>{c ? `Stage ${c.a}` : 'Stage 8–16 ans'}</b>
+    <span data-barre-info>26–31 oct. · dès {euros(STAGE.prix.adherent)}</span>
+  </div>
+  <a class="btn btn--rouge" href={c ? `/inscription?club=${c.id}` : '/choisir-mon-club'} tabindex="-1">{c ? 'Inscrire' : 'Choisir mon club'}</a>
+</div>

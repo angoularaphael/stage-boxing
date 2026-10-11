@@ -1,0 +1,66 @@
+---
+/**
+ * /programme — « Que va-t-il faire ? ». La semaine à l'échelle (le défilement est l'horloge),
+ * les quatre piliers reliés à leurs séances, et l'agenda en un geste.
+ */
+import Base from '../layouts/Base.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import PageTete from '../components/PageTete.astro';
+import Echelle from '../components/Echelle.astro';
+import Piliers from '../components/Piliers.astro';
+import Agenda from '../components/Agenda.astro';
+import Suite from '../components/Suite.astro';
+import Final from '../components/Final.astro';
+import Barre from '../components/Barre.astro';
+import { STAGE } from '../data/stage.js';
+import { graphe, organisation, evenement, fil } from '../data/schema.js';
+import { precharge } from '../data/precharge.js';
+
+const jsonLd = graphe(organisation(), evenement('portet'), evenement('minimes'), fil([['Stages enfants Boxing Center', '/'], ['Programme', '/programme']]));
+---
+<Base
+  title="Programme du stage boxe enfants, 26–31 octobre — Boxing Center"
+  description="Les 12 séances du stage de boxe anglaise 8–16 ans, heure par heure, du lundi 26 au samedi 31 octobre 2026, avec les coachs de Portet et des Minimes."
+  path="/programme"
+  ogTitle="Le programme des Vacances des Boxeurs, heure par heure"
+  ogDescription="Six jours, douze séances, deux salles qui se retrouvent le samedi pour l’interclub."
+  ogImage="/img/og/programme.jpg"
+  ogAlt="Le programme du stage enfants Boxing Center, du lundi 26 au samedi 31 octobre"
+  page="programme"
+  jsonLd={jsonLd}
+  preload={[precharge('minimes-cercle', '100vw')]}
+>
+  <SiteHeader actif="programme" />
+  <main id="contenu">
+    <PageTete
+      photo="minimes-cercle"
+      eyebrow="Le programme"
+      titre="Six jours,<br /><em>douze séances</em>"
+      lede={`${STAGE.sousTitre} Du lundi 26 à 10h au samedi 31 : chaque séance à sa vraie place dans la semaine.`}
+      courant="Programme"
+    >
+      <span class="puce"><span class="puce__point" aria-hidden="true"></span>{STAGE.datesCourt}</span>
+      <span class="puce">Mêmes séances à Portet et aux Minimes</span>
+      <span class="puce" data-compte-court hidden></span>
+    </PageTete>
+
+    <section class="sec sec--echelle" aria-labelledby="titre-echelle">
+      <div class="wrap">
+        <div class="sec__head" data-rev>
+          <p class="eyebrow">Heure par heure</p>
+          <h2 class="sec__title" id="titre-echelle">Faites défiler,<br /><em>l’horloge avance</em></h2>
+          <p class="sec__lede">Chaque séance occupe sa vraie durée et chaque pause est un vrai vide. À gauche Portet, à droite les Minimes : la même séance au même moment, avec les coachs de chaque salle. Le samedi à 14h, les deux colonnes se rejoignent.</p>
+        </div>
+        <Echelle />
+      </div>
+    </section>
+
+    <Piliers details />
+    <Agenda />
+    <Suite pages={['equipe', 'parents', 'tarifs']} />
+    <Final />
+  </main>
+  <SiteFooter />
+  <Barre />
+</Base>

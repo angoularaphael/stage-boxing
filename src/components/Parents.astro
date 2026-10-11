@@ -1,0 +1,72 @@
+---
+/**
+ * Les « blocs clairs pour les parents » (cahier §13), pris au mot : la page quitte le
+ * noir du monde du boxeur pour la lumière du jour. Ici, uniquement des faits.
+ */
+import { STAGE } from '../data/stage.js';
+import { CLUBS } from '../data/clubs.js';
+
+interface Props {
+  club?: 'portet' | 'minimes' | '';
+}
+const { club = '' } = Astro.props;
+const c = club ? CLUBS[club] : null;
+const icones = {
+  equipe: '<path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm8 0a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM2.5 20c.6-3.4 2.8-5.5 5.5-5.5s4.9 2.1 5.5 5.5M13 16c.9-1 1.9-1.5 3-1.5 2.7 0 4.9 2.1 5.5 5.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>',
+  balance: '<path d="M12 3v18M5 7h14M5 7l-3 7a3.5 3.5 0 0 0 6 0L5 7Zm14 0-3 7a3.5 3.5 0 0 0 6 0l-3-7ZM8 21h8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>',
+  casque: '<path d="M12 3c-4.4 0-7.5 3.2-7.5 7.6V16c0 1.7 1.3 3 3 3H10v-5H6.6M12 3c4.4 0 7.5 3.2 7.5 7.6V16c0 1.7-1.3 3-3 3H14v-5h3.4M10 9h4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>',
+  repas: '<path d="M6 3v8a2 2 0 0 0 2 2v8M10 3v8a2 2 0 0 1-2 2M8 3v6M17 21V3c-2 1.5-3 4-3 7v4h3" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>',
+  horloge: '<circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M12 7.5V12l3 2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>',
+  stylo: '<path d="m4 20 1-4L16.5 4.5a2.1 2.1 0 0 1 3 3L8 19l-4 1ZM14 7l3 3" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>',
+};
+const ico = (k: keyof typeof icones) => `<svg viewBox="0 0 24 24" aria-hidden="true">${icones[k]}</svg>`;
+---
+<section class="sec clair" id="parents" aria-labelledby="titre-parents">
+  <div class="wrap">
+    <div class="sec__head" data-rev>
+      <p class="eyebrow">Pour les parents</p>
+      <h2 class="sec__title" id="titre-parents">Un cadre <em>clair</em>,<br />du lundi au samedi</h2>
+      <p class="sec__lede">Tout ce qu’il faut savoir avant d’inscrire votre enfant, sans petites lignes.</p>
+    </div>
+    <div class="rassure">
+      <div class="rassure__bloc" data-rev>
+        <span class="rassure__ico" set:html={ico('equipe')} />
+        <h3>Des coachs Boxing Center</h3>
+        <p>{c ? (c.id === 'portet' ? 'Valentin Tapia, head coach du club, avec Mourad Berraho et Marama Mercier, champions de France.' : 'Mehdi, head coach des Minimes, avec Fayez et Lucas.') : 'Dans chaque salle, les coachs du club encadrent les enfants toute la semaine, rejoints le mercredi par un boxeur professionnel.'}</p>
+      </div>
+      <div class="rassure__bloc" data-rev style="--d:.05s">
+        <span class="rassure__ico" set:html={ico('balance')} />
+        <h3>Des groupes adaptés</h3>
+        <p>{STAGE.public}</p>
+      </div>
+      <div class="rassure__bloc" data-rev style="--d:.1s">
+        <span class="rassure__ico" set:html={ico('casque')} />
+        <h3>Protégés pendant les assauts</h3>
+        <p>Gants, casque et protège-dents pour les assauts et les combats tests. En boxe éducative, la touche remplace la frappe : la puissance est interdite.</p>
+      </div>
+      <div class="rassure__bloc" data-rev>
+        <span class="rassure__ico" set:html={ico('repas')} />
+        <h3>La pause du midi</h3>
+        <p>{STAGE.repas}</p>
+      </div>
+      <div class="rassure__bloc" data-rev style="--d:.05s">
+        <span class="rassure__ico" set:html={ico('horloge')} />
+        <h3>Des horaires simples</h3>
+        <p>10h – 12h et 14h – 16h. Le mercredi : 11h – 13h et 16h – 18h. Le samedi : bowling de 10h à 12h, interclub à partir de 14h.</p>
+      </div>
+      <div class="rassure__bloc" data-rev style="--d:.1s">
+        <span class="rassure__ico" set:html={ico('stylo')} />
+        <h3>L’inscription en trois temps</h3>
+        <ol class="etapes-ins">
+          <li><span><strong>Vous payez</strong> en ligne, la place est réservée.</span></li>
+          <li><span><strong>Vous remplissez la fiche</strong> de votre enfant.</span></li>
+          <li><span><strong>Vous validez les documents</strong> : autorisation, santé, règlement, droit à l’image.</span></li>
+        </ol>
+      </div>
+    </div>
+    <div class="hero__cta" style="margin-top:2rem" data-rev>
+      <a class="btn btn--rouge" href={c ? `/inscription?club=${c.id}` : '/choisir-mon-club'}>{c ? c.inscrire : 'Choisir mon club'} <span class="fleche" aria-hidden="true">→</span></a>
+      <a class="btn btn--ghost" href="/reglement">Lire les documents</a>
+    </div>
+  </div>
+</section>

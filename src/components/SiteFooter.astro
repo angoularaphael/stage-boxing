@@ -1,0 +1,51 @@
+---
+import { CLUBS, EDITEUR, adresseLigne } from '../data/clubs.js';
+import { STAGE } from '../data/stage.js';
+const p = CLUBS.portet;
+const m = CLUBS.minimes;
+---
+<footer class="pied">
+  <div class="wrap">
+    <div class="pied__grille">
+      <div>
+        <a class="pied__logo" href="/" aria-label="Accueil des stages enfants Boxing Center">
+          <img src="/img/logo/bc-logo-400.webp" width="400" height="186" alt="Boxing Center" loading="lazy" />
+        </a>
+        <p><strong style="color:var(--ink)">{STAGE.nom}</strong> — stage de boxe anglaise pour les 8–16 ans, {STAGE.dates}.</p>
+      </div>
+      <div>
+        <h2>Portet-sur-Garonne</h2>
+        <ul>
+          <li><a href={p.path}>Le stage à Portet</a></li>
+          <li>{adresseLigne(p)}</li>
+          <li><a href={`tel:${p.telHref}`}>{p.tel}</a></li>
+          <li><a href={`mailto:${p.email}`}>{p.email}</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2>Minimes — Toulouse</h2>
+        <ul>
+          <li><a href={m.path}>Le stage aux Minimes</a></li>
+          <li>{adresseLigne(m)}</li>
+          <li><a href={`tel:${m.telHref}`}>{m.tel}</a></li>
+          <li><a href={`mailto:${m.email}`}>{m.email}</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2>Documents et réseau</h2>
+        <ul>
+          <li><a href="/cgv">Conditions générales de vente</a></li>
+          <li><a href="/reglement">Règlement et documents du stage</a></li>
+          <li><a href="https://boxingcenter.fr/" rel="noopener">boxingcenter.fr</a></li>
+          <li><a href="https://boxing-center-portet.fr/" rel="noopener">Le club de Portet</a></li>
+          <li><a href="https://boxe-toulouse.com/" rel="noopener">Le club des Minimes</a></li>
+        </ul>
+      </div>
+    </div>
+    <p class="pied__legal">
+      Éditeur : {EDITEUR.nom}, {EDITEUR.forme}, {EDITEUR.rcs}, {EDITEUR.siege}. Directeur de la publication :
+      {EDITEUR.directeur}. Hébergement : {EDITEUR.hebergeur}. Photographies : {EDITEUR.credits}, tous droits réservés.
+      Une personne reconnaissable sur une photo peut en demander le retrait à l’une des adresses ci-dessus.
+    </p>
+  </div>
+</footer>

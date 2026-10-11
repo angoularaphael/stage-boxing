@@ -1,0 +1,48 @@
+---
+import Photo from './Photo.astro';
+import { PILIERS, seancesPilier, heure } from '../data/stage.js';
+
+interface Props {
+  club?: 'portet' | 'minimes' | 'mix';
+  /** sur la page programme : sous chaque pilier, les séances qui le travaillent */
+  details?: boolean;
+  lien?: boolean;
+}
+const { club = 'mix', details = false, lien = false } = Astro.props;
+// sur l'accueil, les deux salles se partagent les piliers ; sur une page club, uniquement ses photos
+const photoDe = (p: any, i: number) => (club === 'mix' ? p.photo[i % 2 === 0 ? 'portet' : 'minimes'] : p.photo[club]);
+---
+<section class:list={['sec', { 'sec--piliers-details': details }]} id="piliers" aria-labelledby="titre-piliers">
+  <div class="wrap">
+    <div class="sec__head" data-rev>
+      <p class="eyebrow">Quatre piliers</p>
+      <h2 class="sec__title" id="titre-piliers">Progresser,<br /><em>se dépasser</em></h2>
+      {details && <p class="sec__lede">Les quatre axes des flyers du stage, et les séances de la semaine qui les travaillent.</p>}
+    </div>
+    <div class:list={['piliers', { 'piliers--details': details }]}>
+      {PILIERS.map((p, i) => (
+        <article class="pilier" data-rev style={`--d:${i * 0.07}s`}>
+          <Photo name={photoDe(p, i)} sizes="(min-width: 1000px) 25vw, 82vw" />
+          <span class="pilier__num">0{i + 1}</span>
+          <h3>{p.titre}</h3>
+          <p>{p.texte}</p>
+          {details && (
+            <ul class="pilier__seances">
+              {seancesPilier(p.id).map(({ jour, seance }) => (
+                <li>
+                  <a href={`#jour-${jour.date}`}>
+                    <time datetime={`${jour.date}T${seance.debut}`}>{jour.court} {jour.num} · {heure(seance.debut)}</time>
+                    <span>{seance.titre}</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          )}
+        </article>
+      ))}
+    </div>
+    {lien && (
+      <p class="sec__plus" data-rev><a class="btn btn--ghost" href="/programme">Voir le programme <span class="fleche" aria-hidden="true">→</span></a></p>
+    )}
+  </div>
+</section>

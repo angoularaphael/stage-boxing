@@ -1,0 +1,77 @@
+---
+/**
+ * Gabarit d'une page club. Même mécanique pour les deux salles ; ce qui vit ici est propre
+ * à chacune : la photo, la couleur du lieu, l'équipe, l'accès, les questions locales.
+ */
+import Base from '../layouts/Base.astro';
+import SiteHeader from './SiteHeader.astro';
+import SiteFooter from './SiteFooter.astro';
+import ClubHero from './ClubHero.astro';
+import Chiffres from './Chiffres.astro';
+import Semaine from './Semaine.astro';
+import Equipes from './Equipes.astro';
+import Piliers from './Piliers.astro';
+import Parents from './Parents.astro';
+import Tarif from './Tarif.astro';
+import Pratique from './Pratique.astro';
+import Faq from './Faq.astro';
+import Galerie from './Galerie.astro';
+import Suite from './Suite.astro';
+import Final from './Final.astro';
+import Barre from './Barre.astro';
+import { CLUBS } from '../data/clubs.js';
+import { faqClub } from '../data/faq.js';
+import { graphe, organisation, evenement, faq, fil } from '../data/schema.js';
+import { precharge } from '../data/precharge.js';
+
+interface Props {
+  club: 'portet' | 'minimes';
+  title: string;
+  description: string;
+  ogTitle: string;
+  ogDescription: string;
+}
+const { club, title, description, ogTitle, ogDescription } = Astro.props;
+const c = CLUBS[club];
+const questions = faqClub(club);
+const jsonLd = graphe(
+  organisation(),
+  evenement(club),
+  faq(questions),
+  fil([
+    ['Stages enfants Boxing Center', '/'],
+    [c.bloc, c.path],
+  ]),
+);
+---
+<Base
+  title={title}
+  description={description}
+  path={c.path}
+  ogTitle={ogTitle}
+  ogDescription={ogDescription}
+  ogImage={`/img/og/${club}.jpg`}
+  ogAlt={`Stage enfants Boxing Center ${c.court} — Les Vacances des Boxeurs`}
+  page="club"
+  club={club}
+  jsonLd={jsonLd}
+  preload={[precharge(c.hero, '100vw')]}
+>
+  <SiteHeader mode="club" club={club} actif={club} />
+  <main id="contenu">
+    <ClubHero club={club} />
+    <Chiffres intro={c.intro} titre={`Une semaine<br /><em>${c.a}</em>`} />
+    <Semaine club={club} />
+    <Galerie club={club} />
+    <Equipes clubs={[club]} titre={`L’équipe<br /><em>${c.court === 'Portet' ? 'de Portet' : 'des Minimes'}</em>`} />
+    <Piliers club={club} />
+    <Parents club={club} />
+    <Tarif club={club} />
+    <Pratique club={club} />
+    <Faq items={questions} />
+    <Suite pages={['programme', 'equipe', 'parents']} />
+    <Final club={club} />
+  </main>
+  <SiteFooter />
+  <Barre club={club} />
+</Base>

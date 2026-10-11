@@ -1,0 +1,64 @@
+---
+/**
+ * Le trouveur de club : « lequel est le plus près de chez nous ? ». La commune (ou la
+ * position du téléphone) donne la distance à vol d'oiseau jusqu'aux deux salles. Tout se
+ * calcule sur l'appareil, à partir d'une liste locale des communes (geo.api.gouv.fr) :
+ * aucune adresse ne part nulle part.
+ */
+import { CLUBS, CLUB_IDS } from '../data/clubs.js';
+
+interface Props {
+  compact?: boolean;
+}
+const { compact = false } = Astro.props;
+---
+<div
+  class:list={['trouve', { 'trouve--compact': compact }]}
+  data-trouveur
+  data-salles={JSON.stringify(Object.fromEntries(CLUB_IDS.map((id) => [id, { lat: CLUBS[id].geo.lat, lng: CLUBS[id].geo.lng, court: CLUBS[id].court }])))}
+>
+  <div class="trouve__form" role="search">
+    <label class="trouve__label" for={compact ? 'trouve-ville-c' : 'trouve-ville'}>Vous habitez où ?</label>
+    <div class="trouve__champ">
+      <input
+        id={compact ? 'trouve-ville-c' : 'trouve-ville'}
+        type="text"
+        inputmode="search"
+        enterkeyhint="search"
+        autocomplete="off"
+        spellcheck="false"
+        placeholder="Muret, Blagnac, 31120…"
+        role="combobox"
+        aria-autocomplete="list"
+        aria-expanded="false"
+        aria-controls={compact ? 'trouve-liste-c' : 'trouve-liste'}
+        data-trouve-saisie
+      />
+      <button class="trouve__geo" type="button" data-trouve-geo>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3" stroke="currentColor" stroke-width="2" stroke-linecap="round" /><circle cx="12" cy="12" r="5.5" fill="none" stroke="currentColor" stroke-width="2" /><circle cx="12" cy="12" r="1.8" fill="currentColor" /></svg>
+        <span>Ma position</span>
+      </button>
+    </div>
+    <ul class="trouve__liste" id={compact ? 'trouve-liste-c' : 'trouve-liste'} role="listbox" aria-label="Communes" data-trouve-liste hidden></ul>
+  </div>
+
+  <div class="trouve__salles">
+    {CLUB_IDS.map((id) => {
+      const c = CLUBS[id];
+      return (
+        <div class:list={['trouve__salle', `trouve__salle--${id}`]} data-salle={id} style={`--c:var(--${id});--c-clair:var(--${id}-clair)`}>
+          <p class="trouve__haut">
+            <span class="trouve__nom">{c.court}</span>
+            <span class="trouve__proche" data-proche hidden>La plus proche</span>
+          </p>
+          <p class="trouve__km"><b data-km>—</b><span> km</span></p>
+          <span class="trouve__jauge" aria-hidden="true"><span data-jauge></span></span>
+          <p class="trouve__acces">{c.acces}</p>
+          <a class="btn btn--salle trouve__btn" href={c.path}>{c.cta} <span class="fleche" aria-hidden="true">→</span></a>
+        </div>
+      );
+    })}
+  </div>
+  <p class="trouve__verdict" data-trouve-verdict aria-live="polite">Tapez votre commune ou votre code postal : on compare la distance jusqu’aux deux salles.</p>
+  <p class="trouve__note">Distances à vol d’oiseau depuis la mairie de votre commune (ou depuis votre position), calculées sur votre appareil : rien n’est envoyé. Liste des communes : geo.api.gouv.fr.</p>
+</div>

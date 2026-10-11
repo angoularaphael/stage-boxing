@@ -1,0 +1,118 @@
+---
+/**
+ * /choisir-mon-club — « Lequel ? ». Le bouton le plus présent du site (cahier §14) mène ici :
+ * le trouveur (commune ou position → la salle la plus proche), le comparatif côte à côte,
+ * puis les deux blocs de redirection avec les places en direct. Les deux moitiés du
+ * face-à-face de l'accueil deviennent les deux moitiés de ce héros.
+ */
+import Base from '../layouts/Base.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import Photo from '../components/Photo.astro';
+import Trouveur from '../components/Trouveur.astro';
+import Salles from '../components/Salles.astro';
+import Faq from '../components/Faq.astro';
+import Suite from '../components/Suite.astro';
+import Barre from '../components/Barre.astro';
+import { CLUBS, CLUB_IDS, INTERVENANTS, adresseLigne, listeNoms } from '../data/clubs.js';
+import { toutesQuestions } from '../data/faq.js';
+import { graphe, organisation, lieu, fil } from '../data/schema.js';
+import { precharge } from '../data/precharge.js';
+
+const p = CLUBS.portet;
+const m = CLUBS.minimes;
+// « Challenger au titre… » → « challenger au titre… », sans toucher « France »
+const minuscule = (s: string) => s.charAt(0).toLowerCase() + s.slice(1);
+const lignes = [
+  { t: 'Adresse', v: CLUB_IDS.map((id) => adresseLigne(CLUBS[id])) },
+  { t: 'Accès', v: CLUB_IDS.map((id) => CLUBS[id].acces) },
+  { t: 'Head coach', v: [INTERVENANTS.valentin.nom, INTERVENANTS.mehdi.nom] },
+  { t: 'L’équipe', v: CLUB_IDS.map((id) => listeNoms(CLUBS[id].equipe, true)) },
+  { t: 'Le boxeur pro', v: ['anna', 'johnson'].map((pid) => `${INTERVENANTS[pid].nom} : ${minuscule(INTERVENANTS[pid].vedette)}`) },
+  { t: 'Paiement', v: ['Carte, PayPal, PayPal en 4 fois si éligible', 'Carte, PayPal, PayPal en 4 fois si éligible, Scalapay'] },
+  { t: 'Contact', v: CLUB_IDS.map((id) => `${CLUBS[id].tel} · ${CLUBS[id].email}`) },
+  { t: 'Le reste', v: ['Mêmes dates, horaires, programme et tarifs', 'Mêmes dates, horaires, programme et tarifs'] },
+];
+const questions = toutesQuestions().filter((q) => q.theme === 'salles');
+const jsonLd = graphe(organisation(), lieu('portet'), lieu('minimes'), fil([['Stages enfants Boxing Center', '/'], ['Choisir mon club', '/choisir-mon-club']]));
+---
+<Base
+  title="Stage boxe enfants : Portet ou Minimes ? — Boxing Center"
+  description="Le même stage de boxe 8–16 ans dans deux salles : trouvez la plus proche de chez vous et comparez Portet-sur-Garonne et les Minimes, à Toulouse."
+  path="/choisir-mon-club"
+  ogTitle="Portet ou Minimes : la salle la plus proche de chez vous"
+  ogDescription="Tapez votre commune : on compare la distance jusqu’aux deux salles du stage."
+  ogImage="/img/og/choisir.jpg"
+  ogAlt="Les deux salles du stage enfants Boxing Center, Portet-sur-Garonne et les Minimes"
+  page="choisir"
+  jsonLd={jsonLd}
+  preload={[precharge('portet-walkout', '50vw')]}
+>
+  <SiteHeader actif="choisir" />
+  <main id="contenu">
+    <section class="duel" data-hero aria-labelledby="titre-page">
+      <div class="duel__photos" aria-hidden="true">
+        <Photo name={p.hero} class="duel__img duel__img--portet" sizes="50vw" eager decorative />
+        <Photo name={m.hero} class="duel__img duel__img--minimes" sizes="50vw" eager decorative />
+        <span class="duel__couture"></span>
+      </div>
+      <div class="wrap duel__in">
+        <nav aria-label="Fil d’Ariane">
+          <ol class="fil">
+            <li><a href="/">Stages enfants</a></li>
+            <li aria-current="page">Choisir mon club</li>
+          </ol>
+        </nav>
+        <p class="eyebrow">Deux salles, le même stage</p>
+        <h1 class="tete__titre display" id="titre-page">Choisir<br /><em>mon club</em></h1>
+        <p class="tete__lede">Mêmes dates, mêmes horaires, même programme, mêmes tarifs. Choisissez la salle la plus pratique pour votre famille : les deux groupes se retrouvent le samedi pour l’interclub.</p>
+      </div>
+    </section>
+
+    <section class="sec sec--trouve" aria-label="Trouver la salle la plus proche">
+      <div class="wrap">
+        <Trouveur />
+      </div>
+    </section>
+
+    <section class="sec" id="comparatif" aria-labelledby="titre-comparatif">
+      <div class="wrap">
+        <div class="sec__head" data-rev>
+          <p class="eyebrow">Côte à côte</p>
+          <h2 class="sec__title" id="titre-comparatif">Ce qui change,<br /><em>ce qui ne change pas</em></h2>
+        </div>
+        <div class="compare" data-rev>
+          <table>
+            <caption class="sr-only">Comparatif des deux salles du stage</caption>
+            <thead>
+              <tr>
+                <td></td>
+                {CLUB_IDS.map((id) => (
+                  <th scope="col" class:list={['compare__salle', `compare__salle--${id}`]}><a href={CLUBS[id].path}>{CLUBS[id].court}</a></th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {lignes.map((l) => (
+                <tr>
+                  <th scope="row">{l.t}</th>
+                  {l.v.map((x) => <td>{x}</td>)}
+                </tr>
+              ))}
+              <tr>
+                <th scope="row">Places</th>
+                {CLUB_IDS.map((id) => <td><span data-places={id} hidden></span></td>)}
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <Salles titre="Les deux salles,<br /><em>en un clic</em>" />
+    <Faq items={questions} titre="Portet<br /><em>ou Minimes</em>" />
+    <Suite pages={['programme', 'equipe', 'tarifs']} />
+  </main>
+  <SiteFooter />
+  <Barre />
+</Base>

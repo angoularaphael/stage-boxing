@@ -1,0 +1,28 @@
+---
+import { CLUBS } from '../data/clubs.js';
+
+interface Props {
+  club?: 'portet' | 'minimes' | '';
+}
+const { club = '' } = Astro.props;
+const c = club ? CLUBS[club] : null;
+---
+<section class="sec final" aria-labelledby="titre-final">
+  <div class="wrap final">
+    <p class="eyebrow" data-rev>Du lundi 26 au samedi 31 octobre</p>
+    <h2 class="final__titre display" id="titre-final" data-rev>Réservez<br />sa place</h2>
+    <div class="final__cta" data-rev>
+      {c ? (
+        <>
+          <a class="btn btn--rouge" href={`/inscription?club=${c.id}`}>Réserver la place de mon enfant <span class="fleche" aria-hidden="true">→</span></a>
+          <a class="btn btn--ghost" href={CLUBS[c.autre].path}>{CLUBS[c.autre].cta}</a>
+        </>
+      ) : (
+        <>
+          <a class="btn btn--rouge" href="/inscription?club=portet">Inscrire mon enfant à Portet</a>
+          <a class="btn btn--rouge" href="/inscription?club=minimes">Inscrire mon enfant aux Minimes</a>
+        </>
+      )}
+    </div>
+  </div>
+</section>

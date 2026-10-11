@@ -1,0 +1,185 @@
+---
+/**
+ * /parents — « Est-ce sûr, et comment ça se passe ? ». Les « blocs clairs pour les parents »
+ * du cahier (§13), pris au mot : après le héros, la page quitte le noir du boxeur pour la
+ * lumière du jour. Uniquement des faits : flyers, cahier, documents du stage.
+ * Puis le sac, à préparer avec l'enfant : on revient dans son monde.
+ */
+import Base from '../layouts/Base.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import PageTete from '../components/PageTete.astro';
+import SemaineMini from '../components/SemaineMini.astro';
+import Sac from '../components/Sac.astro';
+import Suite from '../components/Suite.astro';
+import Final from '../components/Final.astro';
+import Barre from '../components/Barre.astro';
+import { STAGE } from '../data/stage.js';
+import { CLUBS, CLUB_IDS, INTERVENANTS, adresseLigne } from '../data/clubs.js';
+import { DOCUMENTS, DROIT_IMAGE } from '../data/documents.js';
+import { graphe, organisation, fil } from '../data/schema.js';
+import { precharge } from '../data/precharge.js';
+
+const doc = (id: string) => DOCUMENTS.find((d) => d.id === id)!;
+const documents = [
+  { titre: doc('autorisation').titre, texte: 'Vous autorisez votre enfant à participer à toutes les activités du programme, assauts et combats tests compris, adaptés à son âge, son poids et son niveau.', href: '/reglement#autorisation' },
+  { titre: doc('sante').titre, texte: 'Vous certifiez avoir communiqué ce qu’il faut savoir sur sa santé (allergies, traitement, blessure), et vous autorisez l’appel aux secours en cas d’urgence.', href: '/reglement#sante' },
+  { titre: doc('reglement').titre, texte: 'Respect des coachs, des autres et du matériel ; sécurité ; horaires ; pause du midi ; tenue et hygiène.', href: '/reglement#reglement' },
+  { titre: doc('participation').titre, texte: 'Le groupe et le programme définis par les coachs, le repas tiré du sac, et votre choix pour la pause du midi.', href: '/reglement#participation' },
+  { titre: doc('cgv').titre, texte: 'Prix, paiement, inscription complète, places et annulation.', href: '/cgv' },
+  { titre: DROIT_IMAGE.titre, texte: 'Un choix libre, oui ou non : il ne change rien à l’inscription de votre enfant.', href: '/reglement#droit-image' },
+];
+const v = INTERVENANTS.valentin;
+const m = INTERVENANTS.mehdi;
+const jsonLd = graphe(organisation(), fil([['Stages enfants Boxing Center', '/'], ['Pour les parents', '/parents']]));
+---
+<Base
+  title="Stage boxe enfants : sécurité, horaires, repas — Boxing Center"
+  description="Boxe éducative, protections, groupes par âge et niveau, horaires, pause du midi surveillée, sac et documents : l’essentiel avant d’inscrire votre enfant."
+  path="/parents"
+  ogTitle="Les Vacances des Boxeurs, côté parents"
+  ogDescription="Sécurité, horaires, pause du midi, sac et documents : tout, sans petites lignes."
+  ogImage="/img/og/parents.jpg"
+  ogAlt="Des enfants casqués et gantés face à leur coach, pendant un cours de boxe éducative"
+  page="parents"
+  jsonLd={jsonLd}
+  preload={[precharge('portet-educative', '100vw')]}
+>
+  <SiteHeader actif="parents" />
+  <main id="contenu">
+    <PageTete
+      photo="portet-educative"
+      eyebrow="Pour les parents"
+      titre="Un cadre<br /><em>clair</em>"
+      lede="Tout ce qu’il faut savoir avant d’inscrire votre enfant : la sécurité, la journée, le midi, le sac et les documents. Sans petites lignes."
+      courant="Parents"
+    >
+      <span class="puce"><span class="puce__point" aria-hidden="true"></span>8–16 ans · filles et garçons</span>
+      <span class="puce">Débutants acceptés</span>
+      <span class="puce">10h – 12h · 14h – 16h</span>
+    </PageTete>
+
+    <div class="jour-clair">
+      <section class="sec clair" id="securite" aria-labelledby="titre-securite">
+        <div class="wrap">
+          <div class="sec__head" data-rev>
+            <p class="eyebrow">La sécurité d’abord</p>
+            <h2 class="sec__title" id="titre-securite">Encadré,<br /><em>protégé</em></h2>
+            <p class="sec__lede">{STAGE.public}</p>
+          </div>
+          <div class="regles">
+            <article class="regle" data-rev>
+              <p class="regle__n">01</p>
+              <h3>On touche, on ne frappe pas</h3>
+              <p>En boxe éducative, la touche remplace la frappe : la puissance y est interdite par le code sportif de la Fédération française de boxe.</p>
+            </article>
+            <article class="regle" data-rev style="--d:.06s">
+              <p class="regle__n">02</p>
+              <h3>Protégé pendant les assauts</h3>
+              <p>Gants, casque et protège-dents pour les assauts et les combats tests, entre enfants d’âge, de poids et de niveau proches, sous le regard des coachs.</p>
+            </article>
+            <article class="regle" data-rev style="--d:.12s">
+              <p class="regle__n">03</p>
+              <h3>Des coachs diplômés</h3>
+              <p>À Portet, {v.nom}, head coach du club ({v.titres[0]}). Aux Minimes, {m.nom}, head coach ({m.titres[1]}, {m.titres[2]}). Avec leurs coachs, toute la semaine.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="sec clair" id="journee" aria-labelledby="titre-journee">
+        <div class="wrap">
+          <div class="sec__head" data-rev>
+            <p class="eyebrow">Une journée type</p>
+            <h2 class="sec__title" id="titre-journee">Deux séances,<br /><em>une pause</em></h2>
+            <p class="sec__lede">Lundi, mardi, jeudi et vendredi, la même journée. Le mercredi et le samedi ont leurs propres horaires : toute la semaine tient ci-dessous.</p>
+          </div>
+          <div class="journee">
+            <ol class="journee__fil" data-rev>
+              <li><time>10h</time><b>La séance du matin</b><span>Technique, tactique, physique : deux heures avec les coachs.</span></li>
+              <li><time>12h</time><b>La pause du midi</b><span>{STAGE.repas}</span></li>
+              <li><time>14h</time><b>La séance de l’après-midi</b><span>Assauts, sac, piste, cohésion : la mise en pratique.</span></li>
+              <li><time>16h</time><b>Fin de la journée</b><span>Le mercredi, les combats tests finissent à 18h.</span></li>
+            </ol>
+            <div class="journee__semaine" data-rev style="--d:.08s">
+              <SemaineMini />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="sec clair" id="documents" aria-labelledby="titre-documents">
+        <div class="wrap">
+          <div class="sec__head" data-rev>
+            <p class="eyebrow">Les documents</p>
+            <h2 class="sec__title" id="titre-documents">Lus avant,<br /><em>validés en ligne</em></h2>
+            <p class="sec__lede">Adaptés aux 8–16 ans et lisibles dès maintenant. Vous les validez après le paiement et la fiche de votre enfant : l’inscription n’est complète qu’à ce moment-là.</p>
+          </div>
+          <ul class="docs">
+            {documents.map((d, i) => (
+              <li data-rev style={`--d:${(i % 3) * 0.05}s`}>
+                <a href={d.href}>
+                  <b>{d.titre}</b>
+                  <span>{d.texte}</span>
+                  <small>Lire <span class="fleche" aria-hidden="true">→</span></small>
+                </a>
+              </li>
+            ))}
+          </ul>
+          <ol class="etapes-ins etapes-ins--large" data-rev>
+            <li><span><strong>Vous payez</strong> en ligne : la place est réservée.</span></li>
+            <li><span><strong>Vous remplissez la fiche</strong> de votre enfant.</span></li>
+            <li><span><strong>Vous validez les documents.</strong> Si vous vous arrêtez après le paiement, un e-mail vous permet de reprendre.</span></li>
+          </ol>
+          <div class="sec__plus" data-rev>
+            <a class="btn btn--rouge" href="/choisir-mon-club">Choisir mon club <span class="fleche" aria-hidden="true">→</span></a>
+            <a class="btn btn--ghost" href="/tarifs">Voir les tarifs</a>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <section class="sec" id="sac" aria-labelledby="titre-sac">
+      <div class="wrap sac">
+        <div class="sec__head" data-rev>
+          <p class="eyebrow">À préparer avec votre enfant</p>
+          <h2 class="sec__title" id="titre-sac">Le sac<br /><em>du boxeur</em></h2>
+          <p class="sec__lede">Cochez au fur et à mesure : la liste se souvient de ce qui est prêt, sur ce téléphone.</p>
+        </div>
+        <div class="boite sac__boite" data-rev>
+          <Sac />
+        </div>
+      </div>
+    </section>
+
+    <section class="sec" id="contacts" aria-labelledby="titre-contacts">
+      <div class="wrap">
+        <div class="sec__head" data-rev>
+          <p class="eyebrow">Une question ?</p>
+          <h2 class="sec__title" id="titre-contacts">Le club<br /><em>vous répond</em></h2>
+        </div>
+        <div class="contacts">
+          {CLUB_IDS.map((id, i) => {
+            const c = CLUBS[id];
+            return (
+              <article class:list={['contact', `contact--${id}`]} style={`--c:var(--${id});--d:${i * 0.06}s`} data-rev>
+                <h3>{c.court}</h3>
+                <p>{c.nom}<br />{adresseLigne(c)}</p>
+                <p>{c.acces}</p>
+                <p class="contact__liens">
+                  <a class="btn btn--salle" href={`tel:${c.telHref}`} style={`--c:var(--${id})`}>{c.tel}</a>
+                  <a class="lien" href={`mailto:${c.email}`}>{c.email}</a>
+                </p>
+              </article>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+
+    <Suite pages={['programme', 'tarifs', 'questions']} />
+    <Final />
+  </main>
+  <SiteFooter />
+  <Barre />
+</Base>

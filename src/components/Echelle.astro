@@ -1,0 +1,160 @@
+---
+/**
+ * La semaine à l'échelle. La page a la longueur de la semaine : chaque séance occupe sa
+ * vraie durée (un quart d'heure = un rang de la grille), les pauses sont de vrais vides, et
+ * une horloge fixe lit le temps sous l'aiguille pendant qu'on défile.
+ * Les deux salles déroulent la même séance au même moment, chacune avec ses coachs ; le
+ * samedi à 14h les deux colonnes se rejoignent en un seul bloc : c'est l'interclub.
+ * Tout vient de SEMAINE (donc des PDF) : aucune durée, aucun coach n'est inventé.
+ */
+import { SEMAINE, PILIER_COURT, TITRE_COURT, heures, seanceId, creneau } from '../data/stage.js';
+import { CLUBS, listeNoms } from '../data/clubs.js';
+
+interface Props {
+  clubs?: ('portet' | 'minimes')[];
+}
+const { clubs = ['portet', 'minimes'] } = Astro.props;
+const deux = clubs.length > 1;
+const OUVERTURE = 10; // toutes les journées se lisent depuis 10h : le mercredi décalé se voit
+
+const hh = (h: number) => `${Math.floor(h)}h${h % 1 ? String(Math.round((h % 1) * 60)).padStart(2, '0') : ''}`;
+
+const jours = SEMAINE.map((j) => {
+  const fin = Math.max(...j.seances.map((s) => (s.fin ? heures(s.fin) : heures(s.debut) + 4)));
+  const nb = fin - OUVERTURE;
+  const rang = (h: number) => Math.round((h - OUVERTURE) * 4) + 1;
+  const seances = [...j.seances].sort((a, b) => heures(a.debut) - heures(b.debut));
+  const creux: { type: string; de: number; a: number }[] = [];
+  let curseur = OUVERTURE;
+  seances.forEach((s, i) => {
+    const d = heures(s.debut);
+    if (d > curseur) creux.push({ type: i === 0 ? 'vide' : 'pause', de: curseur, a: d });
+    curseur = s.fin ? heures(s.fin) : fin;
+  });
+  const interclub = seances.find((s) => s.titre === 'Interclub');
+  const jonction = deux && interclub ? heures(interclub.debut) : null;
+  // les deux rails s'arrêtent à la fin de la séance qui précède la jonction (le bowling)
+  const finRails = jonction === null ? null : creux.find((c) => c.a === jonction)?.de ?? jonction;
+  return { ...j, fin, nb, rang, seances, creux, jonction, finRails };
+});
+
+const libelleCreux = (j: any, c: any) => {
+  if (c.type === 'vide') return { t: `Le ${j.jour.toLowerCase()}, on commence à ${hh(c.a)}`, n: '' };
+  const midi = c.de <= 12.5 && c.a >= 13.5;
+  if (j.jonction !== null && c.a === j.jonction) return { t: 'Pause du midi', n: deux ? 'Puis les deux stages se rejoignent' : '' };
+  if (midi && c.a - c.de <= 2) return { t: 'Pause du midi', n: 'Chacun apporte son repas ; les enfants peuvent rester à la salle, sous surveillance.' };
+  return { t: 'Pause', n: 'Chacun apporte son repas.' };
+};
+---
+<div class:list={['ech', { 'ech--deux': deux }]} data-echelle style={`--cols:${clubs.length}`}>
+  <div class="ech__barre" data-ech-barre aria-hidden="true">
+    <p class="ech__horloge">
+      <span class="ech__jour" data-ech-jour>Lun 26</span>
+      <b class="ech__heure" data-ech-heure>10:00</b>
+      <span class="ech__quoi" data-ech-quoi></span>
+    </p>
+    <button class="ech__maintenant" type="button" data-ech-maintenant hidden tabindex="-1">
+      <span class="puce__point"></span>Aller à maintenant
+    </button>
+    <div class="ech__colonnes">
+      <span class="ech__gouttiere"></span>
+      {clubs.map((id) => (
+        <span class:list={['ech__col', `ech__col--${id}`]}>{CLUBS[id].court}</span>
+      ))}
+    </div>
+  </div>
+
+  <span class="ech__aiguille" data-ech-aiguille aria-hidden="true"></span>
+
+  <ol class="ech__jours">
+    {jours.map((j) => (
+      <li class="ech__j" data-ech-jour-bloc={j.date} data-ouverture={OUVERTURE} data-heures={j.nb} data-court={`${j.court} ${j.num}`}>
+        <h3 class="ech__tete" id={`jour-${j.date}`}>
+          <span class="ech__num">{j.num}</span>
+          <span class="ech__nomjour">{j.jour}<span class="sr-only"> {j.num} octobre</span></span>
+          <span class="ech__resume">{j.seances.map((s) => TITRE_COURT[seanceId(j, s)]).join(' · ')}</span>
+          <span class="puce ech__etat" data-ech-etat hidden></span>
+        </h3>
+        <div class="ech__grille" data-ech-grille style={`--rangs:${j.nb * 4}`}>
+          {Array.from({ length: j.nb }, (_, k) => (
+            <span class="ech__h" style={`grid-row:${j.rang(OUVERTURE + k)}`} aria-hidden="true">{hh(OUVERTURE + k)}</span>
+          ))}
+          <span class="ech__h ech__h--fin" style={`grid-row:${j.nb * 4}`} aria-hidden="true">{hh(j.fin)}</span>
+
+          {clubs.map((id, k) => (
+            <span
+              class:list={['ech__rail', `ech__rail--${id}`]}
+              style={`grid-column:${k + 2};grid-row:1 / ${j.finRails !== null ? j.rang(j.finRails) : -1}`}
+              aria-hidden="true"
+            ></span>
+          ))}
+          {j.jonction !== null && (
+            <>
+              <svg class="ech__fusion" style={`grid-column:2 / -1;grid-row:${j.rang(j.finRails)} / ${j.rang(j.jonction)}`} viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true" data-rev>
+                <path class="ech__fusion--portet" d="M25 0 C25 58 50 42 50 100" vector-effect="non-scaling-stroke" pathLength="100" />
+                <path class="ech__fusion--minimes" d="M75 0 C75 58 50 42 50 100" vector-effect="non-scaling-stroke" pathLength="100" />
+              </svg>
+              <span class="ech__rail ech__rail--uni" style={`grid-column:2 / -1;grid-row:${j.rang(j.jonction)} / -1`} aria-hidden="true"></span>
+            </>
+          )}
+
+          {j.creux.map((c) => {
+            const l = libelleCreux(j, c);
+            return (
+              <div class:list={['ech__creux', `ech__creux--${c.type}`, { 'ech__creux--jonction': j.jonction !== null && c.a === j.jonction }]} style={`grid-column:2 / -1;grid-row:${j.rang(c.de)} / ${j.rang(c.a)}`} data-creux={l.t}>
+                <p><b>{l.t}</b>{l.n && <span>{l.n}</span>}</p>
+              </div>
+            );
+          })}
+
+          {j.seances.flatMap((s) => {
+            const id = seanceId(j, s);
+            const finS = s.fin ? heures(s.fin) : j.fin;
+            const ligne = `${j.rang(heures(s.debut))} / ${j.rang(finS)}`;
+            const fusion = deux && s.titre === 'Interclub';
+            const bloc = (club: string | null, col: string) => {
+              const ids = club ? s.coachs[club] || [] : [];
+              const titre = fusion ? 'Interclub Portet × Minimes' : s.titreClub && club ? s.titreClub[club] : s.titre;
+              return (
+                <article
+                  class:list={['ech__s', club ? `ech__s--${club}` : 'ech__s--uni', { 'ech__s--ouvert': !s.fin, 'ech__s--fort': s.temps === 'fort', 'ech__s--final': s.temps === 'final' }]}
+                  style={`grid-column:${col};grid-row:${ligne}`}
+                  data-ech-seance={id}
+                  data-quoi={TITRE_COURT[id]}
+                  data-debut={`${j.date}T${s.debut}`}
+                  data-fin={`${j.date}T${s.fin || '18:00'}`}
+                >
+                  <p class="ech__creneau">
+                    <span class="sr-only">{club ? CLUBS[club].court : 'Portet et Minimes'}, {j.jour.toLowerCase()} {j.num} : </span>
+                    <time datetime={`${j.date}T${s.debut}`}>{creneau(s)}</time>
+                    {s.temps === 'fort' && <span class="temps">Temps fort</span>}
+                    {s.temps === 'final' && <span class="temps temps--final">Final de la semaine</span>}
+                  </p>
+                  <h4 class="ech__titre">{titre}</h4>
+                  {ids.length > 0 && <p class="ech__coachs">{ids.length > 1 ? 'Avec ' : 'Coach : '}<b>{listeNoms(ids, s.temps === 'fort')}</b></p>}
+                  {fusion && <p class="ech__coachs">Les deux stages se retrouvent. <b>Lieu et organisation précisés par le club.</b></p>}
+                  <ul class="ech__contenu">
+                    {s.contenu.map((x) => <li>{x}</li>)}
+                  </ul>
+                  <p class="ech__obj"><b>Objectif :</b> {s.objectif}</p>
+                  <p class="ech__piliers">{(s.piliers || []).map((p) => <span>{PILIER_COURT[p]}</span>)}</p>
+                  <button class="ech__ouvrir" type="button" data-ech-ouvrir aria-label={`Détails : ${titre}, ${club ? CLUBS[club].court : 'Portet et Minimes'}, ${j.jour.toLowerCase()} ${j.num}, ${creneau(s)}`}></button>
+                </article>
+              );
+            };
+            if (fusion) return [bloc(null, '2 / -1')];
+            return clubs.map((club, k) => bloc(club, String(k + 2)));
+          })}
+          <span class="ech__now" data-ech-now hidden aria-hidden="true"><span>Maintenant</span></span>
+        </div>
+      </li>
+    ))}
+  </ol>
+
+  <dialog class="feuille" data-feuille aria-label="Détail de la séance">
+    <form method="dialog" class="feuille__haut">
+      <button class="feuille__fermer" aria-label="Fermer">×</button>
+    </form>
+    <div class="feuille__corps" data-feuille-corps></div>
+  </dialog>
+</div>

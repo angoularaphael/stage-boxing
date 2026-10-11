@@ -1,0 +1,18 @@
+---
+/** La liste du sac (flyers) : une case par affaire, qui se souvient de ce qui est prêt. */
+import { MATERIEL } from '../data/stage.js';
+
+const coche = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.2 4L19 7" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+---
+<ul class="kit" data-kit>
+  {MATERIEL.map((m) => (
+    <li>
+      <label>
+        <input type="checkbox" name={`kit-${m.id}`} value={m.id} />
+        <span class="kit__case" set:html={coche} />
+        <span class="kit__nom">{m.nom}{m.note && <small>{m.note}</small>}</span>
+      </label>
+    </li>
+  ))}
+</ul>
+<p class="kit__total" data-kit-total aria-live="polite"></p>

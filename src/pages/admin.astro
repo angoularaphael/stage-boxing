@@ -1,38 +1,356 @@
 ---
+/**
+ * Administration du stage (cahier §17). Deux parties :
+ *  - les inscriptions : suivi par club, fiches, documents, relances, exports CSV / Excel / PDF ;
+ *  - le mode studio de Raphaël (paiements de test), conservé tel quel (mêmes identifiants,
+ *    même script admin-studio.js).
+ * Le jeton passe dans l'en-tête Authorization, jamais dans l'URL.
+ */
 import Base from '../layouts/Base.astro';
 ---
 <Base
-  title="Studio — Stages Boxing Center"
-  description="Backoffice studio mode stages enfants."
-  canonical="https://stages.boxingcenter.fr/admin"
+  title="Administration — stages enfants Boxing Center"
+  description="Suivi des inscriptions au stage Les Vacances des Boxeurs."
+  path="/admin"
   robots="noindex, nofollow"
+  page="admin"
 >
-  <div class="wrap">
-    <header class="site-header">
-      <a class="brand" href="/">Boxing <span>Center</span> Stages</a>
+  <main id="contenu" class="adm">
+    <header class="adm__tete">
+      <a href="/" aria-label="Accueil des stages"><img src="/img/logo/bc-logo-200.webp" width="200" height="93" alt="Boxing Center" style="width:110px" /></a>
+      <h1>Inscriptions <span>Les Vacances des Boxeurs</span></h1>
     </header>
-    <section class="section">
-      <h2>Mode studio</h2>
-      <p class="sub">Active le mode studio pour utiliser les cles TEST (PayPal sandbox, PayPlug test, CAWL preprod). Un seul usage : basculer les paiements hors live.</p>
-      <div id="alert" class="alert alert-error" hidden></div>
-      <div class="price-panel" style="margin-bottom:1.25rem">
-        <p class="price-label" id="studio-state">Statut : inconnu</p>
-        <p id="studio-detail" class="sub"></p>
-      </div>
-      <div class="form-grid">
-        <label class="field full">
-          Token admin
+
+    <section class="adm__bloc" aria-labelledby="t-acces">
+      <h2 id="t-acces">Accès</h2>
+      <div id="alert" class="adm__alerte" hidden></div>
+      <div class="adm__ligne">
+        <label class="adm__champ">
+          <span>Jeton administrateur</span>
           <input id="admin-token" type="password" autocomplete="off" />
         </label>
-      </div>
-      <div class="cta-row" style="margin-top:1rem">
-        <button class="btn btn-primary" type="button" id="studio-on">Activer studio</button>
-        <button class="btn btn-ghost" type="button" id="studio-off">Desactiver studio</button>
-        <button class="btn btn-ghost" type="button" id="studio-refresh">Rafraichir</button>
+        <button class="btn btn--rouge" type="button" data-charger>Charger les inscriptions</button>
       </div>
     </section>
-  </div>
+
+    <section class="adm__bloc" aria-labelledby="t-chiffres" data-tableau hidden>
+      <h2 id="t-chiffres">Par club</h2>
+      <div class="adm__stats" data-stats></div>
+      <div class="adm__outils">
+        <label class="adm__champ"><span>Club</span>
+          <select data-filtre-club><option value="">Les deux</option><option value="portet">Portet</option><option value="minimes">Minimes</option></select>
+        </label>
+        <label class="adm__champ"><span>Statut</span>
+          <select data-filtre-statut>
+            <option value="">Tous</option>
+            <option value="complete">Complètes</option>
+            <option value="fiche">Fiche à remplir</option>
+            <option value="docs">Documents à valider</option>
+            <option value="paiement">Paiement en attente</option>
+          </select>
+        </label>
+        <label class="adm__champ adm__champ--large"><span>Recherche</span><input type="search" data-recherche placeholder="Nom, e-mail, téléphone" /></label>
+        <div class="adm__exports">
+          <button class="btn btn--ghost" type="button" data-export="csv">CSV</button>
+          <button class="btn btn--ghost" type="button" data-export="xlsx">Excel</button>
+          <button class="btn btn--ghost" type="button" data-export="pdf">PDF</button>
+        </div>
+      </div>
+      <div class="adm__table-zone">
+        <table class="adm__table">
+          <thead>
+            <tr>
+              <th>Statut</th><th>Club</th><th>Enfant</th><th>Âge · poids · niveau</th><th>Responsable</th><th>Santé et urgence</th><th>Midi · image</th><th>Tarif</th><th>Date</th><th><span class="sr-only">Actions</span></th>
+            </tr>
+          </thead>
+          <tbody data-lignes></tbody>
+        </table>
+      </div>
+      <p class="adm__vide" data-vide hidden>Aucune inscription pour ce filtre.</p>
+    </section>
+
+    <section class="adm__bloc" aria-labelledby="t-studio">
+      <h2 id="t-studio">Mode studio <span class="adm__sous">paiements de test</span></h2>
+      <p class="adm__note">Active le mode studio pour utiliser les clés de test (PayPal sandbox, PayPlug test, CAWL préproduction) sur ce navigateur. À désactiver avant toute vraie inscription.</p>
+      <p class="adm__etat" id="studio-state">Statut : inconnu</p>
+      <p class="adm__note" id="studio-detail"></p>
+      <div class="adm__ligne">
+        <button class="btn btn--rouge" type="button" id="studio-on">Activer studio</button>
+        <button class="btn btn--ghost" type="button" id="studio-off">Désactiver studio</button>
+        <button class="btn btn--ghost" type="button" id="studio-refresh">Rafraîchir</button>
+      </div>
+    </section>
+  </main>
   <script>
     import '../scripts/admin-studio.js';
   </script>
 </Base>
+
+<style is:global>
+  .adm {
+    width: min(100% - 2 * var(--gutter), 1400px);
+    margin-inline: auto;
+    padding: 2rem 0 4rem;
+    display: grid;
+    gap: 1.2rem;
+  }
+  .adm__tete {
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+  }
+  .adm__tete h1 {
+    font-size: clamp(2.2rem, 5vw, 3.4rem);
+  }
+  .adm__tete h1 span {
+    display: block;
+    font-family: var(--f-body);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    color: var(--ink-3);
+    margin-top: 0.3rem;
+  }
+  .adm__bloc {
+    display: grid;
+    gap: 1rem;
+    padding: 1.3rem;
+    border: 1px solid var(--trait);
+    border-radius: var(--r);
+    background: var(--noir-2);
+  }
+  .adm__bloc h2 {
+    font-size: 1.9rem;
+  }
+  .adm__sous {
+    font-family: var(--f-body);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: var(--ink-3);
+  }
+  .adm__ligne,
+  .adm__outils {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.7rem;
+    align-items: end;
+  }
+  .adm__champ {
+    display: grid;
+    gap: 0.3rem;
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--ink-2);
+  }
+  .adm__champ--large {
+    flex: 1 1 240px;
+  }
+  .adm__champ input,
+  .adm__champ select {
+    min-height: 46px;
+    padding: 0.55rem 0.8rem;
+    border-radius: 10px;
+    border: 1px solid var(--trait-2);
+    background: #0a0b10;
+    color: var(--ink);
+    font-size: 0.95rem;
+  }
+  .adm__exports {
+    display: flex;
+    gap: 0.4rem;
+    margin-left: auto;
+  }
+  .adm__exports .btn {
+    min-height: 46px;
+  }
+  /* admin-studio.js réécrit la classe de #alert (« alert alert-ok ») : on style par l'id */
+  #alert {
+    padding: 0.8rem 1rem;
+    border-radius: 10px;
+    background: rgba(232, 0, 28, 0.12);
+    border: 1px solid rgba(232, 0, 28, 0.5);
+    font-weight: 600;
+  }
+  #alert.alert-ok {
+    background: rgba(124, 198, 74, 0.12);
+    border-color: rgba(124, 198, 74, 0.5);
+  }
+  .adm__stats {
+    display: grid;
+    gap: 0.8rem;
+  }
+  @media (min-width: 800px) {
+    .adm__stats {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  .adm__stat {
+    display: grid;
+    gap: 0.5rem;
+    padding: 1rem;
+    border-radius: 12px;
+    background: var(--noir);
+    border: 1px solid var(--trait);
+  }
+  .adm__stat h3 {
+    font-family: var(--f-display);
+    font-weight: 400;
+    font-size: 1.8rem;
+    text-transform: uppercase;
+  }
+  .adm__chiffres {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.2rem;
+  }
+  .adm__chiffres p {
+    display: grid;
+    font-size: 0.78rem;
+    color: var(--ink-3);
+    font-weight: 600;
+  }
+  .adm__chiffres b {
+    font-family: var(--f-display);
+    font-weight: 400;
+    font-size: 2.4rem;
+    line-height: 1;
+    color: var(--ink);
+  }
+  .adm__jauge {
+    height: 8px;
+    border-radius: 8px;
+    background: var(--trait);
+    overflow: hidden;
+  }
+  .adm__jauge span {
+    display: block;
+    height: 100%;
+    background: var(--rouge);
+  }
+  .adm__table-zone {
+    overflow-x: auto;
+    border-radius: 12px;
+    border: 1px solid var(--trait);
+  }
+  .adm__table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.84rem;
+    min-width: 1100px;
+  }
+  .adm__table th,
+  .adm__table td {
+    padding: 0.65rem 0.75rem;
+    border-bottom: 1px solid var(--trait);
+    text-align: left;
+    vertical-align: top;
+  }
+  .adm__table th {
+    position: sticky;
+    top: 0;
+    background: var(--noir-3);
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
+  .adm__table td small {
+    display: block;
+    color: var(--ink-3);
+  }
+  .badge {
+    display: inline-block;
+    padding: 0.2rem 0.55rem;
+    border-radius: 999px;
+    font-size: 0.72rem;
+    font-weight: 800;
+    white-space: nowrap;
+  }
+  .badge--complete {
+    background: rgba(124, 198, 74, 0.18);
+    color: #c9f0ad;
+  }
+  .badge--fiche,
+  .badge--docs {
+    background: rgba(255, 179, 71, 0.18);
+    color: var(--or);
+  }
+  .badge--paiement {
+    background: rgba(245, 245, 245, 0.08);
+    color: var(--ink-2);
+  }
+  .badge--portet {
+    background: rgba(61, 107, 255, 0.2);
+    color: var(--portet-clair);
+  }
+  .badge--minimes {
+    background: rgba(124, 198, 74, 0.18);
+    color: var(--minimes-clair);
+  }
+  .adm__copier {
+    min-height: 36px;
+    padding: 0.3rem 0.7rem;
+    border-radius: 999px;
+    border: 1px solid var(--trait-2);
+    background: transparent;
+    color: var(--ink);
+    font-size: 0.76rem;
+    font-weight: 700;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .adm__etat {
+    font-weight: 800;
+  }
+  .adm__note {
+    font-size: 0.86rem;
+    color: var(--ink-2);
+  }
+  .adm__vide {
+    color: var(--ink-3);
+  }
+  @media print {
+    body {
+      background: #fff;
+      color: #000;
+    }
+    body::after,
+    .adm__bloc:not([data-tableau]),
+    .adm__outils,
+    .adm__stats,
+    .adm__copier,
+    .saut {
+      display: none !important;
+    }
+    .adm__bloc,
+    .adm__table-zone {
+      border: 0;
+      background: #fff;
+      padding: 0;
+      overflow: visible;
+    }
+    .adm__table {
+      min-width: 0;
+      font-size: 9pt;
+      color: #000;
+    }
+    .adm__table th {
+      background: #eee;
+      color: #000;
+      position: static;
+    }
+    .adm__table td,
+    .adm__table th {
+      border-color: #bbb;
+    }
+    .adm__table td small {
+      color: #444;
+    }
+    .badge {
+      border: 1px solid #999;
+      color: #000 !important;
+      background: none !important;
+    }
+  }
+</style>

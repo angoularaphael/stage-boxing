@@ -1,0 +1,57 @@
+---
+/**
+ * La semaine d'un coup d'œil : une ligne par jour, les séances posées à leur heure sur
+ * l'axe 10h–18h. Le mercredi décalé et le samedi ouvert se voient sans rien lire.
+ * Chaque séance mène à sa journée sur la page programme.
+ */
+import { SEMAINE, TITRE_COURT, heures, seanceId, creneau } from '../data/stage.js';
+
+interface Props {
+  lien?: boolean;
+}
+const { lien = true } = Astro.props;
+const A = 10;
+const B = 18;
+const col = (h: number) => Math.round((h - A) * 4) + 1;
+const axe = Array.from({ length: B - A + 1 }, (_, k) => A + k);
+---
+<div class="sem" data-sem style={`--quarts:${(B - A) * 4}`}>
+  <div class="sem__axe" aria-hidden="true">
+    <span></span>
+    <div class="sem__heures">
+      {axe.map((h) => <span class:list={['sem__hh', { 'sem__hh--impair': (h - A) % 2 === 1 }]} style={`--x:${((h - A) / (B - A)) * 100}%`}>{h}h</span>)}
+    </div>
+  </div>
+  <ol class="sem__jours">
+    {SEMAINE.map((j) => (
+      <li class="sem__j">
+        <p class="sem__date"><b>{j.num}</b><span>{j.court}</span></p>
+        <div class="sem__piste">
+          {j.seances.map((s, k) => {
+            const fin = s.fin ? heures(s.fin) : B;
+            const id = seanceId(j, s);
+            const suivante = j.seances[k + 1];
+            const Tag = lien ? 'a' : 'span';
+            return (
+              <>
+                <Tag
+                  class:list={['sem__s', { 'sem__s--fort': s.temps === 'fort', 'sem__s--final': s.temps === 'final', 'sem__s--ouvert': !s.fin }]}
+                  href={lien ? `/programme#jour-${j.date}` : undefined}
+                  style={`grid-column:${col(heures(s.debut))} / ${col(fin)}`}
+                  data-debut={`${j.date}T${s.debut}`}
+                  data-fin={`${j.date}T${s.fin || '18:00'}`}
+                >
+                  <time datetime={`${j.date}T${s.debut}`}>{creneau(s)}</time>
+                  <span>{s.titre === 'Interclub' ? 'Interclub Portet × Minimes' : TITRE_COURT[id]}</span>
+                </Tag>
+                {suivante && heures(suivante.debut) > fin && (
+                  <span class="sem__pause" style={`grid-column:${col(fin)} / ${col(heures(suivante.debut))}`} aria-hidden="true"></span>
+                )}
+              </>
+            );
+          })}
+        </div>
+      </li>
+    ))}
+  </ol>
+</div>
