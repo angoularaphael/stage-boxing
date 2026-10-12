@@ -905,6 +905,23 @@ html:not([data-club]) .sec__title em {
   color: var(--ink-3);
   min-height: 1.2em;
 }
+/* Les places arrivent de l'API une à deux secondes après l'affichage. Tant qu'elles n'ont pas
+   répondu, leur ligne existe déjà, vide et invisible (l'espace sans chasse lui donne la hauteur et
+   la ligne de base d'un vrai texte) : rien ne saute à leur arrivée. */
+[data-places]:empty {
+  visibility: hidden;
+}
+[data-places]:empty::before {
+  content: "\200b";
+}
+/* sur téléphone, « Places limitées : 40 enfants par salle » tient sur deux lignes : les deux sont
+   gardées, sinon tout le bas de la colonne remonte d'un coup */
+@media (max-width: 559px) {
+  .fo__cote .fo__places {
+    min-height: 3.2em;
+    min-height: 2lh;
+  }
+}
 .fo__couture {
   position: absolute;
   top: 0;
@@ -1102,6 +1119,20 @@ html:not([data-club]) .sec__title em {
   display: flex;
   flex-wrap: wrap;
   gap: 0.7rem;
+}
+/* là où la rangée passe à la ligne, la puce des places a sa ligne à elle dès le premier rendu :
+   elle n'arrive plus en poussant les faits vers le bas */
+@media (max-width: 899px) {
+  .hero__cta::after {
+    content: "";
+    order: 1;
+    flex-basis: 100%;
+    height: 0;
+  }
+  .hero__cta .puce[data-places] {
+    order: 2;
+    margin-top: -0.7rem;
+  }
 }
 .faits {
   display: grid;

@@ -1664,6 +1664,7 @@ a.sem__s:hover {
   align-items: baseline;
   justify-content: space-between;
   gap: 0.6rem;
+  container-type: inline-size;
 }
 .paiement__tete h3 {
   font-family: var(--f-display);
@@ -1676,6 +1677,13 @@ a.sem__s:hover {
   font-size: 0.8rem;
   font-weight: 700;
   color: var(--c-clair);
+}
+/* dans une carte étroite, les places passent sous le nom de la salle : elles y ont leur ligne
+   d'avance, au lieu d'arriver à côté puis de tomber dessous */
+@container (max-width: 26rem) {
+  .paiement__places {
+    flex-basis: 100%;
+  }
 }
 .paiement__liste {
   display: grid;
@@ -2420,8 +2428,16 @@ html:not([data-club]) .equipe-club .sec__title em {
   text-underline-offset: 5px;
 }
 .compare [data-places] {
+  display: block;
   font-weight: 700;
   color: var(--ink);
+}
+/* tant que le tableau est étroit, la phrase des places tient sur deux lignes : elles sont gardées */
+@media (max-width: 1023px) {
+  .compare [data-places] {
+    min-height: 3em;
+    min-height: 2lh;
+  }
 }
 .vt-entree .tete.is-pret .tete__img,
 .vt-entree .tete.is-pret::before {

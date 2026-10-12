@@ -35,7 +35,7 @@ const METHODES = {
           <article class:list={['paiement__club', `paiement__club--${id}`]} style={`--c:var(--${id});--c-clair:var(--${id}-clair);--d:${i * 0.08}s`} data-rev>
             <div class="paiement__tete">
               <h3>{c.court}</h3>
-              <p class="paiement__places" data-places={id} aria-live="polite" hidden></p>
+              <p class="paiement__places" data-places={id} aria-live="polite"></p>
             </div>
             <ul class="paiement__liste">
               {METHODES[id].map((m) => (
