@@ -267,7 +267,7 @@ export const TITRE_COURT = {
   '2026-10-28-16-00': 'Combats tests',
   '2026-10-29-10-00': 'Leçon technique',
   '2026-10-29-14-00': 'Piste',
-  '2026-10-30-10-00': 'Coordination',
+  '2026-10-30-10-00': 'Coordi\u00ADnation', // césure explicite : « Coordination » ne tient pas d'un bloc à 375 px
   '2026-10-30-14-00': 'Leçon + assauts',
   '2026-10-31-10-00': 'Bowling',
   '2026-10-31-14-00': 'Interclub',

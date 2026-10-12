@@ -131,13 +131,21 @@ const libelleCreux = (j: any, c: any) => {
                     {s.temps === 'final' && <span class="temps temps--final">Final de la semaine</span>}
                   </p>
                   <h4 class="ech__titre">{titre}</h4>
-                  {ids.length > 0 && <p class="ech__coachs">{ids.length > 1 ? 'Avec ' : 'Coach : '}<b>{listeNoms(ids, s.temps === 'fort')}</b></p>}
+                  {ids.length > 0 && (
+                    <p class="ech__coachs">
+                      {ids.length > 1 ? 'Avec ' : 'Coach : '}
+                      <b class="ech__noms">{listeNoms(ids, s.temps === 'fort')}</b>
+                      {/* sur téléphone, un bloc de deux heures ne loge pas trois noms complets : les prénoms, le reste est dans la feuille */}
+                      {s.temps === 'fort' && <b class="ech__noms-courts">{listeNoms(ids)}</b>}
+                    </p>
+                  )}
                   {fusion && <p class="ech__coachs">Les deux stages se retrouvent. <b>Lieu et organisation précisés par le club.</b></p>}
                   <ul class="ech__contenu">
                     {s.contenu.map((x) => <li>{x}</li>)}
                   </ul>
                   <p class="ech__obj"><b>Objectif :</b> {s.objectif}</p>
                   <p class="ech__piliers">{(s.piliers || []).map((p) => <span>{PILIER_COURT[p]}</span>)}</p>
+                  <span class="ech__detail" aria-hidden="true">Le détail +</span>
                   <button class="ech__ouvrir" type="button" data-ech-ouvrir aria-label={`Détails : ${titre}, ${club ? CLUBS[club].court : 'Portet et Minimes'}, ${j.jour.toLowerCase()} ${j.num}, ${creneau(s)}`}></button>
                 </article>
               );

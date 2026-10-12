@@ -272,7 +272,7 @@ p {
   display: inline-flex;
   align-items: center;
   gap: 0.6em;
-  font-size: 0.74rem;
+  font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.18em;
   text-transform: uppercase;
@@ -768,7 +768,7 @@ html:not([data-club]) .sec__title em {
   .fo__couture span {
     top: 34%;
     padding: 0.8rem 0.35rem;
-    font-size: 0.54rem;
+    font-size: 0.75rem;
     letter-spacing: 0.16em;
   }
   .fo__cote {
@@ -777,7 +777,7 @@ html:not([data-club]) .sec__title em {
   .fo__puces .puce {
     min-height: 30px;
     padding: 0.25rem 0.7rem;
-    font-size: 0.74rem;
+    font-size: 0.75rem;
   }
   .fo__t2 {
     letter-spacing: 0.14em;
@@ -862,12 +862,18 @@ html:not([data-club]) .sec__title em {
   transition: opacity 0.5s;
 }
 .fo__eyebrow {
-  font-size: clamp(0.62rem, 1.4vw, 0.74rem);
+  font-size: clamp(0.75rem, 1.4vw,0.75rem);
   font-weight: 700;
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--c-clair);
   line-height: 1.3;
+}
+/* sur téléphone, la moitié est étroite : « Stage enfants » au-dessus du nom du club suffit (le lien porte le libellé entier) */
+@media (max-width: 600px) {
+  .fo__eyebrow-suite {
+    display: none;
+  }
 }
 .fo__nom {
   font-family: var(--f-display);
@@ -879,7 +885,7 @@ html:not([data-club]) .sec__title em {
   text-shadow: 0 0 60px color-mix(in srgb, var(--c) 55%, transparent);
 }
 .fo__infos {
-  font-size: clamp(0.72rem, 1.5vw, 0.92rem);
+  font-size: clamp(0.75rem, 1.5vw,0.92rem);
   color: var(--ink-2);
   line-height: 1.45;
   max-width: 24rem;
@@ -902,7 +908,7 @@ html:not([data-club]) .sec__title em {
 }
 .fo__places {
   margin-top: 0.7rem;
-  font-size: 0.74rem;
+  font-size: 0.75rem;
   font-weight: 600;
   color: var(--ink-3);
   min-height: 1.2em;
@@ -944,7 +950,7 @@ html:not([data-club]) .sec__title em {
   background: var(--noir);
   border: 1px solid var(--trait-2);
   border-radius: 999px;
-  font-size: 0.62rem;
+  font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.22em;
   text-transform: uppercase;
@@ -1161,7 +1167,7 @@ html:not([data-club]) .sec__title em {
   -webkit-backdrop-filter: blur(10px);
 }
 .fait dt {
-  font-size: 0.66rem;
+  font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -1405,7 +1411,7 @@ html:not([data-club]) .sec__title em {
   justify-content: space-between;
   align-items: flex-start;
   gap: 0.5rem;
-  font-size: 0.56rem;
+  font-size: 0.75rem;
   font-weight: 800;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -1428,7 +1434,7 @@ html:not([data-club]) .sec__title em {
   gap: 0.3rem;
 }
 .carte__role {
-  font-size: 0.62rem;
+  font-size: 0.75rem;
   font-weight: 800;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -1448,7 +1454,7 @@ html:not([data-club]) .sec__title em {
   margin: 0.25rem 0 0;
   padding: 0;
   list-style: none;
-  font-size: 0.7rem;
+  font-size: 0.75rem;
   font-weight: 600;
   line-height: 1.3;
   color: rgba(255, 255, 255, 0.82);
@@ -1473,7 +1479,7 @@ html:not([data-club]) .sec__title em {
   border-radius: 10px;
   background: linear-gradient(135deg, rgba(255, 179, 71, 0.22), rgba(255, 179, 71, 0.05));
   border: 1px solid rgba(255, 179, 71, 0.45);
-  font-size: 0.7rem;
+  font-size: 0.75rem;
   font-weight: 700;
   line-height: 1.3;
   color: #ffe2b8;
@@ -1743,7 +1749,7 @@ html[data-club] .clair .sec__title em {
   padding: 0.18rem 0.55rem;
   border-radius: 999px;
   border: 1px solid var(--trait-2);
-  font-size: 0.72rem;
+  font-size: 0.75rem;
   font-weight: 600;
   color: var(--ink-2);
 }
@@ -1776,7 +1782,7 @@ html[data-club] .clair .sec__title em {
   gap: 0.35rem;
   padding: 0.15rem 0.5rem;
   border-radius: 999px;
-  font-size: 0.62rem;
+  font-size: 0.75rem;
   font-weight: 800;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -1807,7 +1813,7 @@ html[data-club] .clair .sec__title em {
   line-height: 1;
 }
 .compte__bloc span {
-  font-size: 0.7rem;
+  font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -1990,7 +1996,7 @@ html[data-club] .clair .sec__title em {
     linear-gradient(180deg, transparent 20%, rgba(8, 8, 8, 0.94) 78%);
 }
 .salle__bloc {
-  font-size: 0.74rem;
+  font-size: 0.75rem;
   font-weight: 800;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -2266,7 +2272,7 @@ html[data-club] .clair .sec__title em {
   text-overflow: ellipsis;
 }
 .barre__txt span {
-  font-size: 0.72rem;
+  font-size: 0.75rem;
   color: var(--ink-3);
   white-space: nowrap;
   overflow: hidden;
@@ -2310,7 +2316,7 @@ html[data-club] .clair .sec__title em {
 }
 .pied h2 {
   font-family: var(--f-body);
-  font-size: 0.72rem;
+  font-size: 0.75rem;
   font-weight: 800;
   letter-spacing: 0.16em;
   color: var(--ink);

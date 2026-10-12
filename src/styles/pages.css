@@ -43,7 +43,7 @@
   margin: 0;
   padding: 0;
   list-style: none;
-  font-size: 0.74rem;
+  font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -123,7 +123,7 @@
   background: var(--noir-3);
 }
 .suite small {
-  font-size: 0.7rem;
+  font-size: 0.75rem;
   font-weight: 800;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -218,7 +218,7 @@ html:has(.hd.is-cache) .ech__barre {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  font-size: 0.74rem;
+  font-size: 0.75rem;
   font-weight: 800;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -357,7 +357,7 @@ html:has(.hd.is-cache) .ech__barre {
   transform: translateY(-55%);
   padding-right: 0.3rem;
   background: var(--noir);
-  font-size: 0.68rem;
+  font-size: 0.75rem;
   font-weight: 800;
   letter-spacing: 0.04em;
   color: var(--ink-3);
@@ -525,7 +525,7 @@ html:has(.hd.is-cache) .ech__barre {
   border-radius: 999px;
   background: #fff;
   color: var(--noir);
-  font-size: 0.6rem;
+  font-size: 0.75rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
 }
@@ -534,7 +534,7 @@ html:has(.hd.is-cache) .ech__barre {
   flex-wrap: wrap;
   align-items: center;
   gap: 0.4rem;
-  font-size: 0.74rem;
+  font-size: 0.75rem;
   font-weight: 800;
   letter-spacing: 0.04em;
   color: var(--c-clair);
@@ -576,7 +576,7 @@ html:has(.hd.is-cache) .ech__barre {
   padding: 0.12rem 0.5rem;
   border: 1px solid var(--trait-2);
   border-radius: 999px;
-  font-size: 0.68rem;
+  font-size: 0.75rem;
   font-weight: 600;
   color: var(--ink-2);
 }
@@ -595,11 +595,16 @@ html:has(.hd.is-cache) .ech__barre {
   margin-top: auto;
 }
 .ech__piliers span {
-  font-size: 0.6rem;
+  font-size: 0.75rem;
   font-weight: 800;
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--ink-3);
+}
+/* l'indice « Le détail » et les prénoms seuls n'existent que sur l'échelle du téléphone (voir plus bas) */
+.ech__detail,
+.ech__noms-courts {
+  display: none;
 }
 .ech__ouvrir {
   position: absolute;
@@ -632,7 +637,7 @@ html:has(.hd.is-cache) .ech__barre {
   border-radius: 999px;
   background: #fff;
   color: var(--noir);
-  font-size: 0.56rem;
+  font-size: 0.75rem;
   font-weight: 800;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -644,33 +649,40 @@ html:has(.hd.is-cache) .ech__barre {
   .ech__grille .ech__piliers {
     display: none;
   }
-  /* le contenu reste, en deux lignes au plus : un bloc de deux heures n'est jamais vide */
+  /* sur téléphone, le bloc dit quand, quoi et avec qui, en texte lisible ; le contenu de la séance s'ouvre dans la feuille */
   .ech__grille .ech__contenu {
-    gap: 0.2rem;
-    max-height: 2.7rem;
-    overflow: hidden;
+    display: none;
   }
-  .ech__grille .ech__contenu li {
-    max-width: 100%;
-    padding: 0.05rem 0.38rem;
-    font-size: 0.58rem;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+  .ech__grille .ech__detail {
+    display: block;
+    margin-top: auto;
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+    color: var(--c-clair);
+  }
+  .ech__grille .ech__s--ouvert .ech__detail {
+    display: none;
+  }
+  .ech__grille .ech__noms-courts {
+    display: inline;
+  }
+  .ech__grille .ech__s--fort .ech__noms {
+    display: none;
   }
   .ech__s {
     gap: 0.28rem;
     padding: 0.55rem 0.6rem;
   }
   .ech__s .temps {
-    font-size: 0.54rem;
+    font-size: 0.75rem;
     padding: 0.1rem 0.4rem;
   }
   .ech__coachs {
-    font-size: 0.72rem;
+    font-size: 0.75rem;
   }
   .ech__creux span {
-    font-size: 0.7rem;
+    font-size: 0.75rem;
   }
   .ech__creux--jonction p {
     max-width: 52%;
@@ -795,7 +807,7 @@ html:has(.hd.is-cache) .ech__barre {
   position: absolute;
   left: var(--x);
   transform: translateX(-50%);
-  font-size: 0.66rem;
+  font-size: 0.75rem;
   font-weight: 800;
   letter-spacing: 0.04em;
   color: var(--ink-3);
@@ -837,7 +849,7 @@ html:has(.hd.is-cache) .ech__barre {
   font-size: clamp(1.7rem, 3.6vw, 2.5rem);
 }
 .sem__date span {
-  font-size: 0.66rem;
+  font-size: 0.75rem;
   font-weight: 800;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -875,14 +887,14 @@ a.sem__s:hover {
   transform: translateY(-2px);
 }
 .sem__s time {
-  font-size: 0.62rem;
+  font-size: 0.75rem;
   font-weight: 800;
   letter-spacing: 0.04em;
   color: var(--ink-3);
   white-space: nowrap;
 }
 .sem__s span {
-  font-size: clamp(0.6rem, 1.1vw, 0.86rem);
+  font-size: clamp(0.75rem, 1.1vw,0.86rem);
   font-weight: 800;
   line-height: 1.15;
   /* césure française plutôt que des mots coupés à la lettre près */
@@ -996,7 +1008,7 @@ a.sem__s:hover {
   color: var(--club-clair);
 }
 .pilier__seances time {
-  font-size: 0.66rem;
+  font-size: 0.75rem;
   font-weight: 800;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -1187,7 +1199,7 @@ a.sem__s:hover {
   border-radius: 999px;
   background: var(--c);
   color: #05060a;
-  font-size: 0.66rem;
+  font-size: 0.75rem;
   font-weight: 800;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -1314,7 +1326,7 @@ a.sem__s:hover {
   transition: background-color 0.25s, border-color 0.25s, color 0.25s;
 }
 .questions__puce span {
-  font-size: 0.72rem;
+  font-size: 0.75rem;
   color: var(--ink-3);
 }
 .questions__puce:hover {
@@ -2166,7 +2178,7 @@ html:not([data-club]) .equipe-club .sec__title em {
   align-content: start;
 }
 .fiche__role {
-  font-size: 0.74rem;
+  font-size: 0.75rem;
   font-weight: 800;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -2191,7 +2203,7 @@ html:not([data-club]) .equipe-club .sec__title em {
 }
 .bilan__titre {
   margin-top: 0.3rem;
-  font-size: 0.7rem;
+  font-size: 0.75rem;
   font-weight: 800;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -2215,7 +2227,7 @@ html:not([data-club]) .equipe-club .sec__title em {
   font-variant-numeric: tabular-nums;
 }
 .bilan dt {
-  font-size: 0.7rem;
+  font-size: 0.75rem;
   font-weight: 800;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -2399,7 +2411,7 @@ html:not([data-club]) .equipe-club .sec__title em {
 }
 .compare tbody th {
   width: 9.5rem;
-  font-size: 0.72rem;
+  font-size: 0.75rem;
   font-weight: 800;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -2554,7 +2566,7 @@ html:not([data-club]) .clair .eyebrow::before {
 @media (max-width: 979px) {
   .carte--apercu .tampon {
     padding: 1px 5px;
-    font-size: 0.44rem;
+    font-size: 0.75rem;
   }
   /* sur une petite carte, la ligne « Boxeur du stage » courrait sous les tampons */
   .carte--apercu .carte__role {
