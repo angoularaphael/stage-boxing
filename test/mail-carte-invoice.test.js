@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { buildCarteSvg, cardDataFromOrder } from '../lib/carte-mail.js';
+import { buildCartePng, buildCarteSvg, cardDataFromOrder } from '../lib/carte-mail.js';
 import { buildStageInvoicePdf } from '../lib/invoice-pdf.js';
 import { buildStageAgendaIcs } from '../lib/agenda-ics.js';
 import { isAmountEligibleForScalapay, SCALAPAY_MIN_CENTS, SCALAPAY_MAX_CENTS } from '../lib/payplug.js';
@@ -49,6 +49,14 @@ test('carte mail : HTML + SVG personnalises par salle', () => {
     assert.ok(carte.content.toString('utf8').includes('VALIDEE'));
     assert.ok(carte.content.toString('utf8').includes(data.club.court.toUpperCase()));
   }
+});
+
+test('carte mail : PNG pour Brevo (pas de SVG en piece jointe)', async () => {
+  const png = await buildCartePng(sampleOrder('minimes'));
+  assert.ok(png?.content?.length > 500);
+  assert.match(png.filename, /\.png$/);
+  assert.equal(png.content[0], 0x89);
+  assert.equal(png.content[1], 0x50);
 });
 
 test('facture : emetteur BOXPLUS selon la salle + infos stage', () => {

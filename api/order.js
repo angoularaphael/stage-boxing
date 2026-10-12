@@ -127,8 +127,19 @@ export default async function handler(req, res) {
     };
     order.status = 'complete';
     await saveOrder(order);
-    await sendRegistrationComplete(order).catch((err) => console.error('[mail]', err.message));
-    return json(res, 200, { ok: true, order: publicOrderView(order), next: 'done' });
+    const mailResult = await sendRegistrationComplete(order).catch((err) => {
+      console.error('[mail]', err.message);
+      return { parent: { sent: false, error: err.message } };
+    });
+    if (!mailResult?.parent?.sent) {
+      console.error('[mail:registration-failed]', mailResult?.parent || mailResult);
+    }
+    return json(res, 200, {
+      ok: true,
+      order: publicOrderView(order),
+      next: 'done',
+      mail_sent: Boolean(mailResult?.parent?.sent),
+    });
   }
 
   return json(res, 400, { ok: false, error: 'Action inconnue.' });
