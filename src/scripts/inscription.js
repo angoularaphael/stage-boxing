@@ -330,7 +330,7 @@ export async function inscription() {
     }
     zone.innerHTML = '';
     if (!methodes.length) {
-      zone.innerHTML = `<p class="alerte">Le paiement en ligne n’est pas disponible pour le moment. Pour réserver la place de votre enfant, appelez le club : ${contactClub()}.</p>`;
+      zone.innerHTML = `<p class="alerte">Le paiement en ligne n’est pas disponible pour le moment. Pour réserver la place de votre enfant, appelez le club : ${contactClub()}.</p>`;
       btnPayer.disabled = true;
       return;
     }
@@ -400,7 +400,7 @@ export async function inscription() {
       } else if (e.code === 'method_forbidden') {
         dire('Ce moyen de paiement n’est pas proposé pour ce club. Choisissez-en un autre.');
       } else {
-        dire(`Le paiement n’a pas pu démarrer. Réessayez dans un instant ; si le problème continue, appelez le club : ${contactClub()}.`);
+        dire(`Le paiement n’a pas pu démarrer. Réessayez dans un instant ; si le problème continue, appelez le club : ${contactClub()}.`);
       }
     }
   });
@@ -435,7 +435,7 @@ export async function inscription() {
       } catch {
         /* on affiche le message ci-dessous */
       }
-      texte.innerHTML = `Nous n’avons pas encore la confirmation du paiement. S’il a été accepté, vous recevrez un e-mail avec le lien pour finir l’inscription. Une question : ${contactClub()}.`;
+      texte.innerHTML = `Nous n’avons pas encore la confirmation du paiement. S’il a été accepté, vous recevrez un e-mail avec le lien pour finir l’inscription. Une question : ${contactClub()}.`;
       $('[data-attente-actions]').hidden = false;
     }
   }
@@ -551,7 +551,7 @@ export async function inscription() {
     if (!(String(a).length === 4 && dateValide(a, m, j))) msgDate = 'Indiquez une date de naissance complète et valide, par exemple 14 3 2014.';
     else {
       const age = ageAuStage(a, m, j);
-      if (age < 8 || age > 16) msgDate = `Le stage accueille les enfants de 8 à 16 ans au 26 octobre 2026 ; votre enfant aura ${age} ans.`;
+      if (age < 8 || age > 16) msgDate = `Le stage accueille les enfants de 8 à 16 ans au 26 octobre 2026 ; votre enfant aura ${age} ans.`;
     }
     ok = erreurChamp('e-date', msgDate) && ok;
     if (msgDate) $('#e-jour').setAttribute('aria-invalid', 'true');
@@ -618,7 +618,7 @@ export async function inscription() {
       aller('documents');
     } catch (e) {
       if (e.status === 409) return dejaFinalisee();
-      dire(e.status === 404 ? `Nous ne retrouvons pas cette inscription. Utilisez le lien reçu par e-mail, ou appelez le club : ${contactClub()}.` : `La fiche n’a pas pu être enregistrée. Réessayez ; si le problème continue : ${contactClub()}.`);
+      dire(e.status === 404 ? `Nous ne retrouvons pas cette inscription. Utilisez le lien reçu par e-mail, ou appelez le club : ${contactClub()}.` : `La fiche n’a pas pu être enregistrée. Réessayez ; si le problème continue : ${contactClub()}.`);
     } finally {
       etat.envoi = false;
       bouton.disabled = false;
@@ -704,7 +704,7 @@ export async function inscription() {
       finir(r.order);
     } catch (e) {
       if (e.status === 409) return dejaFinalisee();
-      dire(`L’inscription n’a pas pu être finalisée. Réessayez ; si le problème continue : ${contactClub()}.`);
+      dire(`L’inscription n’a pas pu être finalisée. Réessayez ; si le problème continue : ${contactClub()}.`);
     } finally {
       etat.envoi = false;
       bouton.disabled = false;
@@ -717,7 +717,7 @@ export async function inscription() {
       const r = await api(`/api/order?id=${encodeURIComponent(etat.order?.id || params.get('order'))}&token=${encodeURIComponent(etat.token)}`);
       return router(r.order);
     } catch {
-      dire(`Cette inscription est déjà finalisée. Une question : ${contactClub()}.`, true);
+      dire(`Cette inscription est déjà finalisée. Une question : ${contactClub()}.`, true);
     }
   }
 

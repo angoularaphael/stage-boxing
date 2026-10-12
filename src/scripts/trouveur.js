@@ -84,14 +84,14 @@ function monter(racine) {
     });
     racine.classList.add('is-calcule');
     verdict.textContent = net
-      ? `${depuis}, la salle la plus proche est celle ${nom[proche].de} : ${fmt(d[proche])} km à vol d’oiseau, contre ${fmt(d[loin])} km ${nom[loin].pour}.${suite}`
-      : `${depuis}, les deux salles sont presque à la même distance (${fmt(d.portet)} et ${fmt(d.minimes)} km à vol d’oiseau) : choisissez selon vos trajets.${suite}`;
+      ? `${depuis}, la salle la plus proche est celle ${nom[proche].de} : ${fmt(d[proche])} km à vol d’oiseau, contre ${fmt(d[loin])} km ${nom[loin].pour}.${suite}`
+      : `${depuis}, les deux salles sont presque à la même distance (${fmt(d.portet)} et ${fmt(d.minimes)} km à vol d’oiseau) : choisissez selon vos trajets.${suite}`;
   };
 
   const choisir = (c) => {
     saisie.value = `${c.nom} (${c.cp})`;
     fermer();
-    if (c.nom === 'Toulouse') comparer(c, 'Depuis le centre de Toulouse', ' Toulouse est grande : pour comparer depuis chez vous, utilisez « Ma position ».');
+    if (c.nom === 'Toulouse') comparer(c, 'Depuis le centre de Toulouse', ' Toulouse est grande : pour comparer depuis chez vous, utilisez « Ma position ».');
     else comparer(c, `Depuis ${c.nom}`);
   };
 
@@ -126,7 +126,7 @@ function monter(racine) {
     try {
       await charger();
     } catch {
-      verdict.textContent = 'La liste des communes ne s’est pas chargée : essayez « Ma position ».';
+      verdict.textContent = 'La liste des communes ne s’est pas chargée : essayez « Ma position ».';
       return;
     }
     options = chercher(communes, saisie.value);
@@ -157,7 +157,7 @@ function monter(racine) {
 
   geo.addEventListener('click', () => {
     if (!('geolocation' in navigator)) {
-      verdict.textContent = 'Ce navigateur ne donne pas de position : tapez votre commune.';
+      verdict.textContent = 'Ce navigateur ne donne pas de position : tapez votre commune.';
       return;
     }
     geo.disabled = true;
@@ -169,7 +169,7 @@ function monter(racine) {
       },
       (err) => {
         geo.disabled = false;
-        verdict.textContent = err.code === 1 ? 'Position refusée : tapez plutôt votre commune.' : 'Position introuvable pour le moment : tapez votre commune.';
+        verdict.textContent = err.code === 1 ? 'Position refusée : tapez plutôt votre commune.' : 'Position introuvable pour le moment : tapez votre commune.';
       },
       { enableHighAccuracy: false, timeout: 12000, maximumAge: 600000 },
     );

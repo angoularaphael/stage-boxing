@@ -33,7 +33,7 @@ export function textePlaces(v) {
   if (!Number.isFinite(v.restantes) || !Number.isFinite(v.max) || v.max <= 0) return '';
   if (v.restantes <= 0) return 'Complet';
   if (v.restantes === 1) return 'Dernière place';
-  if (v.restantes > v.max / 2) return `Places limitées : ${v.max} enfants par salle`;
+  if (v.restantes > v.max / 2) return `Places limitées : ${v.max} enfants par salle`;
   return `Plus que ${v.restantes} places`;
 }
 

@@ -640,10 +640,23 @@ html:has(.hd.is-cache) .ech__barre {
 }
 /* sur téléphone, l'échelle garde l'essentiel ; le reste s'ouvre en feuille */
 @media (max-width: 899px) {
-  .ech__grille .ech__contenu,
   .ech__grille .ech__obj,
   .ech__grille .ech__piliers {
     display: none;
+  }
+  /* le contenu reste, en deux lignes au plus : un bloc de deux heures n'est jamais vide */
+  .ech__grille .ech__contenu {
+    gap: 0.2rem;
+    max-height: 2.7rem;
+    overflow: hidden;
+  }
+  .ech__grille .ech__contenu li {
+    max-width: 100%;
+    padding: 0.05rem 0.38rem;
+    font-size: 0.58rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   .ech__s {
     gap: 0.28rem;

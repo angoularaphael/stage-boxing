@@ -10,7 +10,7 @@ export function agenda() {
       const club = b.dataset.agenda;
       const { agendaIcs, telecharger } = await import('./carte-enfant.js');
       telecharger(new Blob([agendaIcs(D, club)], { type: 'text/calendar;charset=utf-8' }), `stage-boxe-${club}.ics`);
-      if (note) note.textContent = `Agenda ${D.clubs[club].nom} : 12 séances ajoutées au fichier. Ouvrez-le pour les importer.`;
+      if (note) note.textContent = `Agenda ${D.clubs[club].nom} : 12 séances ajoutées au fichier. Ouvrez-le pour les importer.`;
     }),
   );
 }

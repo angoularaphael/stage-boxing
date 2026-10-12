@@ -306,7 +306,7 @@ export function admin() {
       await navigator.clipboard.writeText(b.dataset.copier);
       b.textContent = 'Lien copié';
     } catch {
-      window.prompt('Lien de reprise à envoyer au parent :', b.dataset.copier);
+      window.prompt('Lien de reprise à envoyer au parent :', b.dataset.copier);
     }
   });
   document.querySelectorAll('[data-export]').forEach((b) =>
