@@ -40,6 +40,43 @@
   unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+1E00-1E9F, U+20A0-20C0, U+2C60-2C7F, U+A720-A7FF;
 }
 
+
+/* Polices de secours recalibrées sur la largeur des vraies : tant que Bebas ou Montserrat
+   n'est pas arrivée, le texte a déjà la même longueur, les retours à la ligne ne changent pas,
+   et rien ne saute à l'arrivée de la police (le titre du héros décalait toute la page : CLS 0,16).
+   Rapports mesurés le 12/10/2026 : Bebas ≈ 56,5 % d'Arial, 69 % d'Arial Narrow ;
+   Montserrat ≈ 110 % d'Arial, 112,5 % de Segoe UI. */
+@font-face {
+  font-family: "Bebas Repli Narrow";
+  src: local("Arial Narrow"), local("ArialNarrow");
+  size-adjust: 69%;
+}
+@font-face {
+  font-family: "Bebas Repli Roboto";
+  src: local("Roboto"), local("Roboto-Regular");
+  size-adjust: 58%;
+}
+@font-face {
+  font-family: "Bebas Repli Arial";
+  src: local("Helvetica Neue"), local("Helvetica"), local("Arial"), local("ArialMT");
+  size-adjust: 56.5%;
+}
+@font-face {
+  font-family: "Montserrat Repli Segoe";
+  src: local("Segoe UI"), local("SegoeUI");
+  size-adjust: 112.5%;
+}
+@font-face {
+  font-family: "Montserrat Repli Roboto";
+  src: local("Roboto"), local("Roboto-Regular");
+  size-adjust: 113%;
+}
+@font-face {
+  font-family: "Montserrat Repli Arial";
+  src: local("Helvetica Neue"), local("Helvetica"), local("Arial"), local("ArialMT");
+  size-adjust: 110%;
+}
+
 :root {
   --noir: #080808;
   --noir-2: #0d0e13;
@@ -67,8 +104,8 @@
   /* sur l'accueil, aucun accent chaud : le rouge reste à l'action et au prix (charte p. 3) */
   --club: #f5f5f5;
   --club-clair: #ffffff;
-  --f-display: "Bebas Neue", "Oswald", "Arial Narrow", sans-serif;
-  --f-body: "Montserrat", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --f-display: "Bebas Neue", "Bebas Repli Narrow", "Bebas Repli Roboto", "Bebas Repli Arial", sans-serif;
+  --f-body: "Montserrat", "Montserrat Repli Segoe", "Montserrat Repli Roboto", "Montserrat Repli Arial", system-ui, sans-serif;
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-io: cubic-bezier(0.65, 0, 0.35, 1);
   --gutter: clamp(1rem, 4vw, 2.5rem);
