@@ -254,6 +254,11 @@
 .panneau__q--fin {
   font-size: clamp(3rem, 9vw, 6rem);
 }
+/* la question reçoit le focus à chaque étape (lecteurs d'écran) ; elle n'est pas cliquable : pas de cadre */
+.panneau__q:focus,
+.panneau__q:focus-visible {
+  outline: none;
+}
 .panneau__aide {
   max-width: 40rem;
   color: var(--ink-2);
@@ -566,6 +571,9 @@
   font-weight: 700;
   font-size: 0.92rem;
   color: var(--club-clair);
+}
+.date__age.is-hors {
+  color: #ff8a98;
 }
 .segments {
   display: grid;
@@ -901,6 +909,9 @@
 /* attente */
 .panneau--attente {
   justify-items: start;
+}
+.panneau--attente.is-echec .chargeur {
+  display: none;
 }
 .chargeur {
   width: 44px;

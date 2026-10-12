@@ -66,6 +66,54 @@ function dateValide(a, m, j) {
 const chiffres = (s) => String(s || '').replace(/\D/g, '');
 const emailOk = (s) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(String(s || '').trim());
 const telOk = (s) => chiffres(s).length >= 10;
+/** Les trois champs jour / mois / année d'un préfixe : « p » avant le paiement, « e » dans la fiche. */
+const lireTroisChamps = (prefixe) => ({
+  j: Number(chiffres(document.getElementById(`${prefixe}-jour`).value)),
+  m: Number(chiffres(document.getElementById(`${prefixe}-mois`).value)),
+  a: Number(chiffres(document.getElementById(`${prefixe}-annee`).value)),
+});
+/**
+ * Les trois cases jour / mois / année : on passe seul à la case suivante (ou en tapant « / ») ; une date
+ * collée (« 14/03/2014 », « 14032014 ») se répartit dans les trois cases.
+ */
+function brancherDate(champs, apres) {
+  const repartir = (texte) => {
+    const morceaux = String(texte).split(/\D+/).filter(Boolean);
+    const brut = chiffres(texte);
+    if (morceaux.length !== 3 && brut.length !== 8) return false;
+    const [j, m, a] = morceaux.length === 3 ? morceaux : [brut.slice(0, 2), brut.slice(2, 4), brut.slice(4, 8)];
+    champs[0].value = j.slice(0, 2).padStart(2, '0');
+    champs[1].value = m.slice(0, 2).padStart(2, '0');
+    champs[2].value = a.slice(0, 4);
+    champs[2].focus();
+    apres();
+    return true;
+  };
+  champs.forEach((input, i, tous) => {
+    input.addEventListener('paste', (ev) => {
+      if (repartir(ev.clipboardData?.getData('text') || '')) ev.preventDefault();
+    });
+    input.addEventListener('input', () => {
+      const brut = chiffres(input.value);
+      // « 1/ » dans le jour ou le mois : la case est finie, on passe à la suivante
+      if (/\D/.test(input.value) && brut && tous[i + 1]) {
+        input.value = brut.slice(0, 2).padStart(2, '0');
+        tous[i + 1].focus();
+        return apres();
+      }
+      input.value = brut.slice(0, Number(input.maxLength));
+      if (input.value.length === Number(input.maxLength) && tous[i + 1]) tous[i + 1].focus();
+      apres();
+    });
+  });
+}
+/** Le message à montrer, ou '' quand la date est valide et que l'enfant a 8 à 16 ans le premier jour du stage. */
+function erreurAge({ j, m, a }) {
+  if (!(String(a).length === 4 && dateValide(a, m, j))) return 'Indiquez une date de naissance complète et valide, par exemple 14 3 2014.';
+  const age = ageAuStage(a, m, j);
+  if (age < 8 || age > 16) return `Le stage accueille les enfants de 8 à 16 ans au 26 octobre 2026 ; votre enfant aura ${age} ans.`;
+  return '';
+}
 
 export async function inscription() {
   const D = JSON.parse($('#donnees-tunnel').textContent);
@@ -121,6 +169,8 @@ export async function inscription() {
     }
   };
 
+  // le premier écran s'affiche sans voler le défilement ni le focus ; ensuite, chaque étape prend le focus sur sa question
+  let premierEcran = true;
   function aller(id) {
     $$('[data-panneau]').forEach((p) => {
       p.hidden = p.dataset.panneau !== id;
@@ -149,13 +199,19 @@ export async function inscription() {
               : 'La carte de votre enfant se construit pendant que vous remplissez sa fiche, après le paiement.';
     }
     const h = $(`[data-panneau="${id}"] h1`);
-    if (h) {
+    if (h && !premierEcran) {
       h.setAttribute('tabindex', '-1');
       window.scrollTo({ top: 0, behavior: reduit() ? 'auto' : 'smooth' });
       setTimeout(() => h.focus({ preventScroll: true }), 50);
     }
+    premierEcran = false;
     ecrireSession({ etape: id });
   }
+  /** L'adresse ne garde que la commande et sa clé : un rechargement reprend au bon écran, sans rejouer le retour du paiement. */
+  const nettoyerAdresse = () => {
+    if (!etat.order?.id || !etat.token) return;
+    history.replaceState(history.state, '', `/inscription?order=${encodeURIComponent(etat.order.id)}&token=${encodeURIComponent(etat.token)}`);
+  };
 
   /* ---------- récapitulatif et carte ---------- */
   function majRecap() {
@@ -344,10 +400,48 @@ export async function inscription() {
       zone.appendChild(label);
     });
   }
+  // la date de naissance avant de payer : un enfant hors des 8–16 ans ne paie pas pour rien
+  const champsDatePaie = $$('[data-date-paie]');
+  const majAgePaie = () => {
+    const d = lireTroisChamps('p');
+    const sortie = $('[data-age-paie]');
+    if (String(d.a).length === 4 && dateValide(d.a, d.m, d.j)) {
+      const age = ageAuStage(d.a, d.m, d.j);
+      const dansLaTranche = age >= 8 && age <= 16;
+      sortie.textContent = dansLaTranche ? `${age} ans le 26 octobre 2026` : `${age} ans le 26 octobre 2026 : le stage accueille les 8 à 16 ans.`;
+      sortie.classList.toggle('is-hors', !dansLaTranche);
+      if (dansLaTranche) {
+        erreurChamp('p-date', '');
+        champsDatePaie.forEach((i) => i.removeAttribute('aria-invalid'));
+      }
+    } else {
+      sortie.textContent = '';
+      sortie.classList.remove('is-hors');
+    }
+  };
+  brancherDate(champsDatePaie, majAgePaie);
+  const remplirDate = (prefixe, n) => {
+    if (!n?.a) return false;
+    if (['jour', 'mois', 'annee'].some((k) => document.getElementById(`${prefixe}-${k}`).value)) return false;
+    document.getElementById(`${prefixe}-jour`).value = String(n.j).padStart(2, '0');
+    document.getElementById(`${prefixe}-mois`).value = String(n.m).padStart(2, '0');
+    document.getElementById(`${prefixe}-annee`).value = String(n.a);
+    return true;
+  };
+
   // préremplissage : session (« inscrire un autre enfant »)
   const parent = session.parent || {};
   [['p-prenom', 'first_name'], ['p-nom', 'last_name'], ['p-email', 'email'], ['p-tel', 'phone']].forEach(([id, k]) => {
     if (parent[k]) $(`#${id}`).value = parent[k];
+  });
+
+  // retour arrière depuis la page du prestataire (page restaurée telle quelle) : le bouton redevient cliquable
+  let libellePayer = '';
+  window.addEventListener('pageshow', (ev) => {
+    if (!ev.persisted || !libellePayer) return;
+    etat.envoi = false;
+    btnPayer.disabled = false;
+    btnPayer.innerHTML = libellePayer;
   });
 
   formPaie.addEventListener('submit', async (ev) => {
@@ -356,6 +450,11 @@ export async function inscription() {
     dire('');
     const v = (id) => $(`#${id}`).value.trim();
     let ok = true;
+    const naissance = lireTroisChamps('p');
+    const msgDate = erreurAge(naissance);
+    ok = erreurChamp('p-date', msgDate) && ok;
+    if (msgDate) $('#p-jour').setAttribute('aria-invalid', 'true');
+    else champsDatePaie.forEach((i) => i.removeAttribute('aria-invalid'));
     ok = erreurChamp('p-prenom', v('p-prenom') ? '' : 'Indiquez votre prénom.') && ok;
     ok = erreurChamp('p-nom', v('p-nom') ? '' : 'Indiquez votre nom.') && ok;
     ok = erreurChamp('p-email', emailOk(v('p-email')) ? '' : 'Indiquez une adresse e-mail valide, par exemple prenom@exemple.fr.') && ok;
@@ -370,10 +469,10 @@ export async function inscription() {
     }
     etat.envoi = true;
     btnPayer.disabled = true;
-    const libelle = btnPayer.innerHTML;
+    libellePayer = btnPayer.innerHTML;
     btnPayer.textContent = 'Redirection vers le paiement…';
     const parentSaisi = { first_name: v('p-prenom'), last_name: v('p-nom'), email: v('p-email'), phone: v('p-tel') };
-    ecrireSession({ parent: parentSaisi, club: etat.club, tarif: etat.tarif });
+    ecrireSession({ parent: parentSaisi, club: etat.club, tarif: etat.tarif, naissance });
     try {
       const r = await api('/api/checkout', {
         method: 'POST',
@@ -393,7 +492,7 @@ export async function inscription() {
     } catch (e) {
       etat.envoi = false;
       btnPayer.disabled = false;
-      btnPayer.innerHTML = libelle;
+      btnPayer.innerHTML = libellePayer;
       if (e.status === 409) {
         const autre = etat.club === 'portet' ? 'minimes' : 'portet';
         dire(`Il n’y a plus de place au ${D.clubs[etat.club].nom}. Le même stage a lieu ${D.clubs[autre].a} : <a href="/inscription?club=${autre}${etat.tarif ? `&tarif=${etat.tarif}` : ''}">choisir ce club</a>.`);
@@ -406,9 +505,18 @@ export async function inscription() {
   });
 
   /* ---------- retour du prestataire ---------- */
+  const panneauAttente = $('[data-panneau="attente"]');
+  const titreAttente = $('#q-attente');
+  const TITRE_ATTENTE = titreAttente.textContent;
+  const TEXTE_ATTENTE = $('[data-attente-texte]').textContent;
   async function confirmer(essai = 0) {
-    aller('attente');
     const texte = $('[data-attente-texte]');
+    if (essai === 0) {
+      panneauAttente.classList.remove('is-echec');
+      titreAttente.textContent = TITRE_ATTENTE;
+      texte.textContent = TEXTE_ATTENTE;
+    }
+    aller('attente');
     $('[data-attente-actions]').hidden = true;
     try {
       const r = await api('/api/confirm-payment', {
@@ -416,30 +524,46 @@ export async function inscription() {
         body: JSON.stringify({ order_id: etat.order?.id || params.get('order'), token: etat.token }),
       });
       charger(r.order);
-      $('[data-ok-paye]').hidden = false;
-      aller('enfant');
+      nettoyerAdresse();
+      if (r.order?.status !== 'complete') $('[data-ok-paye]').hidden = false;
+      return router(r.order);
     } catch (e) {
       if (e.status === 402 && essai < 4) {
         texte.textContent = 'Le prestataire n’a pas encore confirmé le paiement. Nouvelle vérification dans quelques secondes…';
         setTimeout(() => confirmer(essai + 1), 2500);
         return;
       }
-      // la commande a peut-être été payée entre-temps (webhook) : on relit avant de conclure
+      // la commande a peut-être été payée entre-temps (notification du prestataire) : on relit avant de conclure
       try {
-        const o = await api(`/api/order?id=${encodeURIComponent(params.get('order'))}&token=${encodeURIComponent(etat.token)}`);
+        const o = await api(`/api/order?id=${encodeURIComponent(etat.order?.id || params.get('order'))}&token=${encodeURIComponent(etat.token)}`);
+        if (o.order) charger(o.order);
         if (o.order?.payment?.status === 'paid') {
-          charger(o.order);
-          $('[data-ok-paye]').hidden = false;
+          nettoyerAdresse();
+          if (o.order.status !== 'complete') $('[data-ok-paye]').hidden = false;
           return router(o.order);
         }
       } catch {
         /* on affiche le message ci-dessous */
       }
-      texte.innerHTML = `Nous n’avons pas encore la confirmation du paiement. S’il a été accepté, vous recevrez un e-mail avec le lien pour finir l’inscription. Une question : ${contactClub()}.`;
+      panneauAttente.classList.add('is-echec');
+      titreAttente.textContent = 'Le paiement n’est pas confirmé';
+      texte.innerHTML = `S’il a été refusé ou annulé, rien n’a été prélevé : vous pouvez choisir un autre moyen de paiement. Si le prestataire vous a affiché « paiement accepté », ne payez pas une deuxième fois : vous recevrez un e-mail avec le lien pour finir l’inscription. Une question : ${contactClub()}.`;
       $('[data-attente-actions]').hidden = false;
+      $('[data-autre-moyen]').hidden = !etat.club;
     }
   }
   $('[data-reessayer]').addEventListener('click', () => confirmer(0));
+  $('[data-autre-moyen]').addEventListener('click', () => {
+    // la commande impayée expire seule ; le paiement suivant en crée une nouvelle
+    etat.order = null;
+    etat.token = null;
+    ecrireSession({ order: null, token: null });
+    history.replaceState(history.state, '', `/inscription?club=${encodeURIComponent(etat.club)}`);
+    if (remplirDate('p', lireSession().naissance)) majAgePaie();
+    majPanier();
+    majPaiement();
+    aller('paiement');
+  });
 
   function charger(order) {
     etat.order = order;
@@ -479,7 +603,11 @@ export async function inscription() {
       etat.image = order.documents?.image_rights ?? null;
       return finir(order, { deja: true });
     }
-    if (order.payment?.status === 'paid') return aller(order.child ? 'documents' : 'enfant');
+    if (order.payment?.status === 'paid') {
+      // la date de naissance donnée avant le paiement n'est pas à retaper dans la fiche
+      if (!order.child && remplirDate('e', lireSession().naissance)) majAge();
+      return aller(order.child ? 'documents' : 'enfant');
+    }
     majPanier();
     majPaiement();
     return aller('paiement');
@@ -487,33 +615,21 @@ export async function inscription() {
 
   /* ---------- étape 5 : fiche enfant ---------- */
   const formEnfant = $('[data-form-enfant]');
-  const lireDate = () => {
-    const j = Number(chiffres($('#e-jour').value));
-    const m = Number(chiffres($('#e-mois').value));
-    const a = Number(chiffres($('#e-annee').value));
-    return { j, m, a };
-  };
+  const lireDate = () => lireTroisChamps('e');
   const majAge = () => {
     const { j, m, a } = lireDate();
     const sortie = $('[data-age]');
     if (String(a).length === 4 && dateValide(a, m, j)) {
       const age = ageAuStage(a, m, j);
       etat.enfant.age = age;
-      sortie.textContent = age >= 8 && age <= 16 ? `${age} ans le 26 octobre 2026` : `${age} ans le 26 octobre 2026 : le stage accueille les 8 à 16 ans.`;
+      sortie.textContent = age >= 8 && age <= 16 ? `${age} ans le 26 octobre 2026` : `${age} ans le 26 octobre 2026 : le stage accueille les 8 à 16 ans.`;
     } else {
       etat.enfant.age = NaN;
       sortie.textContent = '';
     }
     majCarte();
   };
-  // passage automatique jour → mois → année
-  $$('[data-date]').forEach((input, i, tous) => {
-    input.addEventListener('input', () => {
-      input.value = chiffres(input.value).slice(0, Number(input.maxLength));
-      if (input.value.length === Number(input.maxLength) && tous[i + 1]) tous[i + 1].focus();
-      majAge();
-    });
-  });
+  brancherDate($$('[data-date]'), majAge);
   formEnfant.addEventListener('input', (ev) => {
     const cible = ev.target;
     const lien = cible.dataset?.versCarte;
@@ -547,18 +663,13 @@ export async function inscription() {
     let ok = true;
     ok = erreurChamp('e-prenom', v('first_name') ? '' : 'Indiquez le prénom de votre enfant.') && ok;
     ok = erreurChamp('e-nom', v('last_name') ? '' : 'Indiquez le nom de votre enfant.') && ok;
-    let msgDate = '';
-    if (!(String(a).length === 4 && dateValide(a, m, j))) msgDate = 'Indiquez une date de naissance complète et valide, par exemple 14 3 2014.';
-    else {
-      const age = ageAuStage(a, m, j);
-      if (age < 8 || age > 16) msgDate = `Le stage accueille les enfants de 8 à 16 ans au 26 octobre 2026 ; votre enfant aura ${age} ans.`;
-    }
+    const msgDate = erreurAge({ j, m, a });
     ok = erreurChamp('e-date', msgDate) && ok;
     if (msgDate) $('#e-jour').setAttribute('aria-invalid', 'true');
     else $$('[data-date]').forEach((i) => i.removeAttribute('aria-invalid'));
     const poids = Number(v('poids').replace(',', '.'));
     ok = erreurChamp('e-poids', poids >= 15 && poids <= 150 ? '' : 'Indiquez le poids en kilos, par exemple 38.') && ok;
-    ok = erreurChamp('e-pratique', v('practice_years') ? '' : 'Choisissez les années de pratique (« Débutant » s’il commence).') && ok;
+    ok = erreurChamp('e-pratique', v('practice_years') ? '' : 'Choisissez les années de pratique (« Débutant » s’il commence).') && ok;
     ok = erreurChamp('e-niveau', v('niveau') ? '' : 'Choisissez le niveau de votre enfant.') && ok;
     ok = erreurChamp('e-tel1', telOk(v('parent_phone')) ? '' : 'Indiquez un numéro à 10 chiffres.') && ok;
     ok = erreurChamp('e-email', emailOk(v('parent_email')) ? '' : 'Indiquez une adresse e-mail valide.') && ok;
@@ -618,7 +729,7 @@ export async function inscription() {
       aller('documents');
     } catch (e) {
       if (e.status === 409) return dejaFinalisee();
-      dire(e.status === 404 ? `Nous ne retrouvons pas cette inscription. Utilisez le lien reçu par e-mail, ou appelez le club : ${contactClub()}.` : `La fiche n’a pas pu être enregistrée. Réessayez ; si le problème continue : ${contactClub()}.`);
+      dire(e.status === 404 ? `Nous ne retrouvons pas cette inscription. Utilisez le lien reçu par e-mail, ou appelez le club : ${contactClub()}.` : `La fiche n’a pas pu être enregistrée. Réessayez ; si le problème continue : ${contactClub()}.`);
     } finally {
       etat.envoi = false;
       bouton.disabled = false;
@@ -734,21 +845,21 @@ export async function inscription() {
     $$('[data-paquet-club]').forEach((p) => {
       p.hidden = p.dataset.paquetClub !== etat.club;
     });
-    const docs = `Autorisation parentale, état de santé, règlement intérieur, CGV, conditions de participation · droit à l’image : ${etat.image === true ? 'autorisé' : etat.image === false ? 'refusé' : 'indiqué'}`;
+    const docs = `Autorisation parentale, état de santé, règlement intérieur, CGV, conditions de participation · droit à l’image : ${etat.image === true ? 'autorisé' : etat.image === false ? 'refusé' : 'indiqué'}`;
     const lignes = [
       ['Club', `${c.nom}<br /><span>${c.adresse}</span>`],
       ['Enfant', `${[e.prenom, e.nom].filter(Boolean).join(' ')}${Number.isFinite(e.age) ? ` · ${e.age} ans` : ''}`],
       ['Dates', 'Du lundi 26 au samedi 31 octobre 2026'],
       ['Horaires', '10h – 12h et 14h – 16h<br /><span>Mercredi 11h – 13h et 16h – 18h · samedi bowling 10h – 12h, interclub à partir de 14h</span>'],
-      ['Repas', 'À prévoir : non fourni<br /><span>Les enfants peuvent rester à la salle sous surveillance pendant la pause du midi.</span>'],
+      ['Repas', 'À prévoir : non fourni<br /><span>Les enfants peuvent rester à la salle sous surveillance pendant la pause du midi.</span>'],
       ['Documents', docs],
       ['Réglé', `${order?.amount_cents ? fmt(order.amount_cents / 100) : montant()} €`],
     ];
     $('[data-recap-fin]').innerHTML = lignes.map(([dt, dd]) => `<div><dt>${dt}</dt><dd>${dd}</dd></div>`).join('');
-    $('[data-f-contact]').innerHTML = `<h2>Une question ?</h2><p>Le club répond : ${contactClub()}. Un e-mail de confirmation vous a été envoyé avec ce récapitulatif.</p>`;
+    $('[data-f-contact]').innerHTML = `<h2>Une question ?</h2><p>Le club répond : ${contactClub()}. Un e-mail de confirmation vous a été envoyé avec ce récapitulatif.</p>`;
     $('[data-autre-enfant]').href = `/inscription?club=${etat.club}&tarif=${etat.tarif}`;
     $('[data-retour-stage]').href = c.path;
-    ecrireSession({ etape: null, order: null, token: null });
+    ecrireSession({ etape: null, order: null, token: null, naissance: null });
     aller('fin');
     if (!deja) dire('');
   }
@@ -805,13 +916,15 @@ export async function inscription() {
       const r = await api(`/api/order?id=${encodeURIComponent(order)}&token=${encodeURIComponent(token)}`);
       charger(r.order);
       if (params.has('cancelled') && r.order.payment?.status !== 'paid') {
+        nettoyerAdresse();
+        if (remplirDate('p', lireSession().naissance)) majAgePaie();
         router(r.order);
-        dire('Paiement annulé : vous n’avez rien réglé. Vous pouvez choisir un autre moyen de paiement.');
+        dire('Paiement annulé : vous n’avez rien réglé. Vous pouvez choisir un autre moyen de paiement.');
         return;
       }
       return router(r.order);
     } catch (e) {
-      dire(`Nous ne retrouvons pas cette inscription. Vérifiez le lien reçu par e-mail ou appelez le club : ${contactClub()}.`);
+      dire(`Nous ne retrouvons pas cette inscription. Vérifiez le lien reçu par e-mail ou appelez le club : ${contactClub()}.`);
       return aller('club');
     }
   }

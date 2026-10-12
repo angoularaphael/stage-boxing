@@ -214,6 +214,20 @@ const visages = (club: 'portet' | 'minimes') =>
         <p class="panneau__aide">Le paiement réserve la place. Juste après, vous remplissez la fiche de votre enfant et validez les documents.</p>
         <form class="form" data-form-paiement novalidate>
           <fieldset class="groupe">
+            <legend>Votre enfant</legend>
+            <fieldset class="champ date" aria-describedby="p-date-aide">
+              <legend>Sa date de naissance</legend>
+              <p class="champ__aide" id="p-date-aide">Le stage accueille les 8 à 16 ans au 26 octobre 2026 : on le vérifie avant le paiement.</p>
+              <div class="date__champs">
+                <div><label for="p-jour">Jour</label><input id="p-jour" inputmode="numeric" pattern="[0-9]*" maxlength="2" autocomplete="off" data-date-paie="jour" /></div>
+                <div><label for="p-mois">Mois</label><input id="p-mois" inputmode="numeric" pattern="[0-9]*" maxlength="2" autocomplete="off" data-date-paie="mois" /></div>
+                <div class="date__annee"><label for="p-annee">Année</label><input id="p-annee" inputmode="numeric" pattern="[0-9]*" maxlength="4" autocomplete="off" data-date-paie="annee" /></div>
+              </div>
+              <p class="date__age" data-age-paie aria-live="polite"></p>
+              <p class="champ__erreur" data-erreur-pour="p-date"></p>
+            </fieldset>
+          </fieldset>
+          <fieldset class="groupe">
             <legend>Le responsable légal</legend>
             <div class="grille-2">
               <div class="champ">
@@ -261,7 +275,8 @@ const visages = (club: 'portet' | 'minimes') =>
         <h1 class="panneau__q" id="q-attente">Confirmation de votre paiement…</h1>
         <p class="panneau__aide" data-attente-texte>Quelques secondes : nous vérifions le paiement auprès du prestataire.</p>
         <div class="panneau__actions" data-attente-actions hidden>
-          <button class="btn btn--rouge" type="button" data-reessayer>Vérifier à nouveau</button>
+          <button class="btn btn--ghost" type="button" data-reessayer>Vérifier à nouveau</button>
+          <button class="btn btn--rouge" type="button" data-autre-moyen>Choisir un autre moyen de paiement</button>
         </div>
       </section>
 
