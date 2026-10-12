@@ -162,3 +162,12 @@ export const EDITEUR = {
   hebergeur: 'Vercel Inc., 440 N Barranca Avenue #4133, Covina, CA 91723, États-Unis',
   credits: 'B.M Photographie et Axel Derewiany',
 };
+
+/**
+ * Le vendeur du stage dans chaque club : celui qui encaisse le paiement et émet la facture.
+ * Aligné sur la facture du back (lib/invoice-pdf.js, commit b77e1a2 de Raphaël, 12/10/2026).
+ */
+export const VENDEURS = {
+  portet: 'Noble Art Portésien, association loi 1901, SIRET 444 152 482 00022, 61 route d’Espagne, 31120 Portet-sur-Garonne',
+  minimes: `${EDITEUR.nom}, ${EDITEUR.forme}, ${EDITEUR.rcs}, ${EDITEUR.siege}`,
+};

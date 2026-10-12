@@ -7,9 +7,9 @@
  * `cle` = nom du champ attendu par l'API (POST /api/order, action « documents »).
  */
 import { STAGE, euros } from './stage.js';
-import { EDITEUR } from './clubs.js';
+import { VENDEURS } from './clubs.js';
 
-export const VERSION_DOCUMENTS = '10 octobre 2026';
+export const VERSION_DOCUMENTS = '12 octobre 2026';
 
 export const DOCUMENTS = [
   {
@@ -86,8 +86,12 @@ export const DOCUMENTS = [
     lien: '/cgv',
     sections: [
       {
-        h: '1. Organisateur',
-        p: [`Le stage est organisé par Boxing Center — ${EDITEUR.nom}, ${EDITEUR.forme}, ${EDITEUR.rcs}, ${EDITEUR.siege}.`],
+        h: '1. Organisateur et vendeur',
+        p: [
+          'Le stage est organisé dans deux salles du réseau Boxing Center. Le vendeur est le club choisi à l’inscription : c’est lui qui encaisse le paiement et émet la facture.',
+          `À Portet-sur-Garonne : ${VENDEURS.portet}.`,
+          `Aux Minimes : ${VENDEURS.minimes}.`,
+        ],
       },
       {
         h: '2. Objet',
