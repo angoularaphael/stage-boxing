@@ -1515,28 +1515,28 @@ html:not([data-club]) .sec__title em {
   text-shadow: 0 0 80px var(--cc);
 }
 /* carte sans photo : la semaine de l'intervenant prend la place du portrait, l'initiale passe en filigrane */
-.carte__face:has(.carte__agenda) .carte__mono {
+.carte__face--agenda .carte__mono {
   opacity: 0.12;
   text-shadow: none;
 }
 /* sans photo, la carte s'empile en colonne : l'en-tête, la semaine, puis le nom — rien ne peut se chevaucher */
-.carte__face:has(.carte__agenda) {
+.carte__face--agenda {
   display: flex;
   flex-direction: column;
   gap: 1.1rem;
   /* pas de marge latérale ici : la largeur de la carte reste celle que mesurent les requêtes de conteneur */
   padding-block: 0.9rem 0.95rem;
 }
-.carte__face:has(.carte__agenda) > .carte__haut,
-.carte__face:has(.carte__agenda) > .carte__agenda,
-.carte__face:has(.carte__agenda) > .carte__bas {
+.carte__face--agenda > .carte__haut,
+.carte__face--agenda > .carte__agenda,
+.carte__face--agenda > .carte__bas {
   position: static;
   margin-inline: 0.95rem;
 }
-.carte__face:has(.carte__agenda) > .carte__haut {
+.carte__face--agenda > .carte__haut {
   order: -1;
 }
-.carte__face:has(.carte__agenda) > .carte__bas {
+.carte__face--agenda > .carte__bas {
   margin-top: auto;
 }
 .carte__agenda {
@@ -1576,12 +1576,13 @@ html:not([data-club]) .sec__title em {
   line-height: 1.2;
   color: rgba(255, 255, 255, 0.78);
 }
-/* carte étroite (téléphone, grille serrée) : la semaine passe sur deux colonnes pour laisser le nom respirer */
-.carte__face {
+/* carte étroite (téléphone, grille serrée) : la semaine passe sur deux colonnes pour laisser le nom respirer.
+   Le conteneur n'est posé que sur les deux cartes sans photo : sur toutes les cartes, il doublait le travail au chargement. */
+.carte__face--agenda {
   container-type: inline-size;
 }
 @container (max-width: 300px) {
-  .carte__face:has(.carte__agenda) {
+  .carte__face--agenda {
     gap: 0.8rem;
   }
   .carte__agenda {
@@ -1598,15 +1599,26 @@ html:not([data-club]) .sec__title em {
     font-size: 0.95rem;
   }
 }
-@container (max-width: 230px) {
-  /* la mention « Les Vacances des Boxeurs » prendrait quatre lignes : la pastille du club suffit */
+/* cartes de 220 à 240 px (téléphone de 350 à 379 px, grille de 900 à 1 199 px) : la mention resserrée tient sur deux lignes */
+@media (max-width: 379px), (min-width: 900px) and (max-width: 1199px) {
+  .carte__haut {
+    letter-spacing: 0.06em;
+  }
+  .carte__club {
+    padding-inline: 0.42rem;
+  }
+}
+/* très petit téléphone : la mention « Les Vacances des Boxeurs » prendrait quatre lignes sur les cartes du carrousel ; la pastille du club suffit */
+@media (max-width: 349px) {
   .carte__haut > span:first-child {
     display: none;
   }
   .carte__club {
     margin-left: auto;
   }
-  .carte__face:has(.carte__agenda) {
+}
+@container (max-width: 230px) {
+  .carte__face--agenda {
     gap: 0.6rem;
   }
   .carte__agenda {

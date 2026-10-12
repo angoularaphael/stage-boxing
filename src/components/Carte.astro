@@ -35,7 +35,7 @@ const semaine = ph ? [] : seancesDe(id).filter((x) => x.club === club);
   style={`--d:${delai}s`}
   aria-label={`${p.nom}, ${p.role}`}
 >
-  <div class="carte__face">
+  <div class:list={['carte__face', { 'carte__face--agenda': semaine.length > 0 }]}>
     {ph ? (
       <img class="carte__photo" srcset={srcset} sizes={sizes} src={src} width="600" height="840" alt={`${p.nom}, ${p.role.toLowerCase()}`} loading="lazy" decoding="async" />
     ) : (
