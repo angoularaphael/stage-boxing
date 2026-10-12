@@ -7,9 +7,6 @@ const $ = (s, r = document) => r.querySelector(s);
 const STOCK_DEFAUT = 40;
 const CLUBS = { portet: 'Portet-sur-Garonne', minimes: 'Minimes' };
 
-function jeton() {
-  return String($('#admin-token')?.value || '').trim();
-}
 function alerte(msg, ok = false) {
   const el = $('#alert');
   if (!el) return;
@@ -198,14 +195,23 @@ export function admin() {
   const filtreClub = $('[data-filtre-club]');
   const filtreStatut = $('[data-filtre-statut]');
   const recherche = $('[data-recherche]');
-  const saved = (() => {
-    try {
-      return sessionStorage.getItem('stg_admin_token');
-    } catch {
-      return null;
+  const root = $('#contenu');
+
+  async function ensureAuth() {
+    const res = await fetch('/api/auth/me', { credentials: 'include' });
+    if (!res.ok) {
+      location.replace('/admin/login?next=/admin');
+      throw new Error('unauthorized');
     }
-  })();
-  if (saved && !jeton()) $('#admin-token').value = saved;
+    const data = await res.json();
+    const sess = $('#admin-session');
+    if (sess && data.user) {
+      sess.hidden = false;
+      sess.textContent = `Connecte : ${data.user.email || data.user.name || 'admin'}`;
+    }
+    if (root) root.hidden = false;
+    return data.user;
+  }
 
   const filtrees = () => {
     const club = filtreClub.value;
@@ -276,29 +282,30 @@ export function admin() {
   }
 
   async function charger() {
-    const t = jeton();
-    if (!t) return alerte('Saisissez le jeton administrateur.');
-    try {
-      sessionStorage.setItem('stg_admin_token', t);
-    } catch {
-      /* rien */
-    }
     alerte('');
-    const res = await fetch('/api/admin/orders', { headers: { Authorization: `Bearer ${t}`, Accept: 'application/json' } });
+    const res = await fetch('/api/admin/orders', {
+      credentials: 'include',
+      headers: { Accept: 'application/json' },
+    });
+    if (res.status === 401) {
+      location.replace('/admin/login?next=/admin');
+      return;
+    }
     const data = await res.json().catch(() => ({}));
-    if (!res.ok) return alerte(res.status === 401 ? 'Jeton refusé.' : data.error || `Erreur ${res.status}`);
+    if (!res.ok) return alerte(data.error || `Erreur ${res.status}`);
     commandes = data.orders || [];
     $('[data-tableau]').hidden = false;
     rendre();
     stats();
   }
 
-  $('[data-charger]').addEventListener('click', () => charger().catch((e) => alerte(e.message)));
-  $('#admin-token').addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') charger().catch((er) => alerte(er.message));
+  $('#admin-logout')?.addEventListener('click', async () => {
+    await fetch('/api/auth/logout', { method: 'POST', credentials: 'include' }).catch(() => null);
+    location.replace('/admin/login');
   });
-  [filtreClub, filtreStatut].forEach((s) => s.addEventListener('change', rendre));
-  recherche.addEventListener('input', rendre);
+
+  [filtreClub, filtreStatut].forEach((s) => s?.addEventListener('change', rendre));
+  recherche?.addEventListener('input', rendre);
   lignes.addEventListener('click', async (e) => {
     const b = e.target.closest('[data-copier]');
     if (!b) return;
@@ -319,4 +326,10 @@ export function admin() {
       if (b.dataset.export === 'pdf') window.print();
     }),
   );
+
+  ensureAuth()
+    .then(() => charger())
+    .catch((e) => {
+      if (e.message !== 'unauthorized') alerte(e.message);
+    });
 }

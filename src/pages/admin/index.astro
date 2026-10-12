@@ -1,12 +1,9 @@
 ---
 /**
- * Administration du stage (cahier §17). Deux parties :
- *  - les inscriptions : suivi par club, fiches, documents, relances, exports CSV / Excel / PDF ;
- *  - le mode studio de Raphaël (paiements de test), conservé tel quel (mêmes identifiants,
- *    même script admin-studio.js).
- * Le jeton passe dans l'en-tête Authorization, jamais dans l'URL.
+ * Administration du stage (cahier §17). Acces reserve : connexion BOXPLUS
+ * (SUPER_ADMIN_* / app_users), cookie bc_admin_session. Pas de jeton public.
  */
-import Base from '../layouts/Base.astro';
+import Base from '../../layouts/Base.astro';
 ---
 <Base
   title="Administration — stages enfants Boxing Center"
@@ -15,23 +12,17 @@ import Base from '../layouts/Base.astro';
   robots="noindex, nofollow"
   page="admin"
 >
-  <main id="contenu" class="adm">
+  <main id="contenu" class="adm" hidden>
     <header class="adm__tete">
       <a href="/" aria-label="Accueil des stages"><img src="/img/logo/bc-logo-200.webp" width="200" height="93" alt="Boxing Center" style="width:110px" /></a>
-      <h1>Inscriptions <span>Les Vacances des Boxeurs</span></h1>
+      <div class="adm__tete-txt">
+        <h1>Inscriptions <span>Les Vacances des Boxeurs</span></h1>
+        <p class="adm__session" id="admin-session" hidden></p>
+      </div>
+      <button class="btn btn--ghost" type="button" id="admin-logout">Se deconnecter</button>
     </header>
 
-    <section class="adm__bloc" aria-labelledby="t-acces">
-      <h2 id="t-acces">Accès</h2>
-      <div id="alert" class="adm__alerte" hidden></div>
-      <div class="adm__ligne">
-        <label class="adm__champ">
-          <span>Jeton administrateur</span>
-          <input id="admin-token" type="password" autocomplete="off" />
-        </label>
-        <button class="btn btn--rouge" type="button" data-charger>Charger les inscriptions</button>
-      </div>
-    </section>
+    <div id="alert" class="adm__alerte" hidden></div>
 
     <section class="adm__bloc" aria-labelledby="t-chiffres" data-tableau hidden>
       <h2 id="t-chiffres">Par club</h2>
@@ -82,7 +73,7 @@ import Base from '../layouts/Base.astro';
     </section>
   </main>
   <script>
-    import '../scripts/admin-studio.js';
+    import '../../scripts/admin-studio.js';
   </script>
 </Base>
 
@@ -96,11 +87,17 @@ import Base from '../layouts/Base.astro';
   }
   .adm__tete {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
-    gap: 1.2rem;
+    gap: 1rem 1.2rem;
+  }
+  .adm__tete-txt {
+    flex: 1 1 200px;
+    min-width: 0;
   }
   .adm__tete h1 {
-    font-size: clamp(2.2rem, 5vw, 3.4rem);
+    font-size: clamp(1.6rem, 5vw, 3.4rem);
+    margin: 0;
   }
   .adm__tete h1 span {
     display: block;
@@ -110,6 +107,21 @@ import Base from '../layouts/Base.astro';
     letter-spacing: 0.16em;
     color: var(--ink-3);
     margin-top: 0.3rem;
+  }
+  .adm__session {
+    margin: 0.45rem 0 0;
+    font-size: 0.86rem;
+    color: var(--ink-2);
+  }
+  #admin-logout {
+    min-height: 44px;
+    margin-left: auto;
+  }
+  @media (max-width: 600px) {
+    #admin-logout {
+      width: 100%;
+      margin-left: 0;
+    }
   }
   .adm__bloc {
     display: grid;

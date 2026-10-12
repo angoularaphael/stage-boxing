@@ -1,0 +1,129 @@
+---
+import Base from '../../layouts/Base.astro';
+---
+<Base
+  title="Connexion admin — stages Boxing Center"
+  description="Connexion administration stages enfants."
+  path="/admin/login"
+  robots="noindex, nofollow"
+  page="admin"
+>
+  <main class="adm-login">
+    <form class="adm-login__card" id="login-form">
+      <img src="/img/logo/bc-logo-200.webp" width="160" height="74" alt="Boxing Center" />
+      <h1>Administration stages</h1>
+      <p class="adm-login__sub">Memes identifiants que BOXPLUS</p>
+      <label class="adm-login__champ">
+        <span>E-mail</span>
+        <input id="email" name="email" type="email" autocomplete="username" required />
+      </label>
+      <label class="adm-login__champ">
+        <span>Mot de passe</span>
+        <input id="password" name="password" type="password" autocomplete="current-password" required />
+      </label>
+      <p id="login-msg" class="adm-login__err" hidden></p>
+      <button class="btn btn--rouge" type="submit" id="login-btn">Se connecter</button>
+      <p class="adm-login__retour"><a href="/">Retour aux stages</a></p>
+    </form>
+  </main>
+  <script>
+    (async () => {
+      function safeNext() {
+        const n = new URLSearchParams(location.search).get('next') || '/admin';
+        return n.startsWith('/admin') ? n : '/admin';
+      }
+      try {
+        const me = await fetch('/api/auth/me', { credentials: 'include' });
+        if (me.ok) {
+          location.replace(safeNext());
+          return;
+        }
+      } catch {
+        /* offline */
+      }
+
+      const form = document.getElementById('login-form');
+      const msg = document.getElementById('login-msg');
+      const btn = document.getElementById('login-btn');
+      form?.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        if (!msg || !btn) return;
+        msg.hidden = true;
+        btn.disabled = true;
+        btn.textContent = 'Connexion…';
+        try {
+          const res = await fetch('/api/auth/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include',
+            body: JSON.stringify({
+              email: document.getElementById('email').value,
+              password: document.getElementById('password').value,
+            }),
+          });
+          const data = await res.json().catch(() => ({}));
+          if (!res.ok) throw new Error(data.error || 'Identifiants incorrects');
+          location.replace(safeNext());
+        } catch (err) {
+          msg.hidden = false;
+          msg.textContent = err.message || 'Erreur';
+        } finally {
+          btn.disabled = false;
+          btn.textContent = 'Se connecter';
+        }
+      });
+    })();
+  </script>
+</Base>
+
+<style is:global>
+  .adm-login {
+    min-height: 100svh;
+    display: grid;
+    place-items: center;
+    padding: 2rem var(--gutter, 1.25rem);
+  }
+  .adm-login__card {
+    width: min(100%, 420px);
+    display: grid;
+    gap: 0.85rem;
+    padding: 1.75rem 1.5rem 1.5rem;
+    background: var(--noir-2, #141414);
+    border: 1px solid var(--trait, #2a2a2a);
+    border-radius: 16px;
+  }
+  .adm-login__card h1 {
+    margin: 0.25rem 0 0;
+    font-size: 1.35rem;
+  }
+  .adm-login__sub {
+    margin: 0 0 0.5rem;
+    color: var(--ink-2, #aaa);
+    font-size: 0.9rem;
+  }
+  .adm-login__champ {
+    display: grid;
+    gap: 0.35rem;
+    font-size: 0.88rem;
+  }
+  .adm-login__champ input {
+    min-height: 44px;
+    padding: 0.55rem 0.75rem;
+    border-radius: 10px;
+    border: 1px solid var(--trait, #333);
+    background: #0c0c0c;
+    color: inherit;
+    font: inherit;
+  }
+  .adm-login__err {
+    margin: 0;
+    color: #ff8a8a;
+    font-size: 0.9rem;
+  }
+  .adm-login__retour {
+    margin: 0.4rem 0 0;
+    text-align: center;
+    font-size: 0.85rem;
+  }
+  .adm-login__retour a { color: var(--ink-2, #aaa); }
+</style>

@@ -12,7 +12,7 @@ import {
 export default async function handler(req, res) {
   const method = methodOf(req);
   const body = method === 'POST' || method === 'DELETE' ? await readBody(req) : {};
-  if (!adminAuthorized(req, body.token)) {
+  if (!(await adminAuthorized(req, body.token))) {
     return json(res, 401, { ok: false, error: 'Non autorise' });
   }
 

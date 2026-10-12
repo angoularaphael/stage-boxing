@@ -3,7 +3,7 @@ import { json, methodOf, queryFromUrl } from '../../lib/http.js';
 import { listOrders } from '../../lib/orders.js';
 import { adminAuthorized } from '../../lib/studio.js';
 
-function authorized(req) {
+async function authorized(req) {
   return adminAuthorized(req);
 }
 
@@ -52,7 +52,7 @@ function toCsv(rows) {
 }
 
 export default async function handler(req, res) {
-  if (!authorized(req)) return json(res, 401, { ok: false, error: 'Non autorise' });
+  if (!(await authorized(req))) return json(res, 401, { ok: false, error: 'Non autorise' });
   if (methodOf(req) !== 'GET') return json(res, 405, { ok: false });
   const q = queryFromUrl(req);
   const orders = await listOrders({ club: q.club || null, limit: 500 });
