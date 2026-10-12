@@ -46,7 +46,7 @@ const cron = randomBytes(24).toString('hex');
 
 const lines = [
   '# Genere depuis BOXPLUS/.env — ne pas committer',
-  'PUBLIC_URL=https://stages.boxingcenter.fr',
+  'PUBLIC_URL=https://stage-boxing.vercel.app',
   'SITE_NAME=Stages enfants Boxing Center',
   '',
   'PRICE_GUEST_CENTS=14000',
