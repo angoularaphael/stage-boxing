@@ -27,7 +27,7 @@ const titres = p.bilan ? p.titres.filter((t: string) => !/^Professionnel(le)? :/
   aria-labelledby={`nom-${id}`}
 >
   <div class="fiche__carte">
-    <Carte id={id} club={club} sizes="(min-width: 1000px) 360px, 72vw" />
+    <Carte id={id} club={club} sizes="(min-width: 1000px) 360px, 72vw" niveau="p" />
   </div>
   <div class="fiche__corps" data-rev>
     <p class="fiche__role">{p.role}</p>

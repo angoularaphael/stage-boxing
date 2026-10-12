@@ -42,7 +42,7 @@ const seul = clubs.length === 1;
               </div>
             )}
             <div class="cartes" data-cartes>
-              {c.equipe.map((pid, i) => <Carte id={pid} club={id} delai={i * 0.08} lien={lienDe(pid)} />)}
+              {c.equipe.map((pid, i) => <Carte id={pid} club={id} delai={i * 0.08} lien={lienDe(pid)} niveau={seul ? 'h3' : 'h4'} />)}
             </div>
           </div>
         );

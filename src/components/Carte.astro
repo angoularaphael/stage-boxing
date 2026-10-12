@@ -13,8 +13,11 @@ interface Props {
   /** la carte mène à la fiche de l'intervenant (page équipe) */
   lien?: string;
   sizes?: string;
+  /** le niveau du nom selon la page : h4 sous un intertitre d'équipe, h3 seul, p dans une fiche qui a déjà son titre */
+  niveau?: 'h3' | 'h4' | 'p';
 }
-const { id, club, delai = 0, lien, sizes = '(min-width: 1000px) 280px, 66vw' } = Astro.props;
+const { id, club, delai = 0, lien, sizes = '(min-width: 1000px) 280px, 66vw', niveau = 'h4' } = Astro.props;
+const Nom = niveau;
 const p = INTERVENANTS[id];
 const c = CLUBS[club];
 const ph = p.photo ? (manifest.coachs as Record<string, any>)[p.photo] : null;
@@ -41,7 +44,7 @@ const initiale = p.court.charAt(0);
     </div>
     <div class="carte__bas">
       <span class="carte__role">{p.role}</span>
-      <h4 class="carte__nom">{p.nom}</h4>
+      <Nom class="carte__nom">{p.nom}</Nom>
       {p.vedette && <p class="carte__vedette">{p.vedette}</p>}
       {p.titres.length > 0 && (
         <ul class="carte__titres">
