@@ -3,6 +3,7 @@
  * Le prix, en un geste : 140 € non-adhérent par défaut, 80 € pour un adhérent.
  * Le chiffre défile de l'un à l'autre ; l'arithmétique affichée est exacte.
  */
+import Partager from './Partager.astro';
 import { STAGE, euros } from '../data/stage.js';
 import { CLUBS } from '../data/clubs.js';
 
@@ -42,7 +43,8 @@ const coche = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.2 
           <p class="tarif__libelle" data-tarif-libelle>Tarif non-adhérent · le stage complet</p>
           <p class="tarif__sous" data-tarif-sous>Soit {parActivite(nonAdherent)} € par séance ou activité · paiement en 4 fois possible avec PayPal (4 × {quart(nonAdherent)}), si vous y êtes éligible</p>
         </div>
-        <a class="btn btn--rouge btn--plein" href={c ? `/inscription?club=${c.id}` : '/choisir-mon-club'} data-tarif-cta data-base={c ? `/inscription?club=${c.id}` : ''}>
+        <Partager classe="btn btn--rouge btn--plein voix voix--b" />
+        <a class="btn btn--rouge btn--plein voix voix--p" href={c ? `/inscription?club=${c.id}` : '/choisir-mon-club'} data-tarif-cta data-base={c ? `/inscription?club=${c.id}` : ''}>
           Réserver la place de mon enfant <span class="fleche" aria-hidden="true">→</span>
         </a>
       </div>

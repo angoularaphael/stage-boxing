@@ -5,12 +5,13 @@
  * annonce l'interclub du samedi, où les deux stages se retrouvent.
  */
 import Photo from './Photo.astro';
+import Bascule from './Bascule.astro';
 import { CLUBS } from '../data/clubs.js';
 import { STAGE } from '../data/stage.js';
 const p = CLUBS.portet;
 const m = CLUBS.minimes;
 ---
-<section class="fo" data-fo aria-labelledby="titre-stage">
+<section class="fo" id="face-a-face" data-fo aria-labelledby="titre-stage">
   <div class="fo__tete">
     <h1 class="fo__titre" id="titre-stage">
       <span class="fo__t1 display"><span class="l">Les Vacances</span><span class="l">des Boxeurs</span></span>
@@ -21,6 +22,7 @@ const m = CLUBS.minimes;
       <span class="puce puce--large">Boxe anglaise · tous niveaux</span>
       <span class="puce" data-compte-court hidden></span>
     </div>
+    <Bascule variante="heros" />
   </div>
   <div class="fo__duo">
     <a class="fo__cote fo__cote--portet" href={p.path} data-suivi aria-label={`${p.cta} : stage enfants au Boxing Center Portet-sur-Garonne`}>

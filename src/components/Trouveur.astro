@@ -5,6 +5,7 @@
  * calcule sur l'appareil, à partir d'une liste locale des communes (geo.api.gouv.fr) :
  * aucune adresse ne part nulle part.
  */
+import Voix from './Voix.astro';
 import { CLUBS, CLUB_IDS } from '../data/clubs.js';
 
 interface Props {
@@ -18,7 +19,7 @@ const { compact = false } = Astro.props;
   data-salles={JSON.stringify(Object.fromEntries(CLUB_IDS.map((id) => [id, { lat: CLUBS[id].geo.lat, lng: CLUBS[id].geo.lng, court: CLUBS[id].court }])))}
 >
   <div class="trouve__form" role="search">
-    <label class="trouve__label" for={compact ? 'trouve-ville-c' : 'trouve-ville'}>Vous habitez où ?</label>
+    <label class="trouve__label" for={compact ? 'trouve-ville-c' : 'trouve-ville'}><Voix p="Vous habitez où ?" b="Tu habites où ?" /></label>
     <div class="trouve__champ">
       <input
         id={compact ? 'trouve-ville-c' : 'trouve-ville'}

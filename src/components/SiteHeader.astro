@@ -4,6 +4,8 @@
  * de leur lieu. L'en-tête garde son nom de transition : il reste en place quand on change
  * de page, seul le contenu bascule.
  */
+import Bascule from './Bascule.astro';
+import Partager from './Partager.astro';
 import { CLUBS } from '../data/clubs.js';
 
 interface Props {
@@ -41,7 +43,11 @@ const liens = [
     {mode === 'tunnel' ? (
       <a class="btn btn--ghost hd__cta" href={c ? c.path : '/'}>Retour au stage</a>
     ) : (
-      <a class="btn btn--rouge hd__cta" href={ctaHref} data-cta-hd aria-current={actif === 'choisir' ? 'page' : undefined}>{ctaTxt}</a>
+      <>
+        <div class="hd__vue"><Bascule variante="tete" /></div>
+        <a class="btn btn--rouge hd__cta voix voix--p" href={ctaHref} data-cta-hd aria-current={actif === 'choisir' ? 'page' : undefined}>{ctaTxt}</a>
+        <Partager classe="btn btn--rouge hd__cta voix voix--b" court />
+      </>
     )}
     {mode !== 'tunnel' && (
       <button class="hd__menu" type="button" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="tiroir" data-menu>
@@ -56,6 +62,7 @@ const liens = [
       <img src="/img/logo/bc-logo-200.webp" width="200" height="93" alt="Boxing Center" style="width:118px" />
       <button class="tiroir__fermer" type="button" aria-label="Fermer le menu" data-fermer>×</button>
     </div>
+    <div class="tiroir__vue"><Bascule variante="tiroir" /></div>
     <nav aria-label="Menu mobile">
       {liens.map((l, i) => (
         <a href={l.href} class:list={[l.salle && `hd__salle hd__salle--${l.salle}`]} aria-current={actif === l.id ? 'page' : undefined} style={`--i:${i}`}>
@@ -64,7 +71,8 @@ const liens = [
       ))}
     </nav>
     <div class="tiroir__bas">
-      <a class="btn btn--rouge btn--plein" href={ctaHref}>{ctaTxt}</a>
+      <a class="btn btn--rouge btn--plein voix voix--p" href={ctaHref}>{ctaTxt}</a>
+      <Partager classe="btn btn--rouge btn--plein voix voix--b" />
       <p class="tiroir__info">Du lundi 26 au samedi 31 octobre · 8–16 ans</p>
     </div>
   </div>

@@ -8,6 +8,7 @@ import Base from '../layouts/Base.astro';
 import SiteHeader from '../components/SiteHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import FicheCoach from '../components/FicheCoach.astro';
+import Voix from '../components/Voix.astro';
 import Suite from '../components/Suite.astro';
 import Final from '../components/Final.astro';
 import Barre from '../components/Barre.astro';
@@ -45,7 +46,7 @@ const jsonLd = graphe(organisation(), lieu('portet'), lieu('minimes'), ...person
         </nav>
         <p class="eyebrow">L’équipe</p>
         <h1 class="tete__titre display" id="titre-page">Huit cartes,<br /><em>deux salles</em></h1>
-        <p class="tete__lede">Dans chaque salle, les coachs du club et un boxeur professionnel. Leurs titres, et les séances qu’ils animent pendant la semaine.</p>
+        <p class="tete__lede"><Voix p="Dans chaque salle, les coachs du club et un boxeur professionnel. Leurs titres, et les séances qu’ils animent pendant la semaine." b="Tes coachs et le boxeur professionnel de ta salle : leurs titres, et les séances qu’ils animent avec toi pendant la semaine." /></p>
       </div>
       <div class="eventail">
         {CLUB_IDS.map((id) => (

@@ -1,18 +1,21 @@
 ---
+import Voix from './Voix.astro';
 import { STAGE } from '../data/stage.js';
 
 interface Props {
   intro?: string;
+  /** la même idée, tutoyée, pour le boxeur */
+  introBoxeur?: string;
   titre?: string;
 }
-const { intro = STAGE.public, titre = 'Une semaine<br /><em>pour progresser</em>' } = Astro.props;
+const { intro = STAGE.public, introBoxeur, titre = 'Une semaine<br /><em>pour progresser</em>' } = Astro.props;
 ---
-<section class="sec" aria-labelledby="titre-semaine-intro">
+<section class="sec" id="semaine-bref" aria-labelledby="titre-semaine-intro">
   <div class="wrap">
     <div class="sec__head" data-rev>
       <p class="eyebrow">{STAGE.vacances}</p>
       <h2 class="sec__title" id="titre-semaine-intro" set:html={titre} />
-      <p class="sec__lede">{intro}</p>
+      <p class="sec__lede">{introBoxeur ? <Voix p={intro} b={introBoxeur} /> : intro}</p>
     </div>
     <div class="chiffres">
       <p class="chiffre" data-rev><b data-compteur="6">6</b><span>jours de stage, du lundi au samedi</span></p>

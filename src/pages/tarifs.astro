@@ -43,6 +43,7 @@ const jsonLd = graphe(organisation(), evenement('portet'), evenement('minimes'),
       eyebrow="Tarifs"
       titre="Un prix,<br /><em>tout compris</em>"
       lede={`${euros(STAGE.prix.adherent)} pour un adhérent Boxing Center, ${euros(STAGE.prix.nonAdherent)} sinon, pour les 6 jours et les 12 séances ou activités. Les mêmes tarifs à Portet et aux Minimes.`}
+      ledeBoxeur={`Ce sont tes parents qui t’inscrivent : ${euros(STAGE.prix.adherent)} pour un adhérent Boxing Center, ${euros(STAGE.prix.nonAdherent)} sinon, tout compris. Envoie-leur le stage.`}
       courant="Tarifs"
     >
       <span class="puce"><span class="puce__point" aria-hidden="true"></span>Paiement en ligne</span>

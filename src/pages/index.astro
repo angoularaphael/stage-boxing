@@ -40,7 +40,11 @@ const jsonLd = graphe(organisation(), siteWeb(), evenement('portet'), evenement(
   <SiteHeader mode="accueil" />
   <main id="contenu">
     <FaceOff />
-    <Chiffres titre="Une semaine<br /><em>100&#8239;% boxe</em>" intro={`${STAGE.accroche} ${STAGE.public}`}>
+    <Chiffres
+      titre="Une semaine<br /><em>100&#8239;% boxe</em>"
+      intro={`${STAGE.accroche} ${STAGE.public}`}
+      introBoxeur="Six jours pour progresser, te dépasser et finir la semaine sur un interclub. Débutant ou compétiteur, tu boxes avec des enfants de ton âge, de ton poids et de ton niveau."
+    >
       <div class="sem-accueil" data-rev>
         <SemaineMini />
       </div>

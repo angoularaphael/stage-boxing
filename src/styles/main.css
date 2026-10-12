@@ -388,7 +388,7 @@ html:not([data-club]) .sec__title em {
   padding: 0.35rem 0.85rem;
   border: 1px solid var(--trait-2);
   border-radius: 999px;
-  background: rgba(8, 8, 8, 0.55);
+  background: var(--puce-fond, rgba(8, 8, 8, 0.55));
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   font-size: 0.8rem;

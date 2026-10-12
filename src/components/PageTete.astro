@@ -5,6 +5,7 @@
  * par le slot.
  */
 import Photo from './Photo.astro';
+import Voix from './Voix.astro';
 
 interface Props {
   photo: string;
@@ -13,8 +14,10 @@ interface Props {
   lede: string;
   courant: string;
   sizes?: string;
+  /** la même réponse, tutoyée, pour le boxeur */
+  ledeBoxeur?: string;
 }
-const { photo, eyebrow, titre, lede, courant, sizes = '100vw' } = Astro.props;
+const { photo, eyebrow, titre, lede, courant, sizes = '100vw', ledeBoxeur } = Astro.props;
 ---
 <section class="tete" data-hero aria-labelledby="titre-page">
   <Photo name={photo} class="tete__img" sizes={sizes} eager decorative />
@@ -27,7 +30,7 @@ const { photo, eyebrow, titre, lede, courant, sizes = '100vw' } = Astro.props;
     </nav>
     <p class="eyebrow">{eyebrow}</p>
     <h1 class="tete__titre display" id="titre-page" set:html={titre} />
-    <p class="tete__lede">{lede}</p>
+    <p class="tete__lede">{ledeBoxeur ? <Voix p={lede} b={ledeBoxeur} /> : lede}</p>
     {Astro.slots.has('default') && <div class="tete__puces"><slot /></div>}
   </div>
 </section>

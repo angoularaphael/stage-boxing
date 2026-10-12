@@ -1,0 +1,24 @@
+---
+/**
+ * Un texte, deux voix. `p` parle au parent (et c'est aussi le texte neutre, celui que lisent
+ * les moteurs) ; `b` tutoie le boxeur. Le CSS n'affiche que la voix choisie.
+ * `html` : le texte contient des balises (<br />, <em>).
+ */
+interface Props {
+  p: string;
+  b: string;
+  html?: boolean;
+}
+const { p, b, html = false } = Astro.props;
+---
+{html ? (
+  <>
+    <span class="voix voix--p" set:html={p} />
+    <span class="voix voix--b" set:html={b} />
+  </>
+) : (
+  <>
+    <span class="voix voix--p">{p}</span>
+    <span class="voix voix--b">{b}</span>
+  </>
+)}

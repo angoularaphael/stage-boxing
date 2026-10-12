@@ -67,7 +67,7 @@ export function barre() {
     const visible = passe && !fin;
     b.classList.toggle('is-visible', visible);
     b.setAttribute('aria-hidden', String(!visible));
-    b.querySelector('a')?.setAttribute('tabindex', visible ? '0' : '-1');
+    b.querySelectorAll('a, button').forEach((el) => el.setAttribute('tabindex', visible ? '0' : '-1'));
   };
   window.addEventListener('scroll', () => {
     if (!prevu) {

@@ -11,6 +11,7 @@ import SiteFooter from '../components/SiteFooter.astro';
 import PageTete from '../components/PageTete.astro';
 import SemaineMini from '../components/SemaineMini.astro';
 import Sac from '../components/Sac.astro';
+import Partager from '../components/Partager.astro';
 import Suite from '../components/Suite.astro';
 import Final from '../components/Final.astro';
 import Barre from '../components/Barre.astro';
@@ -52,8 +53,10 @@ const jsonLd = graphe(organisation(), fil([['Stages enfants Boxing Center', '/']
       eyebrow="Pour les parents"
       titre="Un cadre<br /><em>clair</em>"
       lede="Tout ce qu’il faut savoir avant d’inscrire votre enfant : la sécurité, la journée, le midi, le sac et les documents. Sans petites lignes."
+      ledeBoxeur="Cette page est pour tes parents : la sécurité, la journée, le midi, le sac et les documents. Envoie-la-leur, ils y trouveront tout."
       courant="Parents"
     >
+      <Partager classe="btn btn--rouge voix voix--b" />
       <span class="puce"><span class="puce__point" aria-hidden="true"></span>8–16 ans · filles et garçons</span>
       <span class="puce">Débutants acceptés</span>
       <span class="puce">10h – 12h · 14h – 16h</span>

@@ -1,4 +1,6 @@
 ---
+import Voix from './Voix.astro';
+import Partager from './Partager.astro';
 import { CLUBS } from '../data/clubs.js';
 
 interface Props {
@@ -7,11 +9,12 @@ interface Props {
 const { club = '' } = Astro.props;
 const c = club ? CLUBS[club] : null;
 ---
-<section class="sec final" aria-labelledby="titre-final">
+<section class="sec final" id="final" aria-labelledby="titre-final">
   <div class="wrap final">
     <p class="eyebrow" data-rev>Du lundi 26 au samedi 31 octobre</p>
-    <h2 class="final__titre display" id="titre-final" data-rev>Réservez<br />sa place</h2>
-    <div class="final__cta" data-rev>
+    <h2 class="final__titre display" id="titre-final" data-rev><Voix p="Réservez<br />sa place" b="Ta place<br />t’attend" html /></h2>
+    <div data-rev>
+    <div class="final__cta voix voix--p">
       {c ? (
         <>
           <a class="btn btn--rouge" href={`/inscription?club=${c.id}`}>Réserver la place de mon enfant <span class="fleche" aria-hidden="true">→</span></a>
@@ -23,6 +26,11 @@ const c = club ? CLUBS[club] : null;
           <a class="btn btn--rouge" href="/inscription?club=minimes">Inscrire mon enfant aux Minimes</a>
         </>
       )}
+    </div>
+    <div class="final__cta voix voix--b">
+      <Partager />
+      <a class="btn btn--ghost" href={c ? `/programme?club=${c.id}` : '/programme'}>{c ? 'Voir ta semaine à l’échelle' : 'Voir le programme'}</a>
+    </div>
     </div>
   </div>
 </section>

@@ -1,5 +1,6 @@
 ---
 import Photo from './Photo.astro';
+import Partager from './Partager.astro';
 import { CLUBS, adresseLigne } from '../data/clubs.js';
 import { STAGE, euros } from '../data/stage.js';
 
@@ -19,7 +20,8 @@ const c = CLUBS[club];
     </h1>
     <p class="hero__lede">Stage de boxe anglaise {STAGE.dates}. {STAGE.sousTitre}</p>
     <div class="hero__cta">
-      <a class="btn btn--rouge" href={`/inscription?club=${c.id}`} data-cta-inscrire>{c.inscrire} <span class="fleche" aria-hidden="true">→</span></a>
+      <a class="btn btn--rouge voix voix--p" href={`/inscription?club=${c.id}`} data-cta-inscrire>{c.inscrire} <span class="fleche" aria-hidden="true">→</span></a>
+      <Partager classe="btn btn--rouge voix voix--b" />
       <a class="btn btn--ghost" href="#semaine">Voir le programme</a>
       <span class="puce" data-places={c.id} hidden></span>
     </div>

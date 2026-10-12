@@ -1,6 +1,7 @@
 ---
 import '../styles/main.css';
 import '../styles/pages.css';
+import '../styles/vues.css';
 import { SITE_URL } from '../data/site.js';
 
 interface Props {
@@ -45,11 +46,26 @@ const noindex = robots.includes('noindex');
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <script is:inline>
-      document.documentElement.classList.add('js');
-      // arrivée par une transition de page : le héros a déjà bougé avec elle, il ne rejoue pas son entrée
-      addEventListener('pagereveal', function (e) {
-        if (e.viewTransition) document.documentElement.classList.add('vt-entree');
-      });
+      (function () {
+        var h = document.documentElement;
+        h.classList.add('js');
+        // arrivée par une transition de page : le héros a déjà bougé avec elle, il ne rejoue pas son entrée
+        addEventListener('pagereveal', function (e) {
+          if (e.viewTransition) h.classList.add('vt-entree');
+        });
+        // « Je suis le boxeur / le parent » : posé AVANT le premier affichage (pas de flash), depuis le lien
+        // partagé (?vue=) ou le choix déjà fait dans ce navigateur. Le tunnel et l'admin restent neutres.
+        if (h.dataset.page === 'inscription' || h.dataset.page === 'admin') return;
+        var vue = null;
+        try {
+          vue = new URLSearchParams(location.search).get('vue');
+          if (vue === 'boxeur' || vue === 'parent') localStorage.setItem('vdb-vue', vue);
+          else vue = localStorage.getItem('vdb-vue');
+        } catch (err) {
+          /* navigation privée : pas de mémoire, le site reste neutre */
+        }
+        if (vue === 'boxeur' || vue === 'parent') h.dataset.vue = vue;
+      })();
     </script>
     {!noindex && (
       <script type="speculationrules" is:inline set:html={JSON.stringify({

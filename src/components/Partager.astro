@@ -1,0 +1,15 @@
+---
+/**
+ * Le bouton du boxeur : un enfant ne paie pas, il convainc. Le lien envoyé ouvre le site
+ * côté parent (?vue=parent), sur la page où il était. Partage natif du téléphone, sinon le lien
+ * est copié et WhatsApp ou SMS sont proposés.
+ */
+interface Props {
+  classe?: string;
+  court?: boolean;
+}
+const { classe = 'btn btn--rouge', court = false } = Astro.props;
+---
+<button type="button" class={classe} data-partager>
+  {court ? 'Envoyer à mes parents' : 'Envoie le stage à tes parents'} <span class="fleche" aria-hidden="true">→</span>
+</button>

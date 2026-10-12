@@ -1,5 +1,6 @@
 ---
 import Carte from './Carte.astro';
+import Voix from './Voix.astro';
 import { CLUBS } from '../data/clubs.js';
 
 interface Props {
@@ -10,6 +11,9 @@ interface Props {
   plus?: boolean;
 }
 const { clubs = ['portet', 'minimes'], titre, liens = 'site', plus = false } = Astro.props;
+// le boxeur lit la même section, tutoyée
+const titreP = titre ?? 'Des champions<br />pour <em>les encadrer</em>';
+const titreB = titre ?? 'Des champions<br />pour <em>t’entraîner</em>';
 const lienDe = (pid: string) => (liens === 'page' ? `#fiche-${pid}` : liens === 'site' ? `/equipe#fiche-${pid}` : undefined);
 const seul = clubs.length === 1;
 ---
@@ -17,11 +21,13 @@ const seul = clubs.length === 1;
   <div class="wrap">
     <div class="sec__head" data-rev>
       <p class="eyebrow">{seul ? 'L’équipe de la semaine' : 'Les intervenants'}</p>
-      <h2 class="sec__title" id="titre-equipe" set:html={titre ?? 'Des champions<br />pour <em>les encadrer</em>'} />
+      <h2 class="sec__title" id="titre-equipe"><Voix p={titreP} b={titreB} html /></h2>
       <p class="sec__lede">
-        {seul
-          ? 'Les coachs du club et un boxeur professionnel, toute la semaine avec les enfants.'
-          : 'Dans chaque salle, les coachs Boxing Center et un boxeur professionnel. Le programme est le même ; l’équipe est celle du club.'}
+        {seul ? (
+          <Voix p="Les coachs du club et un boxeur professionnel, toute la semaine avec les enfants." b="Les coachs du club t’entraînent toute la semaine, et le mercredi un boxeur professionnel vient vous parler du haut niveau." />
+        ) : (
+          <Voix p="Dans chaque salle, les coachs Boxing Center et un boxeur professionnel. Le programme est le même ; l’équipe est celle du club." b="Dans chaque salle, les coachs du club t’entraînent toute la semaine, et le mercredi un boxeur professionnel vient vous parler du haut niveau." />
+        )}
       </p>
     </div>
     <div class="paquets">
