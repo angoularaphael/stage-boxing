@@ -91,7 +91,8 @@ export const CLUBS = {
     a: 'à Portet',
     path: '/stage-enfants-portet',
     adresse: { rue: '61 Route d’Espagne', cp: '31120', ville: 'Portet-sur-Garonne' },
-    geo: { lat: 43.5236, lng: 1.4053 },
+    // point de l'adresse, base adresse nationale (api-adresse.data.gouv.fr, relevé le 12/10/2026)
+    geo: { lat: 43.52167, lng: 1.39429 },
     acces: 'Au sud de Toulouse, sur la route d’Espagne.',
     tel: '06 87 90 02 16',
     telHref: '+33687900216',
@@ -118,7 +119,8 @@ export const CLUBS = {
     a: 'aux Minimes',
     path: '/stage-enfants-minimes',
     adresse: { rue: '12 rue de Fenouillet', cp: '31200', ville: 'Toulouse' },
-    geo: { lat: 43.6256, lng: 1.4309 },
+    // point de l'adresse, base adresse nationale (api-adresse.data.gouv.fr, relevé le 12/10/2026)
+    geo: { lat: 43.6265, lng: 1.4306 },
     acces: 'Métro ligne B, station Barrière de Paris, à trois minutes à pied.',
     tel: '05 62 24 46 82',
     telHref: '+33562244682',
