@@ -490,6 +490,23 @@
   color: var(--ink-3);
   font-size: 0.8rem;
 }
+.requis {
+  font-weight: 800;
+  color: var(--rouge, #e8001c);
+  margin-left: 0.15em;
+  text-decoration: none;
+  cursor: help;
+}
+.form__legende-requis {
+  margin: 0 0 1rem;
+  font-size: 0.8rem;
+  color: var(--ink-3);
+  line-height: 1.45;
+}
+.form__legende-requis .requis {
+  margin-left: 0;
+  margin-right: 0.15em;
+}
 .champ__aide {
   font-size: 0.8rem;
   color: var(--ink-3);

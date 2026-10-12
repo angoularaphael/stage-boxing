@@ -213,10 +213,11 @@ const visages = (club: 'portet' | 'minimes') =>
         <h1 class="panneau__q" id="q-paiement">Vos coordonnées et le paiement</h1>
         <p class="panneau__aide">Le paiement réserve la place. Juste après, vous remplissez la fiche de votre enfant et validez les documents.</p>
         <form class="form" data-form-paiement novalidate>
+          <p class="form__legende-requis"><abbr class="requis" title="Obligatoire">*</abbr> Champs obligatoires</p>
           <fieldset class="groupe">
             <legend>Votre enfant</legend>
             <fieldset class="champ date" aria-describedby="p-date-aide">
-              <legend>Sa date de naissance</legend>
+              <legend>Sa date de naissance <abbr class="requis" title="Obligatoire">*</abbr></legend>
               <p class="champ__aide" id="p-date-aide">Le stage accueille les 8 à 16 ans au 26 octobre 2026 : on le vérifie avant le paiement.</p>
               <div class="date__champs">
                 <div><label for="p-jour">Jour</label><input id="p-jour" inputmode="numeric" pattern="[0-9]*" maxlength="2" autocomplete="off" data-date-paie="jour" /></div>
@@ -231,31 +232,31 @@ const visages = (club: 'portet' | 'minimes') =>
             <legend>Le responsable légal</legend>
             <div class="grille-2">
               <div class="champ">
-                <label for="p-prenom">Prénom</label>
+                <label for="p-prenom">Prénom <abbr class="requis" title="Obligatoire">*</abbr></label>
                 <input id="p-prenom" name="parent_first_name" autocomplete="given-name" required />
                 <p class="champ__erreur" data-erreur-pour="p-prenom"></p>
               </div>
               <div class="champ">
-                <label for="p-nom">Nom</label>
+                <label for="p-nom">Nom <abbr class="requis" title="Obligatoire">*</abbr></label>
                 <input id="p-nom" name="parent_last_name" autocomplete="family-name" required />
                 <p class="champ__erreur" data-erreur-pour="p-nom"></p>
               </div>
             </div>
             <div class="champ">
-              <label for="p-email">E-mail</label>
+              <label for="p-email">E-mail <abbr class="requis" title="Obligatoire">*</abbr></label>
               <p class="champ__aide" id="p-email-aide">Pour la confirmation et le lien qui permet de reprendre l’inscription.</p>
               <input id="p-email" name="parent_email" type="email" inputmode="email" autocomplete="email" required aria-describedby="p-email-aide" />
               <p class="champ__erreur" data-erreur-pour="p-email"></p>
             </div>
             <div class="champ">
-              <label for="p-tel">Téléphone</label>
+              <label for="p-tel">Téléphone <abbr class="requis" title="Obligatoire">*</abbr></label>
               <p class="champ__aide" id="p-tel-aide">Mobile 06 ou 07 recommandé (obligatoire pour Scalapay). Le club vous appelle seulement si besoin pendant le stage.</p>
               <input id="p-tel" name="parent_phone" type="tel" inputmode="tel" autocomplete="tel" required aria-describedby="p-tel-aide" />
               <p class="champ__erreur" data-erreur-pour="p-tel"></p>
             </div>
           </fieldset>
           <fieldset class="groupe">
-            <legend>Moyen de paiement</legend>
+            <legend>Moyen de paiement <abbr class="requis" title="Obligatoire">*</abbr></legend>
             <div class="methodes" data-methodes role="radiogroup" aria-label="Moyen de paiement">
               <p class="champ__aide">Chargement des moyens de paiement…</p>
             </div>
@@ -286,22 +287,23 @@ const visages = (club: 'portet' | 'minimes') =>
         <h1 class="panneau__q" id="q-enfant">La fiche de votre enfant</h1>
         <p class="panneau__aide">Ces informations restent au club et servent à composer les groupes et à encadrer votre enfant en sécurité.</p>
         <form class="form" data-form-enfant novalidate>
+          <p class="form__legende-requis"><abbr class="requis" title="Obligatoire">*</abbr> Champs obligatoires</p>
           <fieldset class="groupe">
             <legend>L’enfant</legend>
             <div class="grille-2">
               <div class="champ">
-                <label for="e-prenom">Prénom</label>
+                <label for="e-prenom">Prénom <abbr class="requis" title="Obligatoire">*</abbr></label>
                 <input id="e-prenom" name="first_name" autocomplete="off" required data-vers-carte="prenom" />
                 <p class="champ__erreur" data-erreur-pour="e-prenom"></p>
               </div>
               <div class="champ">
-                <label for="e-nom">Nom</label>
+                <label for="e-nom">Nom <abbr class="requis" title="Obligatoire">*</abbr></label>
                 <input id="e-nom" name="last_name" autocomplete="off" required data-vers-carte="nom" />
                 <p class="champ__erreur" data-erreur-pour="e-nom"></p>
               </div>
             </div>
             <fieldset class="champ date" aria-describedby="e-date-aide">
-              <legend>Date de naissance</legend>
+              <legend>Date de naissance <abbr class="requis" title="Obligatoire">*</abbr></legend>
               <p class="champ__aide" id="e-date-aide">Par exemple 14 3 2014. Le stage accueille les 8 à 16 ans au 26 octobre 2026.</p>
               <div class="date__champs">
                 <div><label for="e-jour">Jour</label><input id="e-jour" inputmode="numeric" pattern="[0-9]*" maxlength="2" autocomplete="off" data-date="jour" /></div>
@@ -313,13 +315,13 @@ const visages = (club: 'portet' | 'minimes') =>
             </fieldset>
             <div class="grille-2">
               <div class="champ">
-                <label for="e-poids">Poids (kg)</label>
+                <label for="e-poids">Poids (kg) <abbr class="requis" title="Obligatoire">*</abbr></label>
                 <p class="champ__aide">Pour composer les oppositions entre enfants de poids proches.</p>
                 <input id="e-poids" name="poids" inputmode="decimal" autocomplete="off" required />
                 <p class="champ__erreur" data-erreur-pour="e-poids"></p>
               </div>
               <div class="champ">
-                <label for="e-pratique">Années de pratique</label>
+                <label for="e-pratique">Années de pratique <abbr class="requis" title="Obligatoire">*</abbr></label>
                 <p class="champ__aide">En boxe, tous clubs confondus.</p>
                 <select id="e-pratique" name="practice_years" required data-vers-carte="pratique">
                   <option value="">Choisir</option>
@@ -329,7 +331,7 @@ const visages = (club: 'portet' | 'minimes') =>
               </div>
             </div>
             <fieldset class="champ">
-              <legend>Niveau</legend>
+              <legend>Niveau <abbr class="requis" title="Obligatoire">*</abbr></legend>
               <div class="segments" role="radiogroup">
                 {STAGE.niveaux.map((n, i) => (
                   <label class="segment"><input type="radio" name="niveau" value={n} required={i === 0} data-vers-carte="niveau" /><span>{n}</span></label>
@@ -347,7 +349,7 @@ const visages = (club: 'portet' | 'minimes') =>
             <legend>Les parents</legend>
             <div class="grille-2">
               <div class="champ">
-                <label for="e-tel1">Téléphone parent 1</label>
+                <label for="e-tel1">Téléphone parent 1 <abbr class="requis" title="Obligatoire">*</abbr></label>
                 <input id="e-tel1" name="parent_phone" type="tel" inputmode="tel" autocomplete="tel" required />
                 <p class="champ__erreur" data-erreur-pour="e-tel1"></p>
               </div>
@@ -357,18 +359,18 @@ const visages = (club: 'portet' | 'minimes') =>
               </div>
             </div>
             <div class="champ">
-              <label for="e-email">E-mail parent</label>
+              <label for="e-email">E-mail parent <abbr class="requis" title="Obligatoire">*</abbr></label>
               <input id="e-email" name="parent_email" type="email" inputmode="email" autocomplete="email" required />
               <p class="champ__erreur" data-erreur-pour="e-email"></p>
             </div>
             <div class="grille-2">
               <div class="champ">
-                <label for="e-urgence">Personne à contacter en cas d’urgence</label>
+                <label for="e-urgence">Personne à contacter en cas d’urgence <abbr class="requis" title="Obligatoire">*</abbr></label>
                 <input id="e-urgence" name="urgence_nom" autocomplete="off" required />
                 <p class="champ__erreur" data-erreur-pour="e-urgence"></p>
               </div>
               <div class="champ">
-                <label for="e-urgence-tel">Son téléphone</label>
+                <label for="e-urgence-tel">Son téléphone <abbr class="requis" title="Obligatoire">*</abbr></label>
                 <input id="e-urgence-tel" name="urgence_tel" type="tel" inputmode="tel" autocomplete="off" required />
                 <p class="champ__erreur" data-erreur-pour="e-urgence-tel"></p>
               </div>
@@ -377,23 +379,23 @@ const visages = (club: 'portet' | 'minimes') =>
 
           <fieldset class="groupe">
             <legend>Santé</legend>
-            <p class="champ__aide">Laissez vide s’il n’y a rien à signaler.</p>
+            <p class="champ__aide">Laissez vide s’il n’y a rien à signaler. <span class="facultatif">facultatif</span></p>
             <div class="champ">
-              <label for="e-allergies">Allergies</label>
+              <label for="e-allergies">Allergies <span class="facultatif">facultatif</span></label>
               <input id="e-allergies" name="allergies" autocomplete="off" />
             </div>
             <div class="champ">
-              <label for="e-traitement">Traitement médical</label>
+              <label for="e-traitement">Traitement médical <span class="facultatif">facultatif</span></label>
               <input id="e-traitement" name="traitement" autocomplete="off" />
             </div>
             <div class="champ">
-              <label for="e-blessure">Blessure, problème médical ou information particulière</label>
+              <label for="e-blessure">Blessure, problème médical ou information particulière <span class="facultatif">facultatif</span></label>
               <textarea id="e-blessure" name="blessure" rows="2"></textarea>
             </div>
           </fieldset>
 
           <fieldset class="groupe">
-            <legend>Pause du midi</legend>
+            <legend>Pause du midi <abbr class="requis" title="Obligatoire">*</abbr></legend>
             <p class="champ__aide">{STAGE.repas}</p>
             <div class="radios">
               <label class="radio"><input type="radio" name="midi" value="reste à la salle sous surveillance" required /><span class="radio__rond" aria-hidden="true"></span><span>J’autorise mon enfant à rester à la salle sous surveillance pendant la pause du midi.</span></label>
@@ -418,11 +420,12 @@ const visages = (club: 'portet' | 'minimes') =>
         <h1 class="panneau__q" id="q-docs">Les documents à valider</h1>
         <p class="panneau__aide">Adaptés aux 8–16 ans. Chaque document validé appose son tampon sur la carte de votre enfant. Version du {VERSION_DOCUMENTS}.</p>
         <form class="form" data-form-docs novalidate>
+          <p class="form__legende-requis"><abbr class="requis" title="Obligatoire">*</abbr> Cases et champs obligatoires</p>
           <div class="docs">
             {DOCUMENTS.map((d) => (
               <div class="doc" data-doc={d.cle}>
                 <details class="doc__texte">
-                  <summary><span class="doc__titre">{d.titre}</span><span class="doc__lire">Lire</span></summary>
+                  <summary><span class="doc__titre">{d.titre} <abbr class="requis" title="Obligatoire">*</abbr></span><span class="doc__lire">Lire</span></summary>
                   <div class="doc__corps">
                     {d.sections.map((s) => (
                       <>
@@ -440,7 +443,7 @@ const visages = (club: 'portet' | 'minimes') =>
               </div>
             ))}
             <fieldset class="doc">
-              <legend class="doc__titre">{DROIT_IMAGE.titre}</legend>
+              <legend class="doc__titre">{DROIT_IMAGE.titre} <abbr class="requis" title="Obligatoire">*</abbr></legend>
               <div class="radios">
                 <label class="radio"><input type="radio" name="image_rights" value="oui" required /><span class="radio__rond" aria-hidden="true"></span><span>{DROIT_IMAGE.oui}</span></label>
                 <label class="radio"><input type="radio" name="image_rights" value="non" /><span class="radio__rond" aria-hidden="true"></span><span>{DROIT_IMAGE.non}</span></label>
@@ -450,22 +453,22 @@ const visages = (club: 'portet' | 'minimes') =>
           </div>
 
           <fieldset class="groupe signature">
-            <legend>Signature du responsable légal</legend>
+            <legend>Signature du responsable légal <abbr class="requis" title="Obligatoire">*</abbr></legend>
             <div class="grille-2">
               <div class="champ">
-                <label for="s-nom">Nom et prénom</label>
+                <label for="s-nom">Nom et prénom <abbr class="requis" title="Obligatoire">*</abbr></label>
                 <input id="s-nom" name="signataire" autocomplete="name" required />
                 <p class="champ__erreur" data-erreur-pour="s-nom"></p>
               </div>
               <div class="champ">
-                <label for="s-lieu">Fait à</label>
+                <label for="s-lieu">Fait à <abbr class="requis" title="Obligatoire">*</abbr></label>
                 <input id="s-lieu" name="lieu" autocomplete="address-level2" required />
                 <p class="champ__erreur" data-erreur-pour="s-lieu"></p>
               </div>
             </div>
             <div class="pad">
               <canvas class="pad__toile" data-pad width="640" height="220" aria-label="Zone de signature : signez avec le doigt ou la souris" role="img"></canvas>
-              <p class="pad__vide" data-pad-vide aria-hidden="true">Signez ici, avec le doigt ou la souris</p>
+              <p class="pad__vide" data-pad-vide aria-hidden="true">Signez ici, avec le doigt ou la souris <abbr class="requis" title="Obligatoire">*</abbr></p>
               <button class="pad__effacer" type="button" data-pad-effacer>Effacer</button>
             </div>
             <p class="champ__erreur" data-erreur-pour="signature"></p>
