@@ -581,6 +581,19 @@ html:not([data-club]) .sec__title em {
     gap: 0.6rem;
   }
 }
+/* 320–359 px (petits téléphones) : « Inscrire mon enfant » doit tenir entier à côté du logo et du menu */
+@media (max-width: 359px) {
+  .hd__logo img {
+    width: 82px;
+  }
+  .hd__cta {
+    padding: 0.5rem 0.7rem;
+    font-size: 0.75rem;
+  }
+  .hd__in {
+    gap: 0.45rem;
+  }
+}
 .hd__menu {
   display: inline-grid;
   place-items: center;
@@ -1496,6 +1509,111 @@ html:not([data-club]) .sec__title em {
   color: color-mix(in srgb, var(--cc) 75%, #fff);
   opacity: 0.9;
   text-shadow: 0 0 80px var(--cc);
+}
+/* carte sans photo : la semaine de l'intervenant prend la place du portrait, l'initiale passe en filigrane */
+.carte__face:has(.carte__agenda) .carte__mono {
+  opacity: 0.12;
+  text-shadow: none;
+}
+/* sans photo, la carte s'empile en colonne : l'en-tête, la semaine, puis le nom — rien ne peut se chevaucher */
+.carte__face:has(.carte__agenda) {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+  /* pas de marge latérale ici : la largeur de la carte reste celle que mesurent les requêtes de conteneur */
+  padding-block: 0.9rem 0.95rem;
+}
+.carte__face:has(.carte__agenda) > .carte__haut,
+.carte__face:has(.carte__agenda) > .carte__agenda,
+.carte__face:has(.carte__agenda) > .carte__bas {
+  position: static;
+  margin-inline: 0.95rem;
+}
+.carte__face:has(.carte__agenda) > .carte__haut {
+  order: -1;
+}
+.carte__face:has(.carte__agenda) > .carte__bas {
+  margin-top: auto;
+}
+.carte__agenda {
+  display: grid;
+  gap: 0.55rem;
+}
+.carte__agenda-titre {
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--cc-clair);
+}
+.carte__agenda ol {
+  display: grid;
+  gap: 0.42rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.carte__agenda li {
+  display: grid;
+  gap: 0.05rem;
+  padding-left: 0.6rem;
+  border-left: 2px solid var(--cc);
+}
+.carte__agenda time {
+  font-family: var(--f-display);
+  font-size: 1.05rem;
+  letter-spacing: 0.04em;
+  line-height: 1;
+  color: #fff;
+}
+.carte__agenda span {
+  font-size: 0.75rem;
+  font-weight: 700;
+  line-height: 1.2;
+  color: rgba(255, 255, 255, 0.78);
+}
+/* carte étroite (téléphone, grille serrée) : la semaine passe sur deux colonnes pour laisser le nom respirer */
+.carte__face {
+  container-type: inline-size;
+}
+@container (max-width: 300px) {
+  .carte__face:has(.carte__agenda) {
+    gap: 0.8rem;
+  }
+  .carte__agenda {
+    gap: 0.45rem;
+  }
+  .carte__agenda ol {
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem 0.6rem;
+  }
+  .carte__agenda li {
+    padding-left: 0.45rem;
+  }
+  .carte__agenda time {
+    font-size: 0.95rem;
+  }
+}
+@container (max-width: 230px) {
+  /* la mention « Les Vacances des Boxeurs » prendrait quatre lignes : la pastille du club suffit */
+  .carte__haut > span:first-child {
+    display: none;
+  }
+  .carte__club {
+    margin-left: auto;
+  }
+  .carte__face:has(.carte__agenda) {
+    gap: 0.6rem;
+  }
+  .carte__agenda {
+    gap: 0.35rem;
+  }
+  .carte__agenda ol {
+    gap: 0.38rem 0.5rem;
+  }
+  .carte__agenda time {
+    font-size: 0.9rem;
+  }
 }
 /* le reflet holographique : suit le doigt, la souris ou l'inclinaison du téléphone */
 .carte__holo {

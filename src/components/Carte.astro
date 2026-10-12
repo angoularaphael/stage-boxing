@@ -5,6 +5,7 @@
  */
 import { INTERVENANTS, CLUBS } from '../data/clubs.js';
 import manifest from '../data/photos.json';
+import { seancesDe, seanceId, TITRE_COURT, heure } from '../data/stage.js';
 
 interface Props {
   id: string;
@@ -24,6 +25,8 @@ const ph = p.photo ? (manifest.coachs as Record<string, any>)[p.photo] : null;
 const srcset = ph ? ph.widths.map((w: number) => `/img/coachs/${p.photo}-${w}.webp ${w}w`).join(', ') : '';
 const src = ph ? `/img/coachs/${p.photo}-${ph.widths[ph.widths.length - 1]}.webp` : '';
 const initiale = p.court.charAt(0);
+// sans photo, la carte ne reste pas vide : elle montre la semaine de l'intervenant, lue dans le programme
+const semaine = ph ? [] : seancesDe(id).filter((x) => x.club === club);
 ---
 <article
   class:list={['carte', { 'carte--vedette': !!p.vedette }]}
@@ -36,7 +39,22 @@ const initiale = p.court.charAt(0);
     {ph ? (
       <img class="carte__photo" srcset={srcset} sizes={sizes} src={src} width="600" height="840" alt={`${p.nom}, ${p.role.toLowerCase()}`} loading="lazy" decoding="async" />
     ) : (
-      <span class="carte__mono" aria-hidden="true">{initiale}</span>
+      <>
+        <span class="carte__mono" aria-hidden="true">{initiale}</span>
+        {semaine.length > 0 && (
+          <div class="carte__agenda">
+            <p class="carte__agenda-titre">Sa semaine</p>
+            <ol>
+              {semaine.map(({ jour, seance }) => (
+                <li>
+                  <time datetime={`${jour.date}T${seance.debut}`}>{jour.court} {jour.num} · {heure(seance.debut)}</time>
+                  <span>{TITRE_COURT[seanceId(jour, seance)]}</span>
+                </li>
+              ))}
+            </ol>
+          </div>
+        )}
+      </>
     )}
     <div class="carte__haut">
       <span>Les Vacances<br />des Boxeurs</span>
