@@ -300,10 +300,21 @@ import Base from '../../layouts/Base.astro';
     background: rgba(124, 198, 74, 0.18);
     color: var(--minimes-clair);
   }
-  .adm__copier {
-    min-height: 36px;
-    padding: 0.3rem 0.7rem;
-    border-radius: 999px;
+  .adm__actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    align-items: stretch;
+    min-width: 7.5rem;
+  }
+  .adm__copier,
+  .adm__suppr {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    padding: 0.35rem 0.7rem;
+    border-radius: 10px;
     border: 1px solid var(--trait-2);
     background: transparent;
     color: var(--ink);
@@ -311,6 +322,19 @@ import Base from '../../layouts/Base.astro';
     font-weight: 700;
     cursor: pointer;
     white-space: nowrap;
+    text-decoration: none;
+    text-align: center;
+  }
+  .adm__suppr {
+    border-color: rgba(232, 0, 28, 0.55);
+    color: #ff8a8a;
+  }
+  .adm__suppr:hover {
+    background: rgba(232, 0, 28, 0.12);
+  }
+  .adm__suppr:disabled {
+    opacity: 0.5;
+    cursor: wait;
   }
   .adm__etat {
     font-weight: 800;

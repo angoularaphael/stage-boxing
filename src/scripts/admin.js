@@ -269,13 +269,25 @@ export function admin() {
         const sante = o.child ? `${esc(n['Contact d’urgence'] || '—')}<small>Allergies : ${esc(n.Allergies || '—')}</small><small>Traitement : ${esc(n['Traitement médical'] || '—')}</small><small>${esc(n['Blessure ou problème médical'] && n['Blessure ou problème médical'] !== '—' ? n['Blessure ou problème médical'] : '')}</small>` : '—';
         const midi = `${esc(n['Pause du midi'] || '—')}<small>Image : ${o.documents ? (o.documents.image_rights ? 'oui' : 'non') : '—'}</small>`;
         const lien = o.access_token ? `${location.origin}/inscription?order=${encodeURIComponent(o.id)}&token=${encodeURIComponent(o.access_token)}` : '';
-        return `<tr>
+        const paye = o.payment?.status === 'paid';
+        const actions = [
+          lien && cle !== 'complete' && cle !== 'paiement'
+            ? `<button class="adm__copier" type="button" data-copier="${esc(lien)}">Copier le lien</button>`
+            : '',
+          paye
+            ? `<a class="adm__copier" href="/api/admin/orders?invoice=${encodeURIComponent(o.id)}" target="_blank" rel="noopener">Facture</a>`
+            : '',
+          `<button class="adm__suppr" type="button" data-suppr="${esc(o.id)}" data-label="${esc([o.parent?.email, o.child?.first_name, o.child?.last_name].filter(Boolean).join(' — ') || o.id)}">Supprimer</button>`,
+        ]
+          .filter(Boolean)
+          .join(' ');
+        return `<tr data-order-id="${esc(o.id)}">
           <td><span class="badge badge--${cle}">${s}</span></td>
           <td><span class="badge badge--${esc(o.club)}">${esc(CLUBS[o.club] || o.club)}</span></td>
           <td>${enfant}</td><td>${profil}</td><td>${resp}</td><td>${sante}</td><td>${midi}</td>
           <td>${o.is_member ? 'Adhérent' : 'Non-adhérent'}<small>${o.amount_cents ? `${(o.amount_cents / 100).toFixed(0)} €` : ''}</small></td>
           <td>${o.created_at ? new Date(o.created_at).toLocaleDateString('fr-FR') : ''}<small>${o.payment?.paid_at ? `payé le ${new Date(o.payment.paid_at).toLocaleDateString('fr-FR')}` : ''}</small></td>
-          <td>${lien && cle !== 'complete' && cle !== 'paiement' ? `<button class="adm__copier" type="button" data-copier="${esc(lien)}">Copier le lien de reprise</button>` : ''}</td>
+          <td class="adm__actions">${actions}</td>
         </tr>`;
       })
       .join('');
@@ -307,13 +319,46 @@ export function admin() {
   [filtreClub, filtreStatut].forEach((s) => s?.addEventListener('change', rendre));
   recherche?.addEventListener('input', rendre);
   lignes.addEventListener('click', async (e) => {
+    const del = e.target.closest('[data-suppr]');
+    if (del) {
+      const id = del.dataset.suppr;
+      const label = del.dataset.label || id;
+      if (!window.confirm(`Supprimer cette inscription ?\n${label}\n\nCette action est definitive.`)) return;
+      del.disabled = true;
+      try {
+        const res = await fetch('/api/admin/orders', {
+          method: 'DELETE',
+          credentials: 'include',
+          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+          body: JSON.stringify({ id }),
+        });
+        if (res.status === 401) {
+          location.replace('/admin/login?next=/admin');
+          return;
+        }
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok) {
+          alerte(data.error || `Erreur ${res.status}`);
+          del.disabled = false;
+          return;
+        }
+        commandes = commandes.filter((o) => o.id !== id);
+        rendre();
+        stats();
+        alerte('Inscription supprimee.', true);
+      } catch (err) {
+        alerte(err.message || 'Erreur suppression');
+        del.disabled = false;
+      }
+      return;
+    }
     const b = e.target.closest('[data-copier]');
-    if (!b) return;
+    if (!b || b.tagName === 'A') return;
     try {
       await navigator.clipboard.writeText(b.dataset.copier);
-      b.textContent = 'Lien copié';
+      b.textContent = 'Lien copie';
     } catch {
-      window.prompt('Lien de reprise à envoyer au parent :', b.dataset.copier);
+      window.prompt('Lien de reprise a envoyer au parent :', b.dataset.copier);
     }
   });
   document.querySelectorAll('[data-export]').forEach((b) =>

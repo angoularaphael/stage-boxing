@@ -1,6 +1,7 @@
 import '../../lib/load-env.js';
-import { json, methodOf, queryFromUrl } from '../../lib/http.js';
-import { listOrders } from '../../lib/orders.js';
+import { json, methodOf, queryFromUrl, readBody } from '../../lib/http.js';
+import { buildStageInvoicePdf } from '../../lib/invoice-pdf.js';
+import { deleteOrder, getOrder, listOrders } from '../../lib/orders.js';
 import { adminAuthorized } from '../../lib/studio.js';
 
 async function authorized(req) {
@@ -53,8 +54,35 @@ function toCsv(rows) {
 
 export default async function handler(req, res) {
   if (!(await authorized(req))) return json(res, 401, { ok: false, error: 'Non autorise' });
-  if (methodOf(req) !== 'GET') return json(res, 405, { ok: false });
+  const method = methodOf(req);
   const q = queryFromUrl(req);
+
+  if (method === 'DELETE') {
+    const body = await readBody(req).catch(() => ({}));
+    const id = String(body.id || q.id || '').trim();
+    if (!id) return json(res, 400, { ok: false, error: 'id manquant' });
+    const existing = await getOrder(id);
+    if (!existing) return json(res, 404, { ok: false, error: 'Inscription introuvable' });
+    await deleteOrder(id);
+    return json(res, 200, { ok: true, deleted: id });
+  }
+
+  if (method === 'GET' && q.invoice) {
+    const id = String(q.invoice || q.id || '').trim();
+    const order = await getOrder(id);
+    if (!order) return json(res, 404, { ok: false, error: 'Inscription introuvable' });
+    const inv = buildStageInvoicePdf(order);
+    if (!inv) {
+      return json(res, 400, { ok: false, error: 'Facture disponible uniquement apres paiement.' });
+    }
+    res.statusCode = 200;
+    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader('Content-Disposition', `attachment; filename="${inv.filename}"`);
+    res.end(inv.content);
+    return;
+  }
+
+  if (method !== 'GET') return json(res, 405, { ok: false });
   const orders = await listOrders({ club: q.club || null, limit: 500 });
   if (q.format === 'csv') {
     res.statusCode = 200;
