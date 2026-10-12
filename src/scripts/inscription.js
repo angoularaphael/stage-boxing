@@ -66,6 +66,12 @@ function dateValide(a, m, j) {
 const chiffres = (s) => String(s || '').replace(/\D/g, '');
 const emailOk = (s) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(String(s || '').trim());
 const telOk = (s) => chiffres(s).length >= 10;
+/** Scalapay (PayPlug) exige un mobile FR 06/07 — un fixe 01–05 passe telOk mais casse le checkout. */
+const mobileFrOk = (s) => {
+  let d = chiffres(s);
+  if (d.startsWith('33') && d.length >= 11) d = `0${d.slice(2)}`;
+  return /^0[67]\d{8}$/.test(d);
+};
 /** Les trois champs jour / mois / année d'un préfixe : « p » avant le paiement, « e » dans la fiche. */
 const lireTroisChamps = (prefixe) => ({
   j: Number(chiffres(document.getElementById(`${prefixe}-jour`).value)),
@@ -369,7 +375,7 @@ export async function inscription() {
     payplug_card: ['Carte bancaire', 'Paiement comptant'],
     paypal_once: ['PayPal', 'Paiement comptant'],
     paypal_4x: ['PayPal en plusieurs fois', 'Selon votre éligibilité chez PayPal'],
-    scalapay: ['Scalapay', 'Paiement en plusieurs fois'],
+    scalapay: ['Scalapay', 'Plusieurs fois — mobile 06/07 requis'],
   };
   async function majPaiement() {
     const p = montant();
@@ -458,8 +464,14 @@ export async function inscription() {
     ok = erreurChamp('p-prenom', v('p-prenom') ? '' : 'Indiquez votre prénom.') && ok;
     ok = erreurChamp('p-nom', v('p-nom') ? '' : 'Indiquez votre nom.') && ok;
     ok = erreurChamp('p-email', emailOk(v('p-email')) ? '' : 'Indiquez une adresse e-mail valide, par exemple prenom@exemple.fr.') && ok;
-    ok = erreurChamp('p-tel', telOk(v('p-tel')) ? '' : 'Indiquez un numéro de téléphone à 10 chiffres.') && ok;
     const methode = formPaie.querySelector('input[name="method"]:checked')?.value;
+    const tel = v('p-tel');
+    let msgTel = '';
+    if (!telOk(tel)) msgTel = 'Indiquez un numéro de téléphone à 10 chiffres.';
+    else if (methode === 'scalapay' && !mobileFrOk(tel)) {
+      msgTel = 'Pour Scalapay, indiquez un mobile français (06 ou 07), pas un fixe.';
+    }
+    ok = erreurChamp('p-tel', msgTel) && ok;
     ok = erreurChamp('methode', methode ? '' : 'Choisissez un moyen de paiement.') && ok;
     if (!ok) return premiereErreur(formPaie);
     if (etat.tarif === 'adherent' && !declare.checked) {
@@ -498,6 +510,12 @@ export async function inscription() {
         dire(`Il n’y a plus de place au ${D.clubs[etat.club].nom}. Le même stage a lieu ${D.clubs[autre].a} : <a href="/inscription?club=${autre}${etat.tarif ? `&tarif=${etat.tarif}` : ''}">choisir ce club</a>.`);
       } else if (e.code === 'method_forbidden') {
         dire('Ce moyen de paiement n’est pas proposé pour ce club. Choisissez-en un autre.');
+      } else if (e.code === 'payplug_customer_incomplete' || /mobile|06 ou 07|telephone/i.test(e.message || '')) {
+        dire(e.message || 'Pour Scalapay, indiquez un mobile français (06 ou 07).');
+        erreurChamp('p-tel', e.message || 'Mobile 06 ou 07 requis pour Scalapay.');
+        $('#p-tel')?.focus();
+      } else if (e.message && e.message !== `Erreur ${e.status}`) {
+        dire(`${e.message} Si le problème continue, appelez le club : ${contactClub()}.`);
       } else {
         dire(`Le paiement n’a pas pu démarrer. Réessayez dans un instant ; si le problème continue, appelez le club : ${contactClub()}.`);
       }

@@ -47,10 +47,13 @@ export default async function handler(req, res) {
       const result = await startCheckout(body);
       return json(res, 200, { ok: true, studio: isStudioRequest(req), ...result });
     } catch (err) {
+      console.error('[checkout]', err.code || 'error', err.message, err.body || null);
       const status =
         err.code === 'sold_out'
           ? 409
-          : err.code === 'method_forbidden' || err.code === 'validation'
+          : err.code === 'method_forbidden' ||
+              err.code === 'validation' ||
+              err.code === 'payplug_customer_incomplete'
             ? 400
             : 500;
       return json(res, status, {
