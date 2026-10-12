@@ -13,7 +13,7 @@ const c = club ? CLUBS[club] : null;
 <div class="barre" data-barre aria-hidden="true">
   <div class="barre__txt">
     <b>{c ? `Stage ${c.a}` : 'Stage 8–16 ans'}</b>
-    <span data-barre-info>26–31 oct. · dès {euros(STAGE.prix.adherent)}</span>
+    <span data-barre-info><span class="barre__date">26–31 oct. · </span>dès {euros(STAGE.prix.adherent)}</span>
   </div>
   <a class="btn btn--rouge voix voix--p" href={c ? `/inscription?club=${c.id}` : '/choisir-mon-club'} tabindex="-1">{c ? 'Inscrire' : 'Choisir mon club'}</a>
   <Partager classe="btn btn--rouge voix voix--b" court />

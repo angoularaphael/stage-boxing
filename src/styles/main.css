@@ -577,6 +577,10 @@ html:not([data-club]) .sec__title em {
     padding: 0.5rem 0.85rem;
     font-size: 0.8rem;
   }
+  /* « Envoyer à mes parents » (vue boxeur) tient entier sans sa flèche */
+  .hd__cta .fleche {
+    display: none;
+  }
   .hd__in {
     gap: 0.6rem;
   }
@@ -2400,6 +2404,11 @@ html[data-club] .clair .sec__title em {
   .barre .btn {
     padding: 0.55rem 0.85rem;
     font-size: 0.8rem;
+  }
+}
+@media (max-width: 359px) {
+  .barre__date {
+    display: none;
   }
 }
 .barre .btn {

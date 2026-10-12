@@ -13,6 +13,179 @@ html[data-vue="boxeur"] .voix--p {
   display: none !important;
 }
 
+/* ---------- le premier écran de chaque vue ----------
+   sans choix : les puces (ce que lisent les moteurs) ; parent : la fiche express ;
+   boxeur : la semaine en trois chiffres. Le héros reste une île de nuit dans les trois. */
+.fo__fiche,
+.fo__boxeur {
+  display: none;
+}
+html[data-vue="parent"] .fo__puces,
+html[data-vue="boxeur"] .fo__puces {
+  display: none;
+}
+html[data-vue="parent"] .fo__fiche,
+html[data-vue="boxeur"] .fo__boxeur {
+  display: grid;
+}
+.fo__fiche {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.5rem;
+  width: min(100%, 880px);
+  margin: 0;
+  pointer-events: auto;
+}
+.fo__fiche > div {
+  display: grid;
+  align-content: start;
+  gap: 0.3rem;
+  padding: 0.7rem 0.85rem 0.8rem;
+  border: 1px solid var(--trait-2);
+  border-radius: 12px;
+  background: rgba(8, 8, 8, 0.62);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  text-align: left;
+}
+.fo__fiche dt {
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+.fo__fiche dd {
+  display: grid;
+  gap: 0.25rem;
+  margin: 0;
+  font-size: 0.8rem;
+  line-height: 1.35;
+  color: var(--ink-2);
+}
+.fo__fiche dd b {
+  font-family: var(--f-display);
+  font-size: 1.45rem;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  line-height: 1;
+  color: #fff;
+}
+.fo__boxeur {
+  grid-template-columns: repeat(3, auto);
+  justify-content: center;
+  align-items: end;
+  gap: 0.4rem 1.4rem;
+  margin: 0;
+  pointer-events: auto;
+}
+.fo__boxeur span {
+  display: grid;
+  justify-items: center;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+.fo__boxeur b {
+  font-family: var(--f-display);
+  font-size: clamp(2.6rem, 9vw, 4.2rem);
+  font-weight: 400;
+  line-height: 0.9;
+  color: #fff;
+}
+.fo__boxeur em {
+  grid-column: 1 / -1;
+  font-style: normal;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--ink-2);
+}
+@media (max-width: 700px) {
+  .fo__fiche {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+.fo__boxeur span,
+.fo__boxeur em {
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.85);
+}
+/* vue boxeur : « Envoie le stage à tes parents » est l'action d'un enfant, elle vient sous les trois chiffres */
+.fo__partager {
+  display: none;
+  pointer-events: auto;
+}
+@media (max-width: 899px) {
+  /* sur ordinateur, l'en-tête porte déjà ce bouton */
+  html[data-vue="boxeur"] .fo__partager {
+    display: inline-flex;
+  }
+}
+@media (max-width: 600px) {
+  /* le bouton du héros et celui de la barre suffisent : l'en-tête garde le logo et le menu, sans texte coupé */
+  html[data-vue="boxeur"] .hd__cta.voix--b {
+    display: none;
+  }
+  html[data-vue="boxeur"] .hd__menu {
+    margin-left: auto;
+  }
+}
+@media (max-width: 979px) {
+  /* la barre du boxeur n'a qu'une chose à dire : un seul bouton, sur toute la largeur */
+  html[data-vue="boxeur"] .barre__txt {
+    display: none;
+  }
+  html[data-vue="boxeur"] .barre .btn {
+    flex: 1;
+    justify-content: center;
+    margin-left: 0;
+  }
+}
+/* téléphone, vue parent : la fiche passe d'abord, le face-à-face suit à sa hauteur naturelle (la barre du bas garde « Choisir mon club ») */
+@media (max-width: 899px) {
+  html[data-vue="parent"] .fo {
+    height: auto;
+    max-height: none;
+  }
+  html[data-vue="parent"] .fo__duo {
+    min-height: 340px;
+  }
+}
+/* petit téléphone (667 px de haut), vue boxeur : les trois chiffres et le face-à-face ne tiennent pas dans un écran */
+@media (max-width: 899px) and (max-height: 740px) {
+  html[data-vue="boxeur"] .fo {
+    height: auto;
+    max-height: none;
+  }
+  html[data-vue="boxeur"] .fo__duo {
+    min-height: 340px;
+  }
+}
+/* ordinateur, vues boxeur et parent : le haut du héros est plus haut, la couture « interclub » descend, en version courte */
+@media (min-width: 900px) {
+  html[data-vue] .fo__couture span {
+    top: 78%;
+  }
+  html[data-vue] .fo__couture-long {
+    display: none;
+  }
+  html[data-vue] .fo__couture-court {
+    display: inline;
+  }
+}
+/* écran d'ordinateur peu haut (768 px) : même dans la vue neutre, la couture longue croisait la bascule */
+@media (min-width: 900px) and (max-height: 820px) {
+  .fo__couture span {
+    top: 78%;
+  }
+  .fo__couture-long {
+    display: none;
+  }
+  .fo__couture-court {
+    display: inline;
+  }
+}
+
 /* ---------- la bascule ---------- */
 .bascule-vue {
   display: inline-flex;

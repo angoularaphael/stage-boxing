@@ -6,6 +6,7 @@
  */
 import Photo from './Photo.astro';
 import Bascule from './Bascule.astro';
+import Partager from './Partager.astro';
 import { CLUBS } from '../data/clubs.js';
 import { STAGE } from '../data/stage.js';
 const p = CLUBS.portet;
@@ -22,6 +23,21 @@ const m = CLUBS.minimes;
       <span class="puce puce--large">Boxe anglaise · tous niveaux</span>
       <span class="puce" data-compte-court hidden></span>
     </div>
+    {/* « Je suis le parent » : les quatre questions d'un parent, avant tout le reste */}
+    <dl class="fo__fiche">
+      <div><dt>Âge</dt><dd><b>{STAGE.ageMin}–{STAGE.ageMax} ans</b>filles et garçons, débutants acceptés</dd></div>
+      <div><dt>Horaires</dt><dd><b><span class="insecable">10h–12h</span> · <span class="insecable">14h–16h</span></b>mercredi 11h–13h et 16h–18h, samedi interclub dès 14h</dd></div>
+      <div><dt>Prix</dt><dd><b>{STAGE.prix.adherent} € adhérent</b>{STAGE.prix.nonAdherent} € sinon, tout compris</dd></div>
+      <div><dt>Midi</dt><dd><b>Surveillé</b>à la salle, repas apporté de la maison</dd></div>
+    </dl>
+    {/* « Je suis le boxeur » : la semaine en trois chiffres */}
+    <p class="fo__boxeur">
+      <span><b>{STAGE.jours}</b>jours</span>
+      <span><b>{STAGE.activites}</b>séances</span>
+      <span><b>1</b>interclub</span>
+      <em>Tu boxes avec les coachs de ton club et un boxeur pro.</em>
+    </p>
+    <Partager classe="btn btn--rouge fo__partager" />
     <Bascule variante="heros" />
   </div>
   <div class="fo__duo">
