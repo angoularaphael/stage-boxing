@@ -1822,6 +1822,31 @@ html[data-club] .clair .sec__title em {
   justify-self: start;
   margin-top: 0.6rem;
 }
+/* téléphone : la date tient sur une ligne (« 26 · lundi octobre »), la journée gagne un écran sur la semaine */
+@media (max-width: 699px) {
+  .jour {
+    gap: 0.8rem;
+    padding: 1rem;
+  }
+  .jour__date {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.2rem 0.55rem;
+  }
+  .jour__date b {
+    order: -1;
+    font-size: 2.8rem;
+  }
+  .jour__etat {
+    margin-top: 0;
+    align-self: center;
+  }
+  .seance {
+    gap: 0.45rem;
+    padding: 0.95rem 1rem 1rem;
+  }
+}
 .seances {
   display: grid;
   gap: 1px;
@@ -1890,6 +1915,78 @@ html[data-club] .clair .sec__title em {
 .seance__coach span {
   color: var(--ink-3);
   font-weight: 600;
+}
+.seance__plus {
+  display: grid;
+  gap: 0.55rem;
+}
+.seance__plus > summary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  width: fit-content;
+  min-height: 32px;
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: var(--club-clair);
+  cursor: pointer;
+  list-style: none;
+}
+.seance__plus > summary::-webkit-details-marker {
+  display: none;
+}
+.seance__plus > summary::after {
+  content: "+";
+  display: inline-grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+  font-size: 0.85rem;
+  line-height: 1;
+  transition: transform 0.3s var(--ease);
+}
+.seance__plus[open] > summary::after {
+  transform: rotate(45deg);
+}
+.seance__plus[open] > summary {
+  margin-bottom: 0.1rem;
+}
+/* téléphone : le bouton devient un « + » rond dans le coin de la carte — une ligne de moins par séance */
+@media (max-width: 899px) {
+  .seance__plus > summary {
+    position: absolute;
+    top: 0.45rem;
+    right: 0.45rem;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    min-height: 40px;
+  }
+  .seance__plus > summary::after {
+    width: 24px;
+    height: 24px;
+  }
+  .seance__plus-txt {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+  .seance__h,
+  .seance h3,
+  .seance__coach {
+    padding-right: 2.2rem;
+  }
+}
+/* grand écran : ouvert d'office (voir le script du composant), le bouton n'a plus lieu d'être ; sans script, il reste */
+@media (min-width: 900px) {
+  .seance__plus[open] > summary {
+    display: none;
+  }
 }
 .seance.is-now {
   background: color-mix(in srgb, var(--club) 16%, var(--noir));

@@ -45,14 +45,18 @@ const chaleur = [0.05, 0.22, 0.6, 0.36, 0.52, 1];
                     {s.temps === 'final' && <span class="temps temps--final">Final de la semaine</span>}
                   </div>
                   <h3>{titre}</h3>
-                  <ul class="seance__contenu">
-                    {s.contenu.map((x) => <li>{x}</li>)}
-                  </ul>
-                  <p class="seance__obj"><b>Objectif :</b> {s.objectif}</p>
                   {ids.length > 0 && (
                     <p class="seance__coach"><span>{ids.length > 1 ? 'Avec ' : 'Coach : '}</span>{listeNoms(ids, s.temps === 'fort')}</p>
                   )}
                   {s.titre === 'Interclub' && <p class="seance__coach"><span>Lieu et organisation précisés par le club.</span></p>}
+                  {/* sur téléphone, le contenu et l'objectif s'ouvrent d'un geste : la semaine tient en deux écrans au lieu de neuf */}
+                  <details class="seance__plus">
+                    <summary aria-label={`Le contenu de la séance : ${titre}`}><span class="seance__plus-txt">Le contenu de la séance</span></summary>
+                    <ul class="seance__contenu">
+                      {s.contenu.map((x) => <li>{x}</li>)}
+                    </ul>
+                    <p class="seance__obj"><b>Objectif :</b> {s.objectif}</p>
+                  </details>
                 </div>
               );
             })}
@@ -60,6 +64,10 @@ const chaleur = [0.05, 0.22, 0.6, 0.36, 0.52, 1];
         </article>
       ))}
     </div>
+    {/* sur un grand écran, tout reste ouvert : exécuté avant l'affichage, rien ne bouge */}
+    <script is:inline>
+      if (matchMedia('(min-width: 900px)').matches) document.querySelectorAll('[data-semaine] .seance__plus').forEach((d) => (d.open = true));
+    </script>
     <p class="sec__plus" data-rev>
       <a class="btn btn--ghost" href={`/programme?club=${club}`}>Voir la semaine à l’échelle <span class="fleche" aria-hidden="true">→</span></a>
       <button class="btn btn--ghost" type="button" data-agenda={club}>Ajouter les 12 séances à mon agenda</button>
