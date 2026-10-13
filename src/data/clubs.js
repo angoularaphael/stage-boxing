@@ -52,7 +52,7 @@ export const INTERVENANTS = {
     photo: 'mehdi',
   },
   // le club, 13/10/2026 : leur palmarès remplace les phrases. Fayez : image de la vidéo du club (désigné par Eddy,
-  // étiquettes du jeu effacées) ; Lucas : pas encore de photo
+  // étiquettes du jeu effacées, agrandie avec Higgsfield) ; Lucas : pas encore de photo
   fayez: {
     nom: 'Fayez Draoui',
     court: 'Fayez',
