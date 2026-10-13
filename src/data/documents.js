@@ -9,7 +9,7 @@
 import { STAGE, euros } from './stage.js';
 import { VENDEURS } from './clubs.js';
 
-export const VERSION_DOCUMENTS = '12 octobre 2026';
+export const VERSION_DOCUMENTS = '13 octobre 2026';
 
 export const DOCUMENTS = [
   {
@@ -22,7 +22,7 @@ export const DOCUMENTS = [
       {
         p: [
           'Je soussigné(e), responsable légal de l’enfant inscrit, autorise mon enfant à participer au stage de boxe anglaise « Les Vacances des Boxeurs », organisé du lundi 26 au samedi 31 octobre 2026 par Boxing Center, dans le club choisi lors de l’inscription.',
-          'J’autorise mon enfant à prendre part à l’ensemble des activités du programme : leçons collectives, préparation physique, assauts à thème, combats tests adaptés à son âge, son poids et son niveau, séance piste, bowling et interclub.',
+          'J’autorise mon enfant à prendre part à l’ensemble des activités du programme : ateliers techniques, préparation physique, mises en situation et mises de gants adaptées à son âge, son poids et son niveau, fractionné sur piste, activité de cohésion et interclub.',
         ],
       },
     ],
@@ -58,7 +58,7 @@ export const DOCUMENTS = [
       {
         h: 'Sécurité',
         p: [
-          'Le port du matériel de protection est obligatoire pendant les assauts et les combats tests : gants, casque et protège-dents.',
+          'Le port du matériel de protection est obligatoire pendant les mises en situation et les mises de gants : gants, casque et protège-dents.',
           'Les oppositions sont organisées par les coachs et adaptées à l’âge, au poids, au niveau et à l’expérience de chacun.',
           'Toute douleur, blessure ou malaise se signale tout de suite à un coach.',
         ],

@@ -368,9 +368,14 @@ export async function inscription() {
     $('[data-p-club]').textContent = c ? `${c.nom} · ${c.adresse}` : '';
     $('[data-p-prix]').textContent = String(p);
     $('[data-p-total]').textContent = String(p);
-    // la ligne « 4 fois » n'apparaît que si l'API propose vraiment ce moyen pour ce club
-    const quatreFois = (etat.methodes[etat.club] || []).some((m) => m.id === 'paypal_4x');
-    $('[data-p-4x]').textContent = quatreFois ? `Payable en une fois, ou en 4 fois avec PayPal (4 × ${fmt(p / 4)} €) si vous y êtes éligible.` : '';
+    // la ligne « plusieurs fois » ne nomme que ce que l'API propose vraiment pour ce club ;
+    // Scalapay comme ses échéances au paiement (lib/installments.js) : 3 fois sans frais ou 4 fois avec 1,5 % de frais
+    const ids = (etat.methodes[etat.club] || []).map((m) => m.id);
+    const enPlusieurs = [
+      ids.includes('paypal_4x') ? `en 4 fois avec PayPal (4 × ${fmt(p / 4)} €) si vous y êtes éligible` : '',
+      ids.includes('scalapay') ? 'avec Scalapay, en 3 fois sans frais ou en 4 fois avec 1,5 % de frais' : '',
+    ].filter(Boolean);
+    $('[data-p-4x]').textContent = enPlusieurs.length ? `Payable en une fois, ou ${enPlusieurs.join(', ou ')}.` : '';
     panier.classList.remove('is-ajoute');
     ajouter.textContent = 'Ajouter au panier';
     ajouter.disabled = false;
@@ -986,7 +991,7 @@ export async function inscription() {
       ['Club', `${c.nom}<br /><span>${c.adresse}</span>`],
       ['Enfant', `${[e.prenom, e.nom].filter(Boolean).join(' ')}${Number.isFinite(e.age) ? ` · ${e.age} ans` : ''}`],
       ['Dates', 'Du lundi 26 au samedi 31 octobre 2026'],
-      ['Horaires', '10h – 12h et 14h – 16h<br /><span>Mercredi 11h – 13h et 16h – 18h · samedi bowling 10h – 12h, interclub à partir de 14h</span>'],
+      ['Horaires', '10h – 12h et 14h – 16h<br /><span>Mercredi 11h – 13h et 16h – 18h · samedi activité de cohésion 10h – 12h, interclub au Boxing Center des Minimes à partir de 14h</span>'],
       ['Repas', 'À prévoir : non fourni<br /><span>Les enfants peuvent rester à la salle sous surveillance pendant la pause du midi.</span>'],
       ['Documents', docs],
       ['Réglé', `${order?.amount_cents ? fmt(order.amount_cents / 100) : montant()} €`],
@@ -994,7 +999,6 @@ export async function inscription() {
     $('[data-recap-fin]').innerHTML = lignes.map(([dt, dd]) => `<div><dt>${dt}</dt><dd>${dd}</dd></div>`).join('');
     $('[data-f-contact]').innerHTML = `<h2>Une question ?</h2><p>Le club répond : ${contactClub()}. Un e-mail de confirmation vous a été envoyé avec ce récapitulatif.</p>`;
     $('[data-autre-enfant]').href = `/inscription?club=${etat.club}&tarif=${etat.tarif}`;
-    $('[data-retour-stage]').href = c.path;
     ecrireSession({ etape: null, order: null, token: null, naissance: null });
     aller('fin');
     if (!deja) dire('');

@@ -38,32 +38,34 @@ export const INTERVENANTS = {
     titres: ['Professionnelle : 2 victoires, 0 défaite', 'Près de 30 combats amateurs'],
     // le même palmarès, en chiffres, pour le bilan affiché sur sa fiche
     bilan: [[2, 'victoires'], [0, 'défaite']],
-    texte: 'Considérée comme l’un des grands espoirs de la boxe professionnelle française, elle intervient pendant l’immersion dans le haut niveau, le mercredi.',
+    texte: 'Considérée comme l’un des grands espoirs de la boxe professionnelle française, elle vient échanger avec les enfants le mercredi.',
     photo: 'anna',
   },
-  // carte officielle « Équipe des coachs, saison 2026/2027 » (Downloads/visuels coachs/FIXED/final)
+  // le club, 13/10/2026 : DEJEPS, nom de famille, et sa vraie photo (séance du club, Axel Derewiany) ;
+  // « Boutlelis » : le nom du fichier de sa photo sur le site officiel des Minimes, l'affiche écrit « MEHDI B »
   mehdi: {
-    nom: 'Mehdi',
+    nom: 'Mehdi Boutlelis',
     court: 'Mehdi',
     role: 'Head coach des Minimes',
-    titres: ['Responsable sportif du club', 'BPJEPS boxe anglaise', 'BPJEPS sports de contact'],
+    titres: ['Responsable sportif du club', 'DEJEPS', 'BPJEPS boxe anglaise', 'BPJEPS sports de contact'],
     texte: 'Pur produit de l’école Boxing Center, il accompagne chaque boxeur avec exigence et pédagogie, du loisir à la compétition.',
     photo: 'mehdi',
   },
+  // le club, 13/10/2026 : leur palmarès remplace les phrases ; pas encore de photo
   fayez: {
-    nom: 'Fayez',
+    nom: 'Fayez Draoui',
     court: 'Fayez',
     role: 'Coach Boxing Center',
-    titres: [],
-    texte: 'Leçons collectives, piste et préparation physique pendant la semaine.',
+    titres: ['12 combats amateurs'],
+    texte: '',
     photo: null,
   },
   lucas: {
-    nom: 'Lucas',
+    nom: 'Lucas Kouyate',
     court: 'Lucas',
     role: 'Coach Boxing Center',
-    titres: [],
-    texte: 'Leçons techniques, assauts à thème et Boot Camp pendant la semaine.',
+    titres: ['21 combats amateurs, 17 victoires'],
+    texte: '',
     photo: null,
   },
   johnson: {
@@ -74,7 +76,7 @@ export const INTERVENANTS = {
     // palmarès inscrit sur sa carte officielle de coach (saison 2026/2027)
     titres: ['Professionnel : 10 victoires, 1 défaite, 1 nul', 'Passé professionnel aux Minimes en 2018'],
     bilan: [[10, 'victoires'], [1, 'défaite'], [1, 'nul']],
-    texte: 'Il intervient pendant l’immersion dans le haut niveau, le mercredi.',
+    texte: 'Il vient échanger avec les enfants le mercredi.',
     photo: 'johnson',
   },
 };
@@ -89,7 +91,8 @@ export const CLUBS = {
     cta: 'Voir le stage à Portet',
     inscrire: 'Inscrire mon enfant à Portet',
     a: 'à Portet',
-    path: '/stage-enfants-portet',
+    // les pages club ont été retirées le 13/10/2026 : le lien d'une salle mène à sa semaine
+    programme: '/programme?club=portet',
     adresse: { rue: '61 Route d’Espagne', cp: '31120', ville: 'Portet-sur-Garonne' },
     // point de l'adresse, base adresse nationale (api-adresse.data.gouv.fr, relevé le 12/10/2026)
     geo: { lat: 43.52167, lng: 1.39429 },
@@ -117,13 +120,14 @@ export const CLUBS = {
     cta: 'Voir le stage aux Minimes',
     inscrire: 'Inscrire mon enfant aux Minimes',
     a: 'aux Minimes',
-    path: '/stage-enfants-minimes',
+    programme: '/programme?club=minimes',
     adresse: { rue: '12 rue de Fenouillet', cp: '31200', ville: 'Toulouse' },
     // point de l'adresse, base adresse nationale (api-adresse.data.gouv.fr, relevé le 12/10/2026)
     geo: { lat: 43.6265, lng: 1.4306 },
     acces: 'Métro ligne B, station Barrière de Paris, à trois minutes à pied.',
-    tel: '05 62 24 46 82',
-    telHref: '+33562244682',
+    // le club, 13/10/2026
+    tel: '07 72 25 41 17',
+    telHref: '+33772254117',
     email: 'boxingcenter31@gmail.com',
     accent: 'minimes',
     hero: 'minimes-ados',
@@ -132,7 +136,7 @@ export const CLUBS = {
     vedette: 'johnson',
     autre: 'portet',
     intro:
-      'Aux Minimes, la semaine se passe dans la première salle Boxing Center, ouverte en 2016 : trois rings, des fresques sur les murs, et le berceau de boxeurs devenus professionnels, comme Johnson Suffo. Mehdi, Fayez et Lucas encadrent les enfants toute la semaine.',
+      'Aux Minimes, la semaine se passe dans la première salle Boxing Center, ouverte en 2016 : trois rings, des fresques sur les murs, et le berceau de boxeurs devenus professionnels, comme Johnson Suffo. Mehdi Boutlelis, Fayez Draoui et Lucas Kouyate encadrent les enfants toute la semaine.',
     mapsQuery: 'Boxing+Center+Minimes,+12+rue+de+Fenouillet,+31200+Toulouse',
   },
 };

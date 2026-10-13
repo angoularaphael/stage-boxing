@@ -1,0 +1,30 @@
+---
+/**
+ * Une adresse retirée qui renvoie tout de suite ailleurs, sans page morte. Les pages club
+ * (/stage-enfants-portet, /stage-enfants-minimes) ont été retirées le 13/10/2026 ; les sites
+ * des salles pointent encore vers elles.
+ */
+import { SITE_URL } from '../data/site.js';
+
+interface Props {
+  vers: string;
+}
+const { vers } = Astro.props;
+---
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, follow" />
+    <title>Les Vacances des Boxeurs — stages enfants Boxing Center</title>
+    <link rel="canonical" href={`${SITE_URL}${vers}`} />
+    <meta http-equiv="refresh" content={`0;url=${vers}`} />
+    <script is:inline define:vars={{ vers }}>
+      location.replace(vers + location.search + location.hash);
+    </script>
+  </head>
+  <body>
+    <p><a href={vers}>Les Vacances des Boxeurs, le stage enfants Boxing Center</a></p>
+  </body>
+</html>

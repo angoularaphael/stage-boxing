@@ -240,7 +240,9 @@ export function agendaIcs(D, clubId, prenom = '') {
   D.semaine.forEach((j) => {
     j.seances.forEach((s) => {
       const titre = s.titreClub ? s.titreClub[clubId] : s.titre;
-      const ailleurs = /Bowling|Interclub/.test(s.titre);
+      // l'interclub a lieu au Boxing Center des Minimes pour les deux stages ; le lieu de l'activité de cohésion n'est pas encore donné
+      const lieu = s.lieu && D.clubs[s.lieu] ? D.clubs[s.lieu] : club;
+      const ailleurs = /Activité cohésion/.test(s.titre);
       const lignes = [
         'BEGIN:VEVENT',
         `UID:${j.date}-${s.debut.replace(':', '')}-${clubId}@stages.boxingcenter.fr`,
@@ -248,7 +250,7 @@ export function agendaIcs(D, clubId, prenom = '') {
         `DTSTART:${utc(j.date, s.debut)}`,
         s.fin ? `DTEND:${utc(j.date, s.fin)}` : null,
         `SUMMARY:${echap(`Stage boxe${prenom ? ` (${prenom})` : ''} — ${titre}`)}`,
-        `LOCATION:${echap(ailleurs ? 'Lieu précisé par le club' : `${club.nom}, ${club.adresse}`)}`,
+        `LOCATION:${echap(ailleurs ? 'Lieu précisé par le club' : `${lieu.nom}, ${lieu.adresse}`)}`,
         `DESCRIPTION:${echap(`Les Vacances des Boxeurs — ${club.nom}. Matériel : gants, protège-dents, casque, tenue, baskets, eau. Repas non fourni.`)}`,
         'END:VEVENT',
       ].filter(Boolean);

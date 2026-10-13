@@ -8,6 +8,8 @@ import { STAGE } from './stage.js';
 import { CLUBS, CLUB_IDS, INTERVENANTS, EDITEUR } from './clubs.js';
 
 const ORG_ID = 'https://boxingcenter.fr/#organization';
+// les deux salles sont décrites côte à côte sur /choisir-mon-club depuis que les pages club ont été retirées
+const lieuId = (id) => `${SITE_URL}/choisir-mon-club#lieu-${id}`;
 
 export function organisation() {
   return {
@@ -26,7 +28,7 @@ export function lieu(id) {
   const c = CLUBS[id];
   return {
     '@type': 'SportsActivityLocation',
-    '@id': `${SITE_URL}${c.path}#lieu`,
+    '@id': lieuId(id),
     name: c.nom,
     telephone: c.telHref,
     email: c.email,
@@ -44,7 +46,7 @@ export function lieu(id) {
 
 export function evenement(id) {
   const c = CLUBS[id];
-  const url = `${SITE_URL}${c.path}`;
+  const url = `${SITE_URL}${c.programme}`;
   const offre = (nom, prix) => ({
     '@type': 'Offer',
     name: `Stage enfant — ${nom}`,
@@ -119,9 +121,9 @@ export function personnes() {
         '@id': `${SITE_URL}/equipe#fiche-${pid}`,
         name: p.nom,
         jobTitle: p.role,
-        description: p.vedette ? `${p.vedette}. ${p.texte}` : p.texte,
+        description: [p.vedette, p.texte || p.titres.join(', ')].filter(Boolean).join('. '),
         worksFor: { '@id': ORG_ID },
-        workLocation: { '@id': `${SITE_URL}${CLUBS[id].path}#lieu` },
+        workLocation: { '@id': lieuId(id) },
         url: `${SITE_URL}/equipe#fiche-${pid}`,
       };
     }),

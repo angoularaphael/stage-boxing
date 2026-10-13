@@ -3,14 +3,12 @@
  * /parents — « Est-ce sûr, et comment ça se passe ? ». Les « blocs clairs pour les parents »
  * du cahier (§13), pris au mot : après le héros, la page quitte le noir du boxeur pour la
  * lumière du jour. Uniquement des faits : flyers, cahier, documents du stage.
- * Puis le sac, à préparer avec l'enfant : on revient dans son monde.
  */
 import Base from '../layouts/Base.astro';
 import SiteHeader from '../components/SiteHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import PageTete from '../components/PageTete.astro';
 import SemaineMini from '../components/SemaineMini.astro';
-import Sac from '../components/Sac.astro';
 import Partager from '../components/Partager.astro';
 import Suite from '../components/Suite.astro';
 import Final from '../components/Final.astro';
@@ -23,7 +21,7 @@ import { precharge } from '../data/precharge.js';
 
 const doc = (id: string) => DOCUMENTS.find((d) => d.id === id)!;
 const documents = [
-  { titre: doc('autorisation').titre, texte: 'Vous autorisez votre enfant à participer à toutes les activités du programme, assauts et combats tests compris, adaptés à son âge, son poids et son niveau.', href: '/reglement#autorisation' },
+  { titre: doc('autorisation').titre, texte: 'Vous autorisez votre enfant à participer à toutes les activités du programme, mises en situation et mises de gants comprises, adaptées à son âge, son poids et son niveau.', href: '/reglement#autorisation' },
   { titre: doc('sante').titre, texte: 'Vous certifiez avoir communiqué ce qu’il faut savoir sur sa santé (allergies, traitement, blessure), et vous autorisez l’appel aux secours en cas d’urgence.', href: '/reglement#sante' },
   { titre: doc('reglement').titre, texte: 'Respect des coachs, des autres et du matériel ; sécurité ; horaires ; pause du midi ; tenue et hygiène.', href: '/reglement#reglement' },
   { titre: doc('participation').titre, texte: 'Le groupe et le programme définis par les coachs, le repas tiré du sac, et votre choix pour la pause du midi.', href: '/reglement#participation' },
@@ -36,10 +34,10 @@ const jsonLd = graphe(organisation(), fil([['Stages enfants Boxing Center', '/']
 ---
 <Base
   title="Stage boxe enfants : sécurité, horaires, repas — Boxing Center"
-  description="Boxe éducative, protections, groupes par âge et niveau, horaires, pause du midi surveillée, sac et documents : l’essentiel avant d’inscrire votre enfant."
+  description="Boxe éducative, protections, groupes par âge et niveau, horaires, pause du midi surveillée et documents : l’essentiel avant d’inscrire votre enfant."
   path="/parents"
   ogTitle="Les Vacances des Boxeurs, côté parents"
-  ogDescription="Sécurité, horaires, pause du midi, sac et documents : tout, sans petites lignes."
+  ogDescription="Sécurité, horaires, pause du midi et documents : tout, sans petites lignes."
   ogImage="/img/og/parents.jpg"
   ogAlt="Des enfants casqués et gantés face à leur coach, pendant un cours de boxe éducative"
   page="parents"
@@ -52,8 +50,8 @@ const jsonLd = graphe(organisation(), fil([['Stages enfants Boxing Center', '/']
       photo="portet-educative"
       eyebrow="Pour les parents"
       titre="Un cadre<br /><em>clair</em>"
-      lede="Tout ce qu’il faut savoir avant d’inscrire votre enfant : la sécurité, la journée, le midi, le sac et les documents. Sans petites lignes."
-      ledeBoxeur="Cette page est pour tes parents : la sécurité, la journée, le midi, le sac et les documents. Envoie-la-leur, ils y trouveront tout."
+      lede="Tout ce qu’il faut savoir avant d’inscrire votre enfant : la sécurité, la journée, le midi et les documents. Sans petites lignes."
+      ledeBoxeur="Cette page est pour tes parents : la sécurité, la journée, le midi et les documents. Envoie-la-leur, ils y trouveront tout."
       courant="Parents"
     >
       <Partager classe="btn btn--rouge voix voix--b" />
@@ -78,8 +76,8 @@ const jsonLd = graphe(organisation(), fil([['Stages enfants Boxing Center', '/']
             </article>
             <article class="regle" data-rev style="--d:.06s">
               <p class="regle__n">02</p>
-              <h3>Protégé pendant les assauts</h3>
-              <p>Gants, casque et protège-dents pour les assauts et les combats tests, entre enfants d’âge, de poids et de niveau proches, sous le regard des coachs.</p>
+              <h3>Protégé à chaque mise de gants</h3>
+              <p>Gants, casque et protège-dents pendant les mises en situation et les mises de gants, entre enfants d’âge, de poids et de niveau proches, sous le regard des coachs.</p>
             </article>
             <article class="regle" data-rev style="--d:.12s">
               <p class="regle__n">03</p>
@@ -101,8 +99,8 @@ const jsonLd = graphe(organisation(), fil([['Stages enfants Boxing Center', '/']
             <ol class="journee__fil" data-rev>
               <li><time>10h</time><b>La séance du matin</b><span>Technique, tactique, physique : deux heures avec les coachs.</span></li>
               <li><time>12h</time><b>La pause du midi</b><span>{STAGE.repas}</span></li>
-              <li><time>14h</time><b>La séance de l’après-midi</b><span>Assauts, sac, piste, cohésion : la mise en pratique.</span></li>
-              <li><time>16h</time><b>Fin de la journée</b><span>Le mercredi, les combats tests finissent à 18h.</span></li>
+              <li><time>14h</time><b>La séance de l’après-midi</b><span>Mise en situation, préparation physique, cohésion : la mise en pratique.</span></li>
+              <li><time>16h</time><b>Fin de la journée</b><span>Le mercredi, la mise de gants finit à 18h.</span></li>
             </ol>
             <div class="journee__semaine" data-rev style="--d:.08s">
               <SemaineMini />
@@ -141,19 +139,6 @@ const jsonLd = graphe(organisation(), fil([['Stages enfants Boxing Center', '/']
         </div>
       </section>
     </div>
-
-    <section class="sec" id="sac" aria-labelledby="titre-sac">
-      <div class="wrap sac">
-        <div class="sec__head" data-rev>
-          <p class="eyebrow">À préparer avec votre enfant</p>
-          <h2 class="sec__title" id="titre-sac">Le sac<br /><em>du boxeur</em></h2>
-          <p class="sec__lede">Cochez au fur et à mesure : la liste se souvient de ce qui est prêt, sur ce téléphone.</p>
-        </div>
-        <div class="boite sac__boite" data-rev>
-          <Sac />
-        </div>
-      </div>
-    </section>
 
     <section class="sec" id="contacts" aria-labelledby="titre-contacts">
       <div class="wrap">

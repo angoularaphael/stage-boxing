@@ -49,7 +49,7 @@ const titres = p.bilan ? p.titres.filter((t: string) => !/^Professionnel(le)? :/
         {titres.map((t: string) => <li>{t}</li>)}
       </ul>
     )}
-    <p class="fiche__texte">{p.texte}</p>
+    {p.texte && <p class="fiche__texte">{p.texte}</p>}
     {semaine.length > 0 && (
       <div class="fiche__semaine">
         <p class="eyebrow">Sa semaine au stage, {c.a}</p>

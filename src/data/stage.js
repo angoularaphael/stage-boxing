@@ -35,38 +35,38 @@ export const STAGE = {
   sousTitre:
     'Une semaine 100 % boxe pour progresser, se dépasser et vivre une vraie expérience sportive encadrée par l’équipe Boxing Center.',
   programme:
-    'Technique, tactique, préparation physique, assauts, sac, cohésion, analyse vidéo, découverte du haut niveau, bowling et interclub.',
+    'Ateliers techniques, préparation physique, travail tactique, mises en situation, analyse vidéo, échanges avec nos boxeurs professionnels, cohésion de groupe et interclub.',
 };
 
 /** Les quatre piliers, mot pour mot depuis les flyers. */
 export const PILIERS = [
   {
     id: 'technique',
-    titre: 'Technique & Tactique',
-    texte: 'Leçons collectives, déplacements, enchaînements, défense et contre-attaque.',
+    titre: 'Perfectionnement technique',
+    texte: 'Ateliers techniques, déplacements, enchaînements, défense et contre-attaque.',
     photo: { portet: 'portet-educative', minimes: 'minimes-coaching' },
   },
   {
     id: 'intensite',
-    titre: 'Intensité & Physique',
-    texte: 'Sac, renforcement, coordination, piste, explosivité et Boot Camp.',
+    titre: 'Préparation physique',
+    texte: 'Renforcement, coordination, fractionné sur piste, travail au sac et ateliers physiques.',
     photo: { portet: 'portet-pads', minimes: 'minimes-jumps' },
   },
   {
     id: 'haut-niveau',
-    titre: 'Haut niveau',
-    texte: 'Analyse vidéo, échanges avec des boxeurs expérimentés et combats tests.',
+    titre: 'Travail tactique & échanges',
+    texte: 'Analyse vidéo, rencontre et échange avec nos boxeurs professionnels, mise en situation.',
     photo: { portet: 'portet-anna', minimes: 'minimes-graff' },
   },
   {
     id: 'cohesion',
-    titre: 'Cohésion',
-    texte: 'Défis collectifs, bowling et interclub pour finir la semaine ensemble.',
+    titre: 'Cohésion de groupe',
+    texte: 'Défis collectifs, activité de cohésion et interclub pour finir la semaine ensemble.',
     photo: { portet: 'portet-ecole-nb', minimes: 'minimes-cercle' },
   },
 ];
 
-/** Matériel nécessaire (flyers). `id` sert à la liste à cocher. */
+/** Matériel nécessaire (flyers). */
 export const MATERIEL = [
   { id: 'gants', nom: 'Gants de boxe' },
   { id: 'dents', nom: 'Protège-dents' },
@@ -95,7 +95,7 @@ export const SEMAINE = [
       {
         debut: '10:00',
         fin: '12:00',
-        titre: 'Leçon collective technique',
+        titre: 'Atelier technique',
         contenu: ['Fondamentaux', 'Déplacements et placements', 'Enchaînements', 'Travail technico-tactique'],
         objectif: 'Perfectionner les bases et améliorer la qualité technique.',
         coachs: { portet: ['valentin'], minimes: ['mehdi'] },
@@ -104,9 +104,9 @@ export const SEMAINE = [
       {
         debut: '14:00',
         fin: '16:00',
-        titre: 'Boot Camp & cohésion',
-        contenu: ['Ateliers physiques', 'Défis individuels et collectifs', 'Travail en équipe', 'Dépassement de soi', 'Jeux de cohésion'],
-        objectif: 'Développer l’esprit d’équipe, la condition physique et le dépassement de soi.',
+        titre: 'Préparation physique',
+        contenu: ['Ateliers physiques', 'Défis individuels et collectifs', 'Travail en équipe', 'Jeux de cohésion'],
+        objectif: 'Développer la condition physique et l’esprit d’équipe, à son rythme.',
         coachs: { portet: ['marama', 'mourad'], minimes: ['lucas', 'fayez'] },
         piliers: ['intensite', 'cohesion'],
       },
@@ -121,7 +121,7 @@ export const SEMAINE = [
       {
         debut: '10:00',
         fin: '12:00',
-        titre: 'Leçon collective',
+        titre: 'Atelier technique',
         contenu: ['Travail technique', 'Déplacements', 'Attaques et défenses', 'Enchaînements et mises en situation'],
         objectif: 'Développer les qualités techniques et apprendre à les utiliser en situation de boxe.',
         coachs: { portet: ['mourad'], minimes: ['fayez'] },
@@ -130,9 +130,9 @@ export const SEMAINE = [
       {
         debut: '14:00',
         fin: '16:00',
-        titre: 'Assauts à thème + sac spécifique',
-        contenu: ['Assauts avec consignes', 'Travail tactique', 'Gestion de la distance', 'Sac spécifique', 'Intensité et répétition'],
-        objectif: 'Mettre la technique en application face à un adversaire.',
+        titre: 'Mise en situation et perfectionnement technique',
+        contenu: ['Mises en situation avec consignes', 'Travail tactique', 'Gestion de la distance', 'Travail au sac', 'Répétition des gestes'],
+        objectif: 'Appliquer la technique en situation, face à un partenaire du même niveau.',
         coachs: { portet: ['marama'], minimes: ['lucas'] },
         piliers: ['technique', 'intensite'],
       },
@@ -147,9 +147,9 @@ export const SEMAINE = [
       {
         debut: '11:00',
         fin: '13:00',
-        titre: 'Immersion dans le haut niveau',
-        contenu: ['Analyse vidéo', 'Lecture tactique', 'Questions / réponses', 'Échanges compétition et haut niveau'],
-        objectif: 'Découvrir les exigences du haut niveau et apprendre à analyser un combat.',
+        titre: 'Échange avec les boxeurs pros',
+        contenu: ['Rencontre avec nos boxeurs professionnels', 'Analyse vidéo', 'Lecture tactique', 'Questions / réponses'],
+        objectif: 'Rencontrer nos boxeurs professionnels, poser ses questions et apprendre à lire un combat.',
         coachs: { portet: ['mourad', 'marama', 'anna'], minimes: ['fayez', 'lucas', 'johnson'] },
         temps: 'fort',
         piliers: ['haut-niveau'],
@@ -157,8 +157,8 @@ export const SEMAINE = [
       {
         debut: '16:00',
         fin: '18:00',
-        titre: 'Combats tests',
-        contenu: ['Mise en situation réelle', 'Oppositions adaptées au niveau et au poids', 'Observation technique et tactique', 'Gestion de l’effort et des émotions'],
+        titre: 'Mise en situation / mise de gants',
+        contenu: ['Mise en situation réelle', 'Mises de gants adaptées au niveau et au poids', 'Observation technique et tactique', 'Gestion de l’effort et des émotions'],
         objectif: 'Mettre en pratique les acquis du début de semaine.',
         coachs: { portet: [], minimes: [] },
         temps: 'fort',
@@ -175,8 +175,8 @@ export const SEMAINE = [
       {
         debut: '10:00',
         fin: '12:00',
-        titre: 'Leçon collective technique',
-        contenu: ['Perfectionnement', 'Enchaînements', 'Défense et contre-attaque', 'Situations technico-tactiques'],
+        titre: 'Perfectionnement technique',
+        contenu: ['Précision des gestes', 'Enchaînements', 'Défense et contre-attaque', 'Situations technico-tactiques'],
         objectif: 'Améliorer la maîtrise technique et la prise de décision.',
         coachs: { portet: ['marama'], minimes: ['lucas'] },
         piliers: ['technique'],
@@ -184,7 +184,7 @@ export const SEMAINE = [
       {
         debut: '14:00',
         fin: '16:00',
-        titre: 'Séance piste',
+        titre: 'Préparation physique / fractionné piste',
         contenu: ['Course', 'Vitesse', 'Endurance', 'Fractionné', 'Explosivité'],
         objectif: 'Développer les qualités physiques spécifiques nécessaires au boxeur.',
         coachs: { portet: ['mourad'], minimes: ['fayez'] },
@@ -201,18 +201,18 @@ export const SEMAINE = [
       {
         debut: '10:00',
         fin: '12:00',
-        titre: 'Coordination + renforcement + école de boxe',
-        contenu: ['Coordination spécifique', 'Appuis', 'Renforcement musculaire', 'École de boxe', 'Précision gestuelle'],
-        objectif: 'Améliorer la coordination, les appuis et les qualités physiques du boxeur.',
+        titre: 'Ateliers de coordination / déplacements',
+        contenu: ['Coordination spécifique', 'Appuis', 'Déplacements', 'Renforcement musculaire', 'Précision gestuelle'],
+        objectif: 'Améliorer la coordination, les appuis et les déplacements.',
         coachs: { portet: ['mourad', 'marama'], minimes: ['fayez', 'lucas'] },
         piliers: ['intensite'],
       },
       {
         debut: '14:00',
         fin: '16:00',
-        titre: 'Leçon collective + assauts à thème + sac',
-        contenu: ['Rappel technique', 'Situations tactiques', 'Assauts dirigés', 'Sac spécifique', 'Mise en application avec intensité'],
-        objectif: 'Réinvestir l’ensemble du travail effectué durant la semaine.',
+        titre: 'Perfectionnement technique + mise en situation',
+        contenu: ['Rappel technique', 'Conseils individuels', 'Situations tactiques', 'Mises en situation dirigées', 'Travail au sac'],
+        objectif: 'Réinvestir le travail de la semaine, avec des conseils pour chaque enfant.',
         coachs: { portet: ['valentin'], minimes: ['mehdi'] },
         piliers: ['technique', 'intensite'],
       },
@@ -227,9 +227,9 @@ export const SEMAINE = [
       {
         debut: '10:00',
         fin: '12:00',
-        titre: 'Bowling — activité cohésion',
+        titre: 'Activité cohésion de groupe',
         contenu: ['Une matinée plus détendue pour terminer la semaine ensemble autour d’une activité collective'],
-        objectif: 'Renforcer la cohésion et partager un moment en dehors de la salle.',
+        objectif: 'Renforcer la cohésion du groupe et partager un moment ensemble.',
         coachs: { portet: [], minimes: [] },
         piliers: ['cohesion'],
       },
@@ -237,9 +237,10 @@ export const SEMAINE = [
         debut: '14:00',
         fin: null,
         titre: 'Interclub',
-        // chaque flyer nomme l'autre club : c'est la rencontre des deux stages
-        titreClub: { portet: 'Interclub avec Boxing Center Minimes', minimes: 'Interclub avec Boxing Center Portet-sur-Garonne' },
-        contenu: ['Rencontres avec d’autres boxeurs', 'Mise en situation', 'Assauts adaptés aux niveaux', 'Application du travail effectué pendant le stage'],
+        // le club, 13/10/2026 : le nom reste « Interclub Portet × Minimes » et les deux stages se retrouvent au Boxing Center des Minimes
+        titreClub: { portet: 'Interclub Portet × Minimes', minimes: 'Interclub Portet × Minimes' },
+        lieu: 'minimes',
+        contenu: ['Rencontres avec d’autres boxeurs', 'Mise en situation', 'Mises de gants adaptées aux niveaux', 'Application du travail effectué pendant le stage'],
         objectif: 'Terminer la semaine par une expérience concrète et valoriser les progrès réalisés.',
         coachs: { portet: [], minimes: [] },
         temps: 'final',
@@ -253,23 +254,23 @@ export const SEMAINE = [
 export const PILIER_COURT = {
   technique: 'Technique',
   intensite: 'Physique',
-  'haut-niveau': 'Haut niveau',
+  'haut-niveau': 'Tactique',
   cohesion: 'Cohésion',
 };
 
 /** Titres courts pour la vue d'ensemble de la semaine (là où le titre entier ne tient pas). */
 export const TITRE_COURT = {
-  '2026-10-26-10-00': 'Leçon technique',
-  '2026-10-26-14-00': 'Boot Camp',
-  '2026-10-27-10-00': 'Leçon collective',
-  '2026-10-27-14-00': 'Assauts + sac',
-  '2026-10-28-11-00': 'Haut niveau',
-  '2026-10-28-16-00': 'Combats tests',
-  '2026-10-29-10-00': 'Leçon technique',
-  '2026-10-29-14-00': 'Piste',
+  '2026-10-26-10-00': 'Atelier technique',
+  '2026-10-26-14-00': 'Prépa physique',
+  '2026-10-27-10-00': 'Atelier technique',
+  '2026-10-27-14-00': 'Mise en situation',
+  '2026-10-28-11-00': 'Boxeurs pros',
+  '2026-10-28-16-00': 'Mise de gants',
+  '2026-10-29-10-00': 'Perfection\u00ADnement',
+  '2026-10-29-14-00': 'Prépa physique',
   '2026-10-30-10-00': 'Coordi\u00ADnation', // césure explicite : « Coordination » ne tient pas d'un bloc à 375 px
-  '2026-10-30-14-00': 'Leçon + assauts',
-  '2026-10-31-10-00': 'Bowling',
+  '2026-10-30-14-00': 'Perfection\u00ADnement',
+  '2026-10-31-10-00': 'Cohésion',
   '2026-10-31-14-00': 'Interclub',
 };
 

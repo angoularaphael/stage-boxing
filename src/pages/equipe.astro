@@ -25,7 +25,7 @@ const jsonLd = graphe(organisation(), lieu('portet'), lieu('minimes'), ...person
 ---
 <Base
   title="L’équipe du stage boxe enfants : coachs et pros — Boxing Center"
-  description="Valentin Tapia, Mourad Berraho, Marama Mercier, Anna Boullez à Portet ; Mehdi, Fayez, Lucas, Johnson Suffo aux Minimes : titres et séances du stage."
+  description="Valentin Tapia, Mourad Berraho, Marama Mercier, Anna Boullez à Portet ; Mehdi Boutlelis, Fayez Draoui, Lucas Kouyate, Johnson Suffo aux Minimes : titres et séances du stage."
   path="/equipe"
   ogTitle="Les coachs et les pros des Vacances des Boxeurs"
   ogDescription="Anna Boullez à Portet, Johnson Suffo aux Minimes, et les coachs Boxing Center toute la semaine."
@@ -79,7 +79,7 @@ const jsonLd = graphe(organisation(), lieu('portet'), lieu('minimes'), ...person
             <div class="equipe-club__tete" data-rev>
               <p class="eyebrow">{c.bloc}</p>
               <h2 class="sec__title" id={`titre-equipe-${id}`}>Équipe<br /><em>{c.court}</em></h2>
-              <a class="lien" href={c.path}>{c.cta}</a>
+              <a class="lien" href={c.programme}>{c.cta}</a>
             </div>
             <div class="fiches">
               {c.equipe.map((pid, i) => <FicheCoach id={pid} club={id} inverse={i % 2 === 1} />)}

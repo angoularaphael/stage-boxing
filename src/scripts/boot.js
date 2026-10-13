@@ -10,7 +10,6 @@ import { revelations } from './reveal.js';
 import { tarifs } from './tarif.js';
 import { places } from './places.js';
 import { horloge } from './horloge.js';
-import { kit } from './kit.js';
 import { cartes } from './cartes.js';
 import { echelle, semaineVivante } from './echelle.js';
 import { agenda } from './agenda.js';
@@ -46,7 +45,6 @@ async function demarrer() {
   tarifs();
   places();
   horloge();
-  kit();
   cartes();
   echelle();
   semaineVivante();

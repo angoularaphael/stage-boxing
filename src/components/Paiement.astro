@@ -17,7 +17,8 @@ const METHODES = {
     { id: 'payplug_card', nom: 'Carte bancaire', note: 'Paiement comptant' },
     { id: 'paypal_once', nom: 'PayPal', note: 'Paiement comptant' },
     { id: 'paypal_4x', nom: 'PayPal en 4 fois', note: `Dès 4 × ${euros(STAGE.prix.adherent / 4)}, selon votre éligibilité chez PayPal` },
-    { id: 'scalapay', nom: 'Scalapay', note: 'Paiement en plusieurs fois' },
+    // comme les échéances affichées au paiement (lib/installments.js)
+    { id: 'scalapay', nom: 'Scalapay', note: `En 3 fois sans frais, dès 3 × ${euros(STAGE.prix.adherent / 3)}, ou en 4 fois avec 1,5 % de frais` },
   ],
 };
 ---

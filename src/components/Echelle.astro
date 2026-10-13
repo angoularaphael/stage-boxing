@@ -33,7 +33,7 @@ const jours = SEMAINE.map((j) => {
   });
   const interclub = seances.find((s) => s.titre === 'Interclub');
   const jonction = deux && interclub ? heures(interclub.debut) : null;
-  // les deux rails s'arrêtent à la fin de la séance qui précède la jonction (le bowling)
+  // les deux rails s'arrêtent à la fin de la séance qui précède la jonction (l'activité de cohésion)
   const finRails = jonction === null ? null : creux.find((c) => c.a === jonction)?.de ?? jonction;
   return { ...j, fin, nb, rang, seances, creux, jonction, finRails };
 });
@@ -139,7 +139,7 @@ const libelleCreux = (j: any, c: any) => {
                       {s.temps === 'fort' && <b class="ech__noms-courts">{listeNoms(ids)}</b>}
                     </p>
                   )}
-                  {fusion && <p class="ech__coachs">Les deux stages se retrouvent. <b>Lieu et organisation précisés par le club.</b></p>}
+                  {s.titre === 'Interclub' && <p class="ech__coachs">Les deux stages se retrouvent <b>au Boxing Center des Minimes</b>.</p>}
                   <ul class="ech__contenu">
                     {s.contenu.map((x) => <li>{x}</li>)}
                   </ul>

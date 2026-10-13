@@ -55,7 +55,7 @@ const { compact = false } = Astro.props;
           <p class="trouve__km"><b data-km>—</b><span> km</span></p>
           <span class="trouve__jauge" aria-hidden="true"><span data-jauge></span></span>
           <p class="trouve__acces">{c.acces}</p>
-          <a class="btn btn--salle trouve__btn" href={c.path}>{c.cta} <span class="fleche" aria-hidden="true">→</span></a>
+          <a class="btn btn--salle trouve__btn" href={`/inscription?club=${id}`}>{c.inscrire} <span class="fleche" aria-hidden="true">→</span></a>
         </div>
       );
     })}

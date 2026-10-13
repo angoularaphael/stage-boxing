@@ -24,9 +24,9 @@ const seul = clubs.length === 1;
       <h2 class="sec__title" id="titre-equipe"><Voix p={titreP} b={titreB} html /></h2>
       <p class="sec__lede">
         {seul ? (
-          <Voix p="Les coachs du club et un boxeur professionnel, toute la semaine avec les enfants." b="Les coachs du club t’entraînent toute la semaine, et le mercredi un boxeur professionnel vient vous parler du haut niveau." />
+          <Voix p="Les coachs du club toute la semaine avec les enfants, et un boxeur professionnel le mercredi." b="Les coachs du club t’entraînent toute la semaine, et le mercredi un boxeur professionnel vient échanger avec ton groupe." />
         ) : (
-          <Voix p="Dans chaque salle, les coachs Boxing Center et un boxeur professionnel. Le programme est le même ; l’équipe est celle du club." b="Dans chaque salle, les coachs du club t’entraînent toute la semaine, et le mercredi un boxeur professionnel vient vous parler du haut niveau." />
+          <Voix p="Dans chaque salle, les coachs Boxing Center et un boxeur professionnel. Le programme est le même ; l’équipe est celle du club." b="Dans chaque salle, les coachs du club t’entraînent toute la semaine, et le mercredi un boxeur professionnel vient échanger avec ton groupe." />
         )}
       </p>
     </div>
@@ -38,7 +38,7 @@ const seul = clubs.length === 1;
             {!seul && (
               <div class="paquet__tete" data-rev>
                 <h3>Équipe <span>{c.court}</span></h3>
-                <a class="lien" href={c.path}>{c.cta}</a>
+                <a class="lien" href={c.programme}>{c.cta}</a>
               </div>
             )}
             <div class="cartes" data-cartes>

@@ -39,7 +39,7 @@ const visage = (id: string) => {
             <span>Avec {c.equipe.map((id) => INTERVENANTS[id].court).join(', ').replace(/, ([^,]*)$/, ' et $1')}</span>
           </div>
           <p class="fo__places" data-places={c.id} aria-live="polite"></p>
-          <a class="btn" href={c.path}>{c.cta} <span class="fleche" aria-hidden="true">→</span></a>
+          <a class="btn" href={`/inscription?club=${c.id}`}>{c.inscrire} <span class="fleche" aria-hidden="true">→</span></a>
         </article>
       ))}
     </div>

@@ -1897,19 +1897,6 @@ a.sem__s:hover {
 .etapes-ins--large li {
   font-size: 1.02rem;
 }
-.sac {
-  display: grid;
-  gap: 1rem;
-}
-@media (min-width: 980px) {
-  .sac {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    align-items: start;
-  }
-}
-.sac__boite {
-  max-width: 560px;
-}
 .contacts {
   display: grid;
   gap: 1rem;

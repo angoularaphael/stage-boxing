@@ -88,7 +88,7 @@ const jsonLd = graphe(organisation(), lieu('portet'), lieu('minimes'), fil([['St
               <tr>
                 <td></td>
                 {CLUB_IDS.map((id) => (
-                  <th scope="col" class:list={['compare__salle', `compare__salle--${id}`]}><a href={CLUBS[id].path}>{CLUBS[id].court}</a></th>
+                  <th scope="col" class:list={['compare__salle', `compare__salle--${id}`]}><a href={CLUBS[id].programme}>{CLUBS[id].court}</a></th>
                 ))}
               </tr>
             </thead>

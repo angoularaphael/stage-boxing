@@ -3,21 +3,21 @@
 > Stage de boxe anglaise pour les filles et garçons de 8 à 16 ans, tous niveaux (débutants, loisirs, boxe éducative, compétiteurs), du lundi 26 au samedi 31 octobre 2026 (deuxième semaine des vacances de la Toussaint), dans deux salles Boxing Center de Toulouse : Portet-sur-Garonne et les Minimes.
 
 ## Le stage
-- 6 jours, 2 séances ou activités par jour (12 au total) : technique et tactique, préparation physique, sac, assauts à thème, analyse vidéo, immersion dans le haut niveau, combats tests, séance piste, bowling et interclub.
-- Horaires : 10h–12h et 14h–16h ; le mercredi 11h–13h et 16h–18h ; le samedi bowling 10h–12h puis interclub à partir de 14h.
+- 6 jours, 2 séances ou activités par jour (12 au total) : ateliers techniques, préparation physique, travail tactique, mises en situation, analyse vidéo, échanges avec nos boxeurs professionnels, cohésion de groupe et interclub.
+- Horaires : 10h–12h et 14h–16h ; le mercredi 11h–13h et 16h–18h ; le samedi activité de cohésion 10h–12h puis interclub Portet × Minimes au Boxing Center des Minimes à partir de 14h.
 - Groupes et oppositions adaptés selon l'âge, le poids, le niveau et l'expérience.
 - Tarifs identiques dans les deux salles : 80 € pour un adhérent Boxing Center, 140 € sinon, pour l'intégralité du stage. Paiement en ligne (carte, PayPal comptant ou en plusieurs fois selon éligibilité ; Scalapay aux Minimes).
 - Repas non fourni ; les enfants peuvent rester à la salle sous surveillance pendant la pause du midi.
 - Matériel : gants, protège-dents, casque, tenue de sport, baskets, bouteille d'eau ; tenue de rechange et serviette pour les journées complètes.
 
 ## Les salles
-- [Stage enfants à Portet-sur-Garonne](https://stage-boxing.vercel.app/stage-enfants-portet) : Boxing Center Portet-sur-Garonne, 61 Route d'Espagne, 31120 Portet-sur-Garonne. 06 87 90 02 16. Encadrement : Valentin Tapia (head coach, DEJEPS boxe), Mourad Berraho (triple champion de France), Marama Mercier (double champion de France) et Anna Boullez, boxeuse professionnelle, challenger au titre de championne de France professionnelle.
-- [Stage enfants aux Minimes, Toulouse](https://stage-boxing.vercel.app/stage-enfants-minimes) : Boxing Center Minimes, 12 rue de Fenouillet, 31200 Toulouse, métro B Barrière de Paris. 05 62 24 46 82. Encadrement : Mehdi (head coach), Fayez, Lucas et Johnson Suffo, boxeur professionnel classé dans le top 100 mondial chez les poids moyens.
+- [Stage enfants à Portet-sur-Garonne](https://stage-boxing.vercel.app/programme?club=portet) : Boxing Center Portet-sur-Garonne, 61 Route d'Espagne, 31120 Portet-sur-Garonne. 06 87 90 02 16. Encadrement : Valentin Tapia (head coach, DEJEPS boxe), Mourad Berraho (triple champion de France), Marama Mercier (double champion de France) et Anna Boullez, boxeuse professionnelle, challenger au titre de championne de France professionnelle.
+- [Stage enfants aux Minimes, Toulouse](https://stage-boxing.vercel.app/programme?club=minimes) : Boxing Center Minimes, 12 rue de Fenouillet, 31200 Toulouse, métro B Barrière de Paris. 07 72 25 41 17. Encadrement : Mehdi Boutlelis (head coach, DEJEPS), Fayez Draoui (12 combats amateurs), Lucas Kouyate (21 combats amateurs, 17 victoires) et Johnson Suffo, boxeur professionnel classé dans le top 100 mondial chez les poids moyens.
 
 ## Les pages
 - [Le programme, heure par heure](https://stage-boxing.vercel.app/programme) : les 12 séances à leur vraie place dans la semaine, les coachs de chaque salle, les quatre piliers et l'agenda (.ics) par salle.
 - [L'équipe](https://stage-boxing.vercel.app/equipe) : les huit intervenants, leurs titres et les créneaux qu'ils animent pendant le stage.
-- [Pour les parents](https://stage-boxing.vercel.app/parents) : sécurité et boxe éducative, journée type, pause du midi, sac à préparer, documents à valider, contacts des deux clubs.
+- [Pour les parents](https://stage-boxing.vercel.app/parents) : sécurité et boxe éducative, journée type, pause du midi, documents à valider, contacts des deux clubs.
 - [Tarifs](https://stage-boxing.vercel.app/tarifs) : 80 € ou 140 €, moyens de paiement par salle, places en direct, la carte de boxeur que l'enfant reçoit à la fin de l'inscription.
 - [Questions fréquentes](https://stage-boxing.vercel.app/questions) : toutes les réponses, classées par thème.
 - [Choisir mon club](https://stage-boxing.vercel.app/choisir-mon-club) : la salle la plus proche d'une commune (distance à vol d'oiseau) et le comparatif des deux salles.

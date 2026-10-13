@@ -41,7 +41,7 @@ const m = CLUBS.minimes;
     <Bascule variante="heros" />
   </div>
   <div class="fo__duo">
-    <a class="fo__cote fo__cote--portet" href={p.path} data-suivi aria-label={`${p.cta} : stage enfants au Boxing Center Portet-sur-Garonne`}>
+    <a class="fo__cote fo__cote--portet" href={p.programme} data-suivi aria-label={`${p.cta} : stage enfants au Boxing Center Portet-sur-Garonne`}>
       <Photo name={p.hero} class="fo__img" sizes="(min-width: 900px) 60vw, 50vw" eager decorative />
       <span class="fo__eyebrow">{p.bloc.split(' — ')[0]}<span class="fo__eyebrow-suite"> — {p.bloc.split(' — ')[1]}</span></span>
       <span class="fo__nom">{p.court}</span>
@@ -49,11 +49,11 @@ const m = CLUBS.minimes;
       <span class="btn fo__btn">{p.cta} <span class="fleche" aria-hidden="true">→</span></span>
       <span class="fo__places" data-places="portet" aria-live="polite"></span>
     </a>
-    <a class="fo__cote fo__cote--minimes" href={m.path} data-suivi aria-label={`${m.cta} : stage enfants au Boxing Center Minimes, Toulouse`}>
+    <a class="fo__cote fo__cote--minimes" href={m.programme} data-suivi aria-label={`${m.cta} : stage enfants au Boxing Center Minimes, Toulouse`}>
       <Photo name={m.hero} class="fo__img" sizes="(min-width: 900px) 60vw, 50vw" eager decorative />
       <span class="fo__eyebrow">{m.bloc.split(' — ')[0]}<span class="fo__eyebrow-suite"> — {m.bloc.split(' — ')[1]}</span></span>
       <span class="fo__nom">{m.court}</span>
-      <span class="fo__infos">12 rue de Fenouillet · métro B<br />avec <strong>Mehdi</strong> et <strong>Johnson Suffo</strong></span>
+      <span class="fo__infos">12 rue de Fenouillet · métro B<br />avec <strong>Mehdi Boutlelis</strong> et <strong>Johnson Suffo</strong></span>
       <span class="btn fo__btn">{m.cta} <span class="fleche" aria-hidden="true">→</span></span>
       <span class="fo__places" data-places="minimes" aria-live="polite"></span>
     </a>

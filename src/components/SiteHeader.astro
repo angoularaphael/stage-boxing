@@ -1,8 +1,7 @@
 ---
 /**
- * L'en-tête du site. Chaque lien ouvre une vraie page ; les deux salles portent la couleur
- * de leur lieu. L'en-tête garde son nom de transition : il reste en place quand on change
- * de page, seul le contenu bascule.
+ * L'en-tête du site. Chaque lien ouvre une vraie page. L'en-tête garde son nom de transition :
+ * il reste en place quand on change de page, seul le contenu bascule.
  */
 import Bascule from './Bascule.astro';
 import Partager from './Partager.astro';
@@ -18,8 +17,6 @@ const c = club ? CLUBS[club] : null;
 const ctaHref = c ? `/inscription?club=${c.id}` : '/choisir-mon-club';
 const ctaTxt = c ? 'Inscrire mon enfant' : 'Choisir mon club';
 const liens = [
-  { href: '/stage-enfants-portet', txt: 'Portet', id: 'portet', salle: 'portet' },
-  { href: '/stage-enfants-minimes', txt: 'Minimes', id: 'minimes', salle: 'minimes' },
   { href: '/programme', txt: 'Programme', id: 'programme' },
   { href: '/equipe', txt: 'Équipe', id: 'equipe' },
   { href: '/parents', txt: 'Parents', id: 'parents' },
@@ -41,7 +38,7 @@ const liens = [
       </nav>
     )}
     {mode === 'tunnel' ? (
-      <a class="btn btn--ghost hd__cta" href={c ? c.path : '/'}>Retour au stage</a>
+      <a class="btn btn--ghost hd__cta" href="/">Retour au stage</a>
     ) : (
       <>
         <div class="hd__vue"><Bascule variante="tete" /></div>

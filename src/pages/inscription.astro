@@ -36,7 +36,6 @@ const donnees = {
         nom: c.nom,
         court: c.court,
         a: c.a,
-        path: c.path,
         adresse: adresseLigne(c),
         tel: c.tel,
         telHref: c.telHref,
@@ -50,7 +49,7 @@ const donnees = {
   semaine: SEMAINE.map((j) => ({
     date: j.date,
     jour: j.jour,
-    seances: j.seances.map((s) => ({ debut: s.debut, fin: s.fin, titre: s.titre, titreClub: s.titreClub || null })),
+    seances: j.seances.map((s) => ({ debut: s.debut, fin: s.fin, titre: s.titre, titreClub: s.titreClub || null, lieu: s.lieu || null })),
   })),
   materiel: MATERIEL.map((m) => m.nom + (m.note ? ` (${m.note})` : '')),
   docs: DOCUMENTS.map((d) => ({ cle: d.cle, titre: d.titre, tampon: d.tampon })),
@@ -197,7 +196,7 @@ const visages = (club: 'portet' | 'minimes') =>
           </div>
           <ul class="panier__inclus">
             <li>12 séances ou activités encadrées</li>
-            <li>Bowling et interclub du samedi</li>
+            <li>Activité de cohésion et interclub du samedi</li>
             <li>Repas non compris</li>
           </ul>
           <div class="panier__total"><span>Total</span><span><span class="prix-chiffre" data-p-total>—</span> €</span></div>

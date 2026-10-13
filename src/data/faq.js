@@ -31,7 +31,7 @@ export const FAQ_COMMUNE = [
   {
     theme: 'journee',
     q: 'Quels sont les horaires ?',
-    r: 'Deux séances par jour, de 10h à 12h et de 14h à 16h. Le mercredi, l’immersion dans le haut niveau a lieu de 11h à 13h et les combats tests de 16h à 18h. Le samedi, bowling de 10h à 12h puis interclub à partir de 14h.',
+    r: 'Deux séances par jour, de 10h à 12h et de 14h à 16h. Le mercredi, l’échange avec les boxeurs pros a lieu de 11h à 13h et la mise de gants de 16h à 18h. Le samedi, activité de cohésion de 10h à 12h puis interclub au Boxing Center des Minimes à partir de 14h.',
   },
   {
     theme: 'journee',
@@ -56,12 +56,12 @@ export const FAQ_COMMUNE = [
   {
     theme: 'securite',
     q: 'Les enfants vont-ils prendre des coups ?',
-    r: 'Les assauts et les combats tests se font avec casque, protège-dents et gants, entre enfants d’âge, de poids et de niveau proches, sous le regard des coachs. En boxe éducative, la touche remplace la frappe : la puissance y est interdite par le code sportif de la Fédération française de boxe.',
+    r: 'Les mises en situation et les mises de gants se font avec casque, protège-dents et gants, entre enfants d’âge, de poids et de niveau proches, sous le regard des coachs. En boxe éducative, la touche remplace la frappe : la puissance y est interdite par le code sportif de la Fédération française de boxe.',
   },
   {
     theme: 'stage',
     q: 'C’est quoi, l’interclub du samedi ?',
-    r: 'Le samedi après-midi, à partir de 14h, les deux stages se retrouvent : les enfants de Portet et ceux des Minimes font des assauts adaptés à leur niveau pour montrer leurs progrès. Le club précise le lieu et l’organisation.',
+    r: 'Le samedi après-midi, à partir de 14h, les deux stages se retrouvent au Boxing Center des Minimes, 12 rue de Fenouillet à Toulouse : les enfants de Portet et ceux des Minimes font des mises de gants adaptées à leur niveau pour montrer leurs progrès. Le club précise l’organisation.',
   },
   {
     theme: 'inscription',
@@ -115,7 +115,7 @@ function locales(id) {
       r:
         id === 'portet'
           ? 'Valentin Tapia, head coach du Boxing Center Portet, avec Mourad Berraho, triple champion de France, et Marama Mercier, double champion de France. Anna Boullez, boxeuse professionnelle et challenger au titre de championne de France, intervient le mercredi.'
-          : 'Mehdi, head coach des Minimes, avec Fayez et Lucas. Johnson Suffo, boxeur professionnel classé dans le top 100 mondial chez les poids moyens, intervient le mercredi.',
+          : 'Mehdi Boutlelis, head coach des Minimes, avec Fayez Draoui et Lucas Kouyate. Johnson Suffo, boxeur professionnel classé dans le top 100 mondial chez les poids moyens, intervient le mercredi.',
     },
     {
       theme: 'salles',
@@ -123,10 +123,6 @@ function locales(id) {
       r: `Oui : mêmes dates, mêmes horaires, même programme et mêmes tarifs. Seule l’équipe change, et les deux groupes se retrouvent le samedi pour l’interclub avec ${autre.nom}.`,
     },
   ];
-}
-
-export function faqClub(id) {
-  return [...locales(id), ...FAQ_COMMUNE];
 }
 
 export const FAQ_ACCUEIL = [PORTET_OU_MINIMES, ...FAQ_COMMUNE];
