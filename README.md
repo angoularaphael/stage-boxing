@@ -32,7 +32,8 @@ En studio, les paiements passent par les cles `*_TEST_*` (PayPal sandbox, PayPlu
 | | |
 |--|--|
 | **Dashboard équipe** | https://vercel.com/angoularaphaels-projects |
-| **Projet** | `stage-boxing` (Settings, env, déploiements) |
+| **Projet stage-boxing** | https://vercel.com/angoularaphaels-projects/stage-boxing |
+| **Variables d'environnement** | https://vercel.com/angoularaphaels-projects/stage-boxing/settings/environment-variables |
 | **URL prod actuelle** | https://stage-boxing.vercel.app |
 | **Domaine cible** | https://stages.boxingcenter.fr |
 
