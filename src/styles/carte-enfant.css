@@ -29,6 +29,12 @@
   letter-spacing: 0.02em;
   transition: color 0.4s;
 }
+.carte--enfant.has-photo .carte__mono {
+  display: none;
+}
+.carte--enfant.has-photo .carte__photo {
+  z-index: -2;
+}
 .carte--enfant .carte__nom {
   font-size: clamp(2rem, 7vw, 2.8rem);
   min-height: 0.86em;

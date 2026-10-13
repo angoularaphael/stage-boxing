@@ -81,6 +81,7 @@ const visages = (club: 'portet' | 'minimes') =>
         <p class="eyebrow">Votre inscription</p>
         <div class="carte carte--enfant" data-carte-enfant data-club="" aria-label="Carte de boxeur de votre enfant">
           <div class="carte__face">
+            <img class="carte__photo" data-c-photo alt="" width="600" height="840" hidden decoding="async" />
             <span class="carte__mono" data-c-initiales aria-hidden="true">?</span>
             <div class="carte__haut">
               <span>Les Vacances<br />des Boxeurs</span>
@@ -260,6 +261,7 @@ const visages = (club: 'portet' | 'minimes') =>
             <div class="methodes" data-methodes role="radiogroup" aria-label="Moyen de paiement">
               <p class="champ__aide">Chargement des moyens de paiement…</p>
             </div>
+            <div class="echeances" data-echeances hidden></div>
             <p class="champ__erreur" data-erreur-pour="methode"></p>
           </fieldset>
           <p class="cgv-note">En payant, vous acceptez les <a class="lien" href="/cgv" target="_blank" rel="noopener">conditions générales de vente</a> du stage. Paiement sécurisé chez le prestataire choisi : vous quittez un instant le site, puis vous revenez ici pour la fiche de votre enfant.</p>
@@ -290,6 +292,25 @@ const visages = (club: 'portet' | 'minimes') =>
           <p class="form__legende-requis"><abbr class="requis" title="Obligatoire">*</abbr> Champs obligatoires</p>
           <fieldset class="groupe">
             <legend>L’enfant</legend>
+            <div class="champ photo-enfant">
+              <span class="photo-enfant__label">Photo pour sa carte <span class="facultatif">facultatif</span></span>
+              <p class="champ__aide">Portrait de face, bien éclairé. Elle remplace les initiales sur la carte (partagée avec le club, pas le nom de famille sur l’image).</p>
+              <div class="photo-enfant__zone">
+                <img class="photo-enfant__apercu" data-photo-apercu alt="" width="120" height="120" hidden decoding="async" />
+                <div class="photo-enfant__actions">
+                  <label class="btn btn--ghost photo-enfant__btn">
+                    Choisir une photo
+                    <input type="file" accept="image/jpeg,image/png,image/webp" data-photo-fichier hidden />
+                  </label>
+                  <label class="btn btn--ghost photo-enfant__btn">
+                    Prendre une photo
+                    <input type="file" accept="image/jpeg,image/png,image/webp" capture="user" data-photo-camera hidden />
+                  </label>
+                </div>
+              </div>
+              <p class="photo-enfant__etat" data-photo-etat aria-live="polite"></p>
+              <p class="champ__erreur" data-erreur-pour="e-photo"></p>
+            </div>
             <div class="grille-2">
               <div class="champ">
                 <label for="e-prenom">Prénom <abbr class="requis" title="Obligatoire">*</abbr></label>

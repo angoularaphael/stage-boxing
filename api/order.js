@@ -74,6 +74,8 @@ export default async function handler(req, res) {
     }
     const emergencyName = String(body.emergency_name || '').trim();
     const emergencyPhone = String(body.emergency_phone || '').trim();
+    const prevPhoto = order.child?.photo_url;
+    const prevPhotoId = order.child?.photo_public_id;
     order.child = {
       first_name: String(body.first_name || '').trim(),
       last_name: String(body.last_name || '').trim(),
@@ -92,6 +94,13 @@ export default async function handler(req, res) {
       injury: String(body.injury || '').trim(),
       lunch_break: String(body.lunch_break || '').trim(),
     };
+    if (body.photo_url && String(body.photo_url).startsWith('https://')) {
+      order.child.photo_url = String(body.photo_url).trim();
+    } else if (prevPhoto) {
+      order.child.photo_url = prevPhoto;
+      order.child.photo_public_id = prevPhotoId;
+    }
+    if (body.photo_public_id) order.child.photo_public_id = String(body.photo_public_id).trim();
     if (!order.child.first_name || !order.child.last_name) {
       return json(res, 400, { ok: false, error: 'Nom et prenom de l enfant obligatoires.' });
     }

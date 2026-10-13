@@ -51,6 +51,17 @@ test('carte mail : HTML + SVG personnalises par salle', () => {
   }
 });
 
+test('carte mail : photo Cloudinary a la place des initiales', () => {
+  const order = sampleOrder('minimes');
+  order.child.photo_url = 'https://res.cloudinary.com/demo/image/upload/stage-boxeur/photos/stg_abcd';
+  const data = cardDataFromOrder(order);
+  assert.equal(data.photo_url, order.child.photo_url);
+  const carte = buildCarteSvg(order);
+  assert.match(carte.svg, /image href=/);
+  assert.ok(carte.html.includes(order.child.photo_url));
+  assert.ok(!carte.svg.includes('font-size="420"'));
+});
+
 test('carte mail : PNG pour Brevo (pas de SVG en piece jointe)', async () => {
   const png = await buildCartePng(sampleOrder('minimes'));
   assert.ok(png?.content?.length > 500);

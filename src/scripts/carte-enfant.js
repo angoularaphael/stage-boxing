@@ -26,6 +26,16 @@ function mix(hex, k) {
   return `rgb(${f(r)}, ${f(g)}, ${f(b)})`;
 }
 
+function chargerImage(url) {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.crossOrigin = 'anonymous';
+    img.onload = () => resolve(img);
+    img.onerror = () => reject(new Error('photo_load'));
+    img.src = url;
+  });
+}
+
 export async function carteEnImage(d) {
   try {
     await Promise.all([document.fonts.load('400 200px "Bebas Neue"'), document.fonts.load('800 40px "Montserrat"'), document.fonts.load('600 40px "Montserrat"')]);
@@ -49,16 +59,36 @@ export async function carteEnImage(d) {
   ctx.fillStyle = g;
   ctx.fillRect(0, 0, W, H);
 
-  // initiales, très grandes
-  const ini = `${(d.prenom[0] || '').toUpperCase()}${(d.nom[0] || '').toUpperCase()}` || 'VB';
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'alphabetic';
-  ctx.font = '400 560px "Bebas Neue", "Arial Narrow", sans-serif';
-  ctx.shadowColor = accent;
-  ctx.shadowBlur = 120;
-  ctx.fillStyle = mix(accent, 0.95);
-  ctx.fillText(ini, W / 2 - 80, 760);
-  ctx.shadowBlur = 0;
+  let photoOk = false;
+  if (d.photo_url) {
+    try {
+      const img = await chargerImage(d.photo_url);
+      const hPhoto = 900;
+      ctx.save();
+      ctx.beginPath();
+      ctx.rect(0, 0, W, hPhoto);
+      ctx.clip();
+      const scale = Math.max(W / img.width, hPhoto / img.height);
+      const dw = img.width * scale;
+      const dh = img.height * scale;
+      ctx.drawImage(img, (W - dw) / 2, (hPhoto - dh) / 2, dw, dh);
+      ctx.restore();
+      photoOk = true;
+    } catch {
+      photoOk = false;
+    }
+  }
+  if (!photoOk) {
+    const ini = `${(d.prenom[0] || '').toUpperCase()}${(d.nom[0] || '').toUpperCase()}` || 'VB';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'alphabetic';
+    ctx.font = '400 560px "Bebas Neue", "Arial Narrow", sans-serif';
+    ctx.shadowColor = accent;
+    ctx.shadowBlur = 120;
+    ctx.fillStyle = mix(accent, 0.95);
+    ctx.fillText(ini, W / 2 - 80, 760);
+    ctx.shadowBlur = 0;
+  }
 
   // dégradé de lecture en bas
   const bas = ctx.createLinearGradient(0, 760, 0, H);

@@ -13,6 +13,7 @@ import { incliner, gyroscope } from './cartes.js';
 import { reduit } from './ui.js';
 import { carteEnImage, agendaIcs, telecharger } from './carte-enfant.js';
 import { padSignature } from './signature.js';
+import { installmentScheduleHtml } from '../../lib/installments.js';
 
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
@@ -44,9 +45,9 @@ async function api(chemin, opts = {}) {
   });
   const data = await res.json().catch(() => ({}));
   if (!res.ok) {
-    const e = new Error(data.error || `Erreur ${res.status}`);
+    const e = new Error(data.message || data.error || `Erreur ${res.status}`);
     e.status = res.status;
-    e.code = data.code || null;
+    e.code = data.code || data.error || null;
     throw e;
   }
   return data;
@@ -234,6 +235,23 @@ export async function inscription() {
   }
   const montant = () => (etat.tarif === 'adherent' ? D.prix.adherent : D.prix.nonAdherent);
 
+  const appliquerPhotoCarte = (url) => {
+    const img = $('[data-c-photo]');
+    const mono = $('[data-c-initiales]');
+    if (url) {
+      img.src = url;
+      img.hidden = false;
+      img.alt = '';
+      carte.classList.add('has-photo');
+      mono.hidden = true;
+    } else {
+      img.removeAttribute('src');
+      img.hidden = true;
+      carte.classList.remove('has-photo');
+      mono.hidden = false;
+    }
+  };
+
   function majCarte() {
     const e = etat.enfant;
     const prenom = (e.prenom || '').trim();
@@ -245,8 +263,9 @@ export async function inscription() {
       void carte.offsetWidth;
       carte.classList.add('is-ecrit');
     }
+    appliquerPhotoCarte(e.photo_url || '');
     const ini = `${(prenom[0] || '').toUpperCase()}${((e.nom || '').trim()[0] || '').toUpperCase()}`;
-    $('[data-c-initiales]').textContent = ini || '?';
+    if (!e.photo_url) $('[data-c-initiales]').textContent = ini || '?';
     $('[data-c-niveau]').textContent = e.niveau || 'Boxeur du stage';
     $('[data-c-age]').textContent = Number.isFinite(e.age) && e.age >= 8 && e.age <= 16 ? `${e.age} ans${e.pratique ? ` · ${e.pratique === 'Débutant' ? 'débutant' : `${e.pratique} de pratique`}` : ''}` : '8–16 ans';
     if (etat.order?.id) $('[data-c-serie]').textContent = `N° ${String(etat.order.id).slice(-4).toUpperCase()}`;
@@ -370,6 +389,9 @@ export async function inscription() {
   /* ---------- étape 4 : paiement ---------- */
   const formPaie = $('[data-form-paiement]');
   const btnPayer = $('[data-payer]');
+  formPaie.addEventListener('change', (ev) => {
+    if (ev.target?.name === 'method') majEcheances();
+  });
   const LIBELLES = {
     cawl_card: ['Carte bancaire', 'Paiement comptant'],
     payplug_card: ['Carte bancaire', 'Paiement comptant'],
@@ -399,12 +421,28 @@ export async function inscription() {
     btnPayer.disabled = false;
     methodes.forEach((m, i) => {
       const [nom, detail] = LIBELLES[m.id] || [m.label, ''];
-      const somme = m.id === 'paypal_4x' ? `dès 4 × ${fmt(p / 4)} €` : `${p} €`;
+      const somme =
+        m.id === 'paypal_4x' ? `dès 4 × ${fmt(p / 4)} €` : m.id === 'scalapay' ? `dès 3 × ${fmt(p / 3)} €` : `${p} €`;
       const label = document.createElement('label');
       label.className = 'methode';
       label.innerHTML = `<input type="radio" name="method" value="${m.id}" ${i === 0 ? 'checked' : ''} /><span class="radio__rond" aria-hidden="true"></span><span class="methode__nom">${nom}<small>${detail}</small></span><span class="methode__montant">${somme}</span>`;
       zone.appendChild(label);
     });
+    majEcheances();
+  }
+
+  function majEcheances() {
+    const bloc = $('[data-echeances]');
+    if (!bloc) return;
+    const methode = formPaie.querySelector('input[name="method"]:checked')?.value;
+    const html = installmentScheduleHtml(methode, montant());
+    if (html) {
+      bloc.innerHTML = html;
+      bloc.hidden = false;
+    } else {
+      bloc.innerHTML = '';
+      bloc.hidden = true;
+    }
   }
   // la date de naissance avant de payer : un enfant hors des 8–16 ans ne paie pas pour rien
   const champsDatePaie = $$('[data-date-paie]');
@@ -611,6 +649,14 @@ export async function inscription() {
       etat.enfant.pratique = c.practice_years;
       const niv = /Niveau : (.+)/.exec(c.notes || '');
       etat.enfant.niveau = c.level || (niv ? niv[1].trim() : '');
+      if (c.photo_url) {
+        etat.enfant.photo_url = c.photo_url;
+        const prev = $('[data-photo-apercu]');
+        if (prev) {
+          prev.src = c.photo_url;
+          prev.hidden = false;
+        }
+      }
     }
     majCarte();
   }
@@ -633,6 +679,77 @@ export async function inscription() {
 
   /* ---------- étape 5 : fiche enfant ---------- */
   const formEnfant = $('[data-form-enfant]');
+
+  async function fichierVersJpegBlob(file, maxDim = 1600, quality = 0.86) {
+    const bmp = await createImageBitmap(file);
+    const scale = Math.min(1, maxDim / Math.max(bmp.width, bmp.height));
+    const w = Math.round(bmp.width * scale);
+    const h = Math.round(bmp.height * scale);
+    const canvas = document.createElement('canvas');
+    canvas.width = w;
+    canvas.height = h;
+    canvas.getContext('2d').drawImage(bmp, 0, 0, w, h);
+    bmp.close();
+    return new Promise((resolve) => canvas.toBlob((b) => resolve(b), 'image/jpeg', quality));
+  }
+
+  async function envoyerPhotoEnfant(file) {
+    if (!etat.order?.id || !etat.token) {
+      erreurChamp('e-photo', 'Paiement requis avant d’ajouter la photo.');
+      return;
+    }
+    const etatEl = $('[data-photo-etat]');
+    erreurChamp('e-photo', '');
+    if (etatEl) etatEl.textContent = 'Envoi de la photo…';
+    try {
+      const blob = await fichierVersJpegBlob(file);
+      if (!blob || blob.size > 1.8 * 1024 * 1024) {
+        erreurChamp('e-photo', 'Photo trop lourde. Choisissez une image plus petite.');
+        if (etatEl) etatEl.textContent = '';
+        return;
+      }
+      const b64 = await new Promise((res, rej) => {
+        const r = new FileReader();
+        r.onload = () => res(String(r.result || '').split(',')[1] || '');
+        r.onerror = () => rej(new Error('read'));
+        r.readAsDataURL(blob);
+      });
+      const r = await api('/api/child-photo', {
+        method: 'POST',
+        body: JSON.stringify({
+          order_id: etat.order.id,
+          token: etat.token,
+          mime: 'image/jpeg',
+          data: b64,
+        }),
+      });
+      etat.enfant.photo_url = r.photo_url;
+      const prev = $('[data-photo-apercu]');
+      if (prev) {
+        prev.src = r.photo_url;
+        prev.hidden = false;
+      }
+      majCarte();
+      if (etatEl) etatEl.textContent = 'Photo enregistrée sur la carte.';
+    } catch (e) {
+      const msg =
+        e.status === 503
+          ? 'Le stockage photo n’est pas disponible pour le moment. Réessayez plus tard ou continuez sans photo.'
+          : e.message && e.message !== 'cloudinary_failed'
+            ? e.message
+            : 'La photo n’a pas pu être enregistrée. Réessayez.';
+      erreurChamp('e-photo', msg);
+      if (etatEl) etatEl.textContent = '';
+    }
+  }
+
+  $$('[data-photo-fichier], [data-photo-camera]').forEach((input) => {
+    input.addEventListener('change', () => {
+      const f = input.files?.[0];
+      input.value = '';
+      if (f) void envoyerPhotoEnfant(f);
+    });
+  });
   const lireDate = () => lireTroisChamps('e');
   const majAge = () => {
     const { j, m, a } = lireDate();
@@ -739,6 +856,7 @@ export async function inscription() {
           parent_phone: v('parent_phone'),
           parent_phone_2: v('parent_phone_2'),
           parent_email: v('parent_email'),
+          photo_url: etat.enfant.photo_url || undefined,
         }),
       });
       etat.order = r.order;
@@ -887,6 +1005,7 @@ export async function inscription() {
     age: etat.enfant.age,
     niveau: etat.enfant.niveau || '',
     pratique: etat.enfant.pratique || '',
+    photo_url: etat.enfant.photo_url || '',
     club: D.clubs[etat.club],
     serie: etat.order?.id ? String(etat.order.id).slice(-4).toUpperCase() : '',
     tampons: D.docs.map((d) => d.tampon),

@@ -263,7 +263,12 @@ export function admin() {
       .map((o) => {
         const [cle, s] = statut(o);
         const n = fiche(o);
-        const enfant = o.child ? `${esc(o.child.first_name)} ${esc(o.child.last_name)}<small>né(e) le ${esc(dateFr(o.child.birthdate))}</small>` : '<small>fiche non remplie</small>';
+        const photo = o.child?.photo_url
+          ? `<img class="adm__photo" src="${esc(o.child.photo_url)}" alt="" width="48" height="48" />`
+          : '';
+        const enfant = o.child
+          ? `<span class="adm__enfant">${photo}<span>${esc(o.child.first_name)} ${esc(o.child.last_name)}<small>né(e) le ${esc(dateFr(o.child.birthdate))}</small></span></span>`
+          : '<small>fiche non remplie</small>';
         const profil = o.child ? `${esc(o.child.age)} ans · ${esc(n.Poids || '—')}<small>${esc(n.Niveau || '')} · ${esc(o.child.practice_years || '')}</small>` : '—';
         const resp = `${esc([o.parent?.first_name, o.parent?.last_name].filter(Boolean).join(' '))}<small>${esc(o.parent?.email)}</small><small>${esc(o.parent?.phone)}${o.child?.parent_phone_2 ? ` · ${esc(o.child.parent_phone_2)}` : ''}</small>`;
         const sante = o.child ? `${esc(n['Contact d’urgence'] || '—')}<small>Allergies : ${esc(n.Allergies || '—')}</small><small>Traitement : ${esc(n['Traitement médical'] || '—')}</small><small>${esc(n['Blessure ou problème médical'] && n['Blessure ou problème médical'] !== '—' ? n['Blessure ou problème médical'] : '')}</small>` : '—';
