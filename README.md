@@ -29,6 +29,15 @@ En studio, les paiements passent par les cles `*_TEST_*` (PayPal sandbox, PayPlu
 
 ## Deploy Vercel
 
+| | |
+|--|--|
+| **Dashboard équipe** | https://vercel.com/angoularaphaels-projects |
+| **Projet** | `stage-boxing` (Settings, env, déploiements) |
+| **URL prod actuelle** | https://stage-boxing.vercel.app |
+| **Domaine cible** | https://stages.boxingcenter.fr |
+
+Variables importantes en production : Supabase, Brevo (`suzinabot@gmail.com`), prestataires de paiement, **Cloudinary** (photos enfant sur la carte).
+
 ```bash
 # 1. Connexion CLI (une fois)
 npx vercel@latest login
@@ -39,4 +48,4 @@ npm run env:push
 npm run deploy
 ```
 
-Repo : https://github.com/angoularaphael/stage-boxing
+Repo GitHub : https://github.com/angoularaphael/stage-boxing
