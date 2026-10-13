@@ -210,7 +210,7 @@ export const SEMAINE = [
       {
         debut: '14:00',
         fin: '16:00',
-        titre: 'Perfectionnement technique + mise en situation',
+        titre: 'Perfectionnement technique individualisé + mise en situation',
         contenu: ['Rappel technique', 'Conseils individuels', 'Situations tactiques', 'Mises en situation dirigées', 'Travail au sac'],
         objectif: 'Réinvestir le travail de la semaine, avec des conseils pour chaque enfant.',
         coachs: { portet: ['valentin'], minimes: ['mehdi'] },
@@ -264,12 +264,12 @@ export const TITRE_COURT = {
   '2026-10-26-14-00': 'Prépa physique',
   '2026-10-27-10-00': 'Atelier technique',
   '2026-10-27-14-00': 'Mise en situation',
-  '2026-10-28-11-00': 'Boxeurs pros',
+  '2026-10-28-11-00': 'Bo\u00ADxeurs pros', // à 320 px, « Boxeurs » dépasse de 3 px d'un bloc de deux heures
   '2026-10-28-16-00': 'Mise de gants',
-  '2026-10-29-10-00': 'Perfection\u00ADnement',
+  '2026-10-29-10-00': 'Per\u00ADfec\u00ADtion\u00ADne\u00ADment',
   '2026-10-29-14-00': 'Prépa physique',
-  '2026-10-30-10-00': 'Coordi\u00ADnation', // césure explicite : « Coordination » ne tient pas d'un bloc à 375 px
-  '2026-10-30-14-00': 'Perfection\u00ADnement',
+  '2026-10-30-10-00': 'Coor\u00ADdi\u00ADna\u00ADtion', // césures explicites : les mots longs ne tiennent pas d'un bloc à 320–375 px
+  '2026-10-30-14-00': 'Per\u00ADfec\u00ADtion\u00ADne\u00ADment',
   '2026-10-31-10-00': 'Cohésion',
   '2026-10-31-14-00': 'Interclub',
 };

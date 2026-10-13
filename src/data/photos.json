@@ -185,6 +185,15 @@
         525
       ],
       "source": "carte officielle"
+    },
+    "fayez": {
+      "w": 600,
+      "h": 840,
+      "widths": [
+        360,
+        600
+      ],
+      "source": "vidéo du club (TikTok @boxingcentertoulouse), image à 65,5 s"
     }
   }
 }

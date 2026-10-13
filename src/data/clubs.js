@@ -51,14 +51,15 @@ export const INTERVENANTS = {
     texte: 'Pur produit de l’école Boxing Center, il accompagne chaque boxeur avec exigence et pédagogie, du loisir à la compétition.',
     photo: 'mehdi',
   },
-  // le club, 13/10/2026 : leur palmarès remplace les phrases ; pas encore de photo
+  // le club, 13/10/2026 : leur palmarès remplace les phrases. Fayez : image de la vidéo du club (désigné par Eddy,
+  // étiquettes du jeu effacées) ; Lucas : pas encore de photo
   fayez: {
     nom: 'Fayez Draoui',
     court: 'Fayez',
     role: 'Coach Boxing Center',
     titres: ['12 combats amateurs'],
     texte: '',
-    photo: null,
+    photo: 'fayez',
   },
   lucas: {
     nom: 'Lucas Kouyate',

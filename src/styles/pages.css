@@ -546,6 +546,9 @@ html:has(.hd.is-cache) .ech__barre {
   font-size: clamp(0.84rem, 1.45vw, 1.12rem);
   font-weight: 800;
   line-height: 1.22;
+  /* « Perfectionnement » ne tient pas dans une colonne de téléphone : coupé avec un trait d'union, pas au hasard */
+  -webkit-hyphens: auto;
+  hyphens: auto;
   overflow-wrap: anywhere;
 }
 .ech__s--uni .ech__titre {
@@ -792,6 +795,13 @@ html:has(.hd.is-cache) .ech__barre {
   .sem {
     --date: 5.5rem;
     --rang: 62px;
+  }
+}
+/* à 320 px, un bloc de deux heures fait 50 px de large : « Perfectionnement » y prend cinq lignes, « Mise en situation »
+   quatre. Les rangs grandissent plutôt que le texte rapetisse (12 px minimum). */
+@media (max-width: 359px) {
+  .sem {
+    --rang: 84px;
   }
 }
 .sem__axe {
