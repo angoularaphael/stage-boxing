@@ -1269,6 +1269,8 @@ html:not([data-club]) .sec__title em {
   overflow: hidden;
   isolation: isolate;
   border: 1px solid var(--trait);
+  /* le titre se règle sur la largeur de la carte : « PERFECTIONNEMENT » débordait à 1440 px (carte de 250 px utiles) */
+  container-type: inline-size;
 }
 .pilier img {
   position: absolute;
@@ -1304,10 +1306,12 @@ html:not([data-club]) .sec__title em {
 .pilier h3 {
   font-family: var(--f-display);
   font-weight: 400;
-  font-size: clamp(2.3rem, 4vw, 3rem);
+  font-size: clamp(1.9rem, 17cqi, 3rem);
   line-height: 0.9;
   text-transform: uppercase;
   margin-bottom: 0.7rem;
+  -webkit-hyphens: auto;
+  hyphens: auto;
 }
 .pilier p {
   font-size: 0.92rem;
