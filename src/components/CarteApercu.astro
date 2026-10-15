@@ -10,10 +10,10 @@ import { CLUBS, CLUB_IDS, INTERVENANTS, listeNoms } from '../data/clubs.js';
 import manifest from '../data/photos.json';
 
 const etapes = [
-  { t: 'Vous payez en ligne', d: 'La place est réservée. Sa carte apparaît, aux couleurs du club choisi.' },
-  { t: 'Vous remplissez sa fiche', d: 'Son prénom et son niveau s’écrivent sur la carte, avec ses coachs de la semaine.' },
-  { t: 'Vous validez les documents', d: 'Chaque document validé appose son tampon : autorisation, santé, règlement, CGV, participation.' },
-  { t: 'Sa carte est validée', d: 'Le sceau tombe et la carte rejoint le paquet de ses coachs. Elle se télécharge, et l’agenda des 12 séances avec.' },
+  { t: 'Vous payez en ligne', d: 'La place de votre enfant est réservée. Sa carte apparaît, aux couleurs du club choisi.' },
+  { t: 'Vous remplissez sa fiche', d: 'Son prénom et son niveau s’affichent sur sa carte, avec ses coachs de la semaine.' },
+  { t: 'Vous validez les documents', d: 'Autorisation parentale, santé, règlement, conditions de vente et de participation : chacun ajoute son tampon sur la carte.' },
+  { t: 'L’inscription est complète', d: 'Sa carte de boxeur est prête : vous la téléchargez, avec l’agenda des 12 séances.' },
 ];
 const salles = Object.fromEntries(
   CLUB_IDS.map((id) => [
@@ -34,9 +34,9 @@ const s0 = salles.portet;
 <section class="sec apercu" id="carte" data-apercu data-salles={JSON.stringify(salles)} aria-labelledby="titre-apercu">
   <div class="wrap apercu__intro">
     <div class="sec__head" data-rev>
-      <p class="eyebrow">L’inscription en trois temps</p>
-      <h2 class="sec__title" id="titre-apercu">Sa carte<br /><em>se gagne</em></h2>
-      <p class="sec__lede">Après le paiement, la fiche et les documents restent à faire. Pour que personne ne s’arrête en route, chaque étape construit la carte de boxeur de votre enfant. Faites défiler pour la voir se remplir.</p>
+      <p class="eyebrow">L’inscription, étape par étape</p>
+      <h2 class="sec__title" id="titre-apercu">Trois étapes,<br /><em>une carte de boxeur</em></h2>
+      <p class="sec__lede">Vous payez, vous remplissez la fiche de votre enfant, puis vous validez les documents. À chaque étape, sa carte de boxeur se complète : à la fin, vous la téléchargez avec l’agenda des 12 séances.</p>
     </div>
   </div>
   <div class="apercu__piste">

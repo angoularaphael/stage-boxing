@@ -21,7 +21,7 @@ export const FAQ_COMMUNE = [
   {
     theme: 'stage',
     q: 'Mon enfant n’a jamais boxé : peut-il venir ?',
-    r: 'Oui. Le stage est ouvert à tous les niveaux et les débutants sont acceptés. Les groupes et les oppositions sont adaptés selon l’âge, le poids, le niveau et l’expérience de chaque enfant.',
+    r: 'Oui. Le stage est ouvert à tous les niveaux et les débutants sont les bienvenus. Les groupes sont faits selon l’âge, le poids, le niveau et l’expérience : votre enfant travaille avec des enfants de son niveau.',
   },
   {
     theme: 'stage',
@@ -55,13 +55,13 @@ export const FAQ_COMMUNE = [
   },
   {
     theme: 'securite',
-    q: 'Les enfants vont-ils prendre des coups ?',
-    r: 'Les mises en situation et les mises de gants se font avec casque, protège-dents et gants, entre enfants d’âge, de poids et de niveau proches, sous le regard des coachs. En boxe éducative, la touche remplace la frappe : la puissance y est interdite par le code sportif de la Fédération française de boxe.',
+    q: 'La boxe, est-ce sans risque pour mon enfant ?',
+    r: 'La sécurité passe avant tout. En boxe éducative, on apprend à toucher avec contrôle, sans puissance : c’est la règle de la Fédération française de boxe. Les mises en situation et les mises de gants se font avec gants, casque et protège-dents, entre enfants d’âge, de poids et de niveau proches, toujours sous le regard des coachs.',
   },
   {
     theme: 'stage',
     q: 'C’est quoi, l’interclub du samedi ?',
-    r: 'Le samedi après-midi, à partir de 14h, les deux stages se retrouvent au Boxing Center des Minimes, 12 rue de Fenouillet à Toulouse : les enfants de Portet et ceux des Minimes font des mises de gants adaptées à leur niveau pour montrer leurs progrès. Le club précise l’organisation.',
+    r: 'Le samedi après-midi, à partir de 14h, les deux stages se retrouvent au Boxing Center des Minimes, 12 rue de Fenouillet à Toulouse : les enfants de Portet et ceux des Minimes font des mises de gants adaptées à leur niveau, pour montrer leurs progrès de la semaine. Le club vous précisera l’organisation pendant le stage.',
   },
   {
     theme: 'inscription',
@@ -73,6 +73,11 @@ export const FAQ_COMMUNE = [
     q: 'J’ai deux enfants à inscrire.',
     r: 'Une inscription par enfant. Une fois la première terminée, un bouton relance l’inscription avec vos coordonnées déjà remplies.',
   },
+  {
+    theme: 'securite',
+    q: 'Mon enfant sera-t-il avec des enfants de son âge ?',
+    r: 'Oui. Les groupes sont faits selon l’âge, le poids, le niveau et l’expérience. Les mises de gants se font toujours entre enfants d’âge, de poids et de niveau proches.',
+  },
 ];
 
 /** Questions que seule la page /questions affiche en entier (faits des CGV). */
@@ -80,12 +85,12 @@ export const FAQ_PLUS = [
   {
     theme: 'inscription',
     q: 'Les places sont-elles limitées ?',
-    r: 'Oui. Le nombre de places est limité dans chaque club, et la place est réservée au moment du paiement. La disponibilité de chaque salle s’affiche en direct sur le site, et le compte exact apparaît dès que la moitié des places est prise.',
+    r: 'Oui. Le nombre de places est limité dans chaque salle, et la place est réservée au moment du paiement. Les places restantes s’affichent sur le site.',
   },
   {
     theme: 'inscription',
     q: 'Et si le stage est annulé ?',
-    r: 'Si Boxing Center annule le stage, le montant payé est intégralement remboursé. Pour toute autre demande, contactez le club choisi : ses coordonnées figurent sur sa page et dans l’e-mail de confirmation.',
+    r: 'Si Boxing Center annule le stage, le montant payé est intégralement remboursé. Pour toute autre demande, contactez le club choisi : ses coordonnées sont en bas de chaque page du site et dans l’e-mail de confirmation.',
   },
   {
     theme: 'securite',
@@ -114,8 +119,8 @@ function locales(id) {
       q: `Qui encadre les enfants ${c.a} ?`,
       r:
         id === 'portet'
-          ? 'Valentin Tapia, head coach du Boxing Center Portet, avec Mourad Berraho, triple champion de France, et Marama Mercier, double champion de France. Anna Boullez, boxeuse professionnelle et challenger au titre de championne de France, intervient le mercredi.'
-          : 'Mehdi Boutlelis, head coach des Minimes, avec Fayez Draoui et Lucas Kouyate. Johnson Suffo, boxeur professionnel classé dans le top 100 mondial chez les poids moyens, intervient le mercredi.',
+          ? 'Valentin Tapia, head coach du Boxing Center Portet, avec Mourad Berraho, triple champion de France, et Marama Mercier, double champion de France. Anna Boullez, boxeuse professionnelle et challenger au titre de championne de France, vient échanger avec les enfants le mercredi.'
+          : 'Mehdi Boutlelis, head coach des Minimes, avec Fayez Draoui et Lucas Kouyate. Johnson Suffo, boxeur professionnel classé dans le top 100 mondial chez les poids moyens, vient échanger avec les enfants le mercredi.',
     },
     {
       theme: 'salles',

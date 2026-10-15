@@ -42,7 +42,7 @@ const axe = Array.from({ length: B - A + 1 }, (_, k) => A + k);
                   data-fin={`${j.date}T${s.fin || '18:00'}`}
                 >
                   <time datetime={`${j.date}T${s.debut}`}>{creneau(s)}</time>
-                  <span>{s.titre === 'Interclub' ? 'Interclub Portet × Minimes' : TITRE_COURT[id]}</span>
+                  <span>{s.titre === 'Interclub' ? 'Interclub Portet × Minimes' : <><span class="sem__long">{s.titre}</span><span class="sem__court">{TITRE_COURT[id]}</span></>}</span>
                 </Tag>
                 {suivante && heures(suivante.debut) > fin && (
                   <span class="sem__pause" style={`grid-column:${col(fin)} / ${col(heures(suivante.debut))}`} aria-hidden="true"></span>

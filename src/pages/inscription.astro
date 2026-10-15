@@ -218,7 +218,7 @@ const visages = (club: 'portet' | 'minimes') =>
             <legend>Votre enfant</legend>
             <fieldset class="champ date" aria-describedby="p-date-aide">
               <legend>Sa date de naissance <abbr class="requis" title="Obligatoire">*</abbr></legend>
-              <p class="champ__aide" id="p-date-aide">Le stage accueille les 8 à 16 ans au 26 octobre 2026 : on le vérifie avant le paiement.</p>
+              <p class="champ__aide" id="p-date-aide">Le stage accueille les enfants de 8 à 16 ans au 26 octobre 2026 : l’âge est vérifié avant le paiement.</p>
               <div class="date__champs">
                 <div><label for="p-jour">Jour</label><input id="p-jour" inputmode="numeric" pattern="[0-9]*" maxlength="2" autocomplete="off" data-date-paie="jour" /></div>
                 <div><label for="p-mois">Mois</label><input id="p-mois" inputmode="numeric" pattern="[0-9]*" maxlength="2" autocomplete="off" data-date-paie="mois" /></div>
@@ -293,7 +293,7 @@ const visages = (club: 'portet' | 'minimes') =>
             <legend>L’enfant</legend>
             <div class="champ photo-enfant">
               <span class="photo-enfant__label">Photo pour sa carte <span class="facultatif">facultatif</span></span>
-              <p class="champ__aide">Portrait de face, bien éclairé. Elle remplace les initiales sur la carte (partagée avec le club, pas le nom de famille sur l’image).</p>
+              <p class="champ__aide">Un portrait de face, bien éclairé. La photo remplace les initiales sur sa carte ; elle est partagée avec le club, et le nom de famille n’apparaît pas sur l’image.</p>
               <div class="photo-enfant__zone">
                 <img class="photo-enfant__apercu" data-photo-apercu alt="" width="120" height="120" hidden decoding="async" />
                 <div class="photo-enfant__actions">
@@ -336,7 +336,7 @@ const visages = (club: 'portet' | 'minimes') =>
             <div class="grille-2">
               <div class="champ">
                 <label for="e-poids">Poids (kg) <abbr class="requis" title="Obligatoire">*</abbr></label>
-                <p class="champ__aide">Pour composer les oppositions entre enfants de poids proches.</p>
+                <p class="champ__aide">Pour que votre enfant travaille avec des enfants de poids proche.</p>
                 <input id="e-poids" name="poids" inputmode="decimal" autocomplete="off" required />
                 <p class="champ__erreur" data-erreur-pour="e-poids"></p>
               </div>
@@ -360,7 +360,7 @@ const visages = (club: 'portet' | 'minimes') =>
               <p class="champ__erreur" data-erreur-pour="e-niveau"></p>
             </fieldset>
             <div class="champ">
-              <label for="e-combats">Nombre d’assauts ou de combats disputés <span class="facultatif">facultatif</span></label>
+              <label for="e-combats">Nombre de matchs disputés en compétition <span class="facultatif">facultatif</span></label>
               <input id="e-combats" name="combats" inputmode="numeric" autocomplete="off" />
             </div>
           </fieldset>
@@ -438,7 +438,7 @@ const visages = (club: 'portet' | 'minimes') =>
       <!-- 6. Documents -->
       <section class="panneau" data-panneau="documents" aria-labelledby="q-docs" hidden>
         <h1 class="panneau__q" id="q-docs">Les documents à valider</h1>
-        <p class="panneau__aide">Adaptés aux 8–16 ans. Chaque document validé appose son tampon sur la carte de votre enfant. Version du {VERSION_DOCUMENTS}.</p>
+        <p class="panneau__aide">Lisez chaque document, puis cochez sa case : chaque document validé ajoute son tampon sur la carte de votre enfant. Version du {VERSION_DOCUMENTS}.</p>
         <form class="form" data-form-docs novalidate>
           <p class="form__legende-requis"><abbr class="requis" title="Obligatoire">*</abbr> Cases et champs obligatoires</p>
           <div class="docs">

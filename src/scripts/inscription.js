@@ -824,7 +824,7 @@ export async function inscription() {
     const notes = [
       ligne('Poids', `${String(poids).replace('.', ',')} kg`),
       ligne('Niveau', v('niveau')),
-      ligne('Assauts ou combats disputés', v('combats')),
+      ligne('Matchs disputés en compétition', v('combats')),
       ligne('Contact d’urgence', `${v('urgence_nom')} — ${v('urgence_tel')}`),
       ligne('Allergies', v('allergies')),
       ligne('Traitement médical', v('traitement')),

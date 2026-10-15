@@ -794,7 +794,22 @@ html:has(.hd.is-cache) .ech__barre {
 @media (min-width: 900px) {
   .sem {
     --date: 5.5rem;
-    --rang: 62px;
+    --rang: 92px;
+  }
+}
+/* les noms du coach en entier sur grand écran ; sur téléphone, un bloc de deux heures ne loge qu'un nom court */
+.sem__long,
+.ech__resume-long {
+  display: none;
+}
+@media (min-width: 900px) {
+  .sem__long,
+  .ech__resume-long {
+    display: inline;
+  }
+  .sem__court,
+  .ech__resume-court {
+    display: none;
   }
 }
 /* à 320 px, un bloc de deux heures fait 50 px de large : « Perfectionnement » y prend cinq lignes, « Mise en situation »
@@ -1759,7 +1774,7 @@ a.sem__s:hover {
 }
 @media (min-width: 900px) {
   .regles {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 .regle {
@@ -1792,9 +1807,9 @@ a.sem__s:hover {
   display: grid;
   gap: clamp(1.8rem, 4vw, 3rem);
 }
-@media (min-width: 1000px) {
+@media (min-width: 1200px) {
   .journee {
-    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+    grid-template-columns: minmax(0, 0.6fr) minmax(0, 1.4fr);
     align-items: start;
   }
 }

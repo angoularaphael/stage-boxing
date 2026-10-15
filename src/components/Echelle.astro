@@ -72,7 +72,7 @@ const libelleCreux = (j: any, c: any) => {
         <h3 class="ech__tete" id={`jour-${j.date}`}>
           <span class="ech__num">{j.num}</span>
           <span class="ech__nomjour">{j.jour}<span class="sr-only"> {j.num} octobre</span></span>
-          <span class="ech__resume">{j.seances.map((s) => TITRE_COURT[seanceId(j, s)]).join(' · ')}</span>
+          <span class="ech__resume"><span class="ech__resume-long">{j.seances.map((s) => (s.titre === 'Interclub' ? 'Interclub Portet × Minimes' : s.titre)).join(' · ')}</span><span class="ech__resume-court">{j.seances.map((s) => TITRE_COURT[seanceId(j, s)]).join(' · ')}</span></span>
           <span class="puce ech__etat" data-ech-etat hidden></span>
         </h3>
         <div class="ech__grille" data-ech-grille style={`--rangs:${j.nb * 4}`}>

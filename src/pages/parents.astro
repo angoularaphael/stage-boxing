@@ -49,8 +49,8 @@ const jsonLd = graphe(organisation(), fil([['Stages enfants Boxing Center', '/']
     <PageTete
       photo="portet-educative"
       eyebrow="Pour les parents"
-      titre="Un cadre<br /><em>clair</em>"
-      lede="Tout ce qu’il faut savoir avant d’inscrire votre enfant : la sécurité, la journée, le midi et les documents. Sans petites lignes."
+      titre="Votre enfant<br /><em>entre de bonnes mains</em>"
+      lede="Tout ce qu’il faut savoir avant d’inscrire votre enfant : la sécurité, l’encadrement, la journée type, le midi et les documents."
       ledeBoxeur="Cette page est pour tes parents : la sécurité, la journée, le midi et les documents. Envoie-la-leur, ils y trouveront tout."
       courant="Parents"
     >
@@ -71,8 +71,8 @@ const jsonLd = graphe(organisation(), fil([['Stages enfants Boxing Center', '/']
           <div class="regles">
             <article class="regle" data-rev>
               <p class="regle__n">01</p>
-              <h3>On touche, on ne frappe pas</h3>
-              <p>En boxe éducative, la touche remplace la frappe : la puissance y est interdite par le code sportif de la Fédération française de boxe.</p>
+              <h3>La boxe éducative, en toute sécurité</h3>
+              <p>On apprend à toucher avec contrôle, sans puissance : c’est la règle de la Fédération française de boxe pour les jeunes. Le but est d’apprendre les bons gestes, en sécurité.</p>
             </article>
             <article class="regle" data-rev style="--d:.06s">
               <p class="regle__n">02</p>
@@ -82,7 +82,12 @@ const jsonLd = graphe(organisation(), fil([['Stages enfants Boxing Center', '/']
             <article class="regle" data-rev style="--d:.12s">
               <p class="regle__n">03</p>
               <h3>Des coachs diplômés</h3>
-              <p>À Portet, {v.nom}, head coach du club ({v.titres[0]}). Aux Minimes, {m.nom}, head coach ({m.titres[1]}, {m.titres[2]}). Avec leurs coachs, toute la semaine.</p>
+              <p>À Portet, {v.nom}, head coach du club ({v.titres[0]}). Aux Minimes, {m.nom}, head coach ({m.titres[1]}, {m.titres[2]}). Ils encadrent les enfants toute la semaine, avec les coachs de leur salle.</p>
+            </article>
+            <article class="regle" data-rev style="--d:.18s">
+              <p class="regle__n">04</p>
+              <h3>Le midi, sous surveillance</h3>
+              <p>Les enfants peuvent rester à la salle pendant la pause et manger sur place, sous surveillance. Vous indiquez votre choix dans la fiche d’inscription.</p>
             </article>
           </div>
         </div>
@@ -93,14 +98,14 @@ const jsonLd = graphe(organisation(), fil([['Stages enfants Boxing Center', '/']
           <div class="sec__head" data-rev>
             <p class="eyebrow">Une journée type</p>
             <h2 class="sec__title" id="titre-journee">Deux séances,<br /><em>une pause</em></h2>
-            <p class="sec__lede">Lundi, mardi, jeudi et vendredi, la même journée. Le mercredi et le samedi ont leurs propres horaires : toute la semaine tient ci-dessous.</p>
+            <p class="sec__lede">Lundi, mardi, jeudi et vendredi, la journée est la même. Le mercredi et le samedi ont leurs propres horaires, détaillés dans la semaine ci-dessous.</p>
           </div>
           <div class="journee">
             <ol class="journee__fil" data-rev>
               <li><time>10h</time><b>La séance du matin</b><span>Technique, tactique, physique : deux heures avec les coachs.</span></li>
               <li><time>12h</time><b>La pause du midi</b><span>{STAGE.repas}</span></li>
-              <li><time>14h</time><b>La séance de l’après-midi</b><span>Mise en situation, préparation physique, cohésion : la mise en pratique.</span></li>
-              <li><time>16h</time><b>Fin de la journée</b><span>Le mercredi, la mise de gants finit à 18h.</span></li>
+              <li><time>14h</time><b>La séance de l’après-midi</b><span>Préparation physique ou mise en situation : on met en pratique le travail du matin.</span></li>
+              <li><time>16h</time><b>Fin de la journée</b><span>La journée se termine à 16h. Le mercredi, elle se termine à 18h ; le samedi, l’interclub commence à 14h.</span></li>
             </ol>
             <div class="journee__semaine" data-rev style="--d:.08s">
               <SemaineMini />
@@ -114,7 +119,7 @@ const jsonLd = graphe(organisation(), fil([['Stages enfants Boxing Center', '/']
           <div class="sec__head" data-rev>
             <p class="eyebrow">Les documents</p>
             <h2 class="sec__title" id="titre-documents">Lus avant,<br /><em>validés en ligne</em></h2>
-            <p class="sec__lede">Adaptés aux 8–16 ans et lisibles dès maintenant. Vous les validez après le paiement et la fiche de votre enfant : l’inscription n’est complète qu’à ce moment-là.</p>
+            <p class="sec__lede">Vous pouvez tous les lire dès maintenant. Vous les validez en ligne, après le paiement et la fiche de votre enfant : l’inscription est alors complète.</p>
           </div>
           <ul class="docs">
             {documents.map((d, i) => (

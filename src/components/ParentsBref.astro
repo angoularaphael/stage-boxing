@@ -7,8 +7,8 @@ import Voix from './Voix.astro';
 import Partager from './Partager.astro';
 const faits = [
   { t: 'Des coachs Boxing Center', d: 'Dans chaque salle, les coachs du club encadrent les enfants toute la semaine.' },
-  { t: 'Des groupes adaptés', d: 'Selon l’âge, le poids, le niveau et l’expérience. Les débutants sont acceptés.' },
-  { t: 'Protégés à chaque mise de gants', d: 'Gants, casque, protège-dents. En boxe éducative, on touche, on ne frappe pas.' },
+  { t: 'Des groupes adaptés', d: 'Selon l’âge, le poids, le niveau et l’expérience. Les débutants sont les bienvenus.' },
+  { t: 'Protégés à chaque mise de gants', d: 'Gants, casque et protège-dents. En boxe éducative, on touche avec contrôle, sans puissance.' },
   { t: 'Le midi, sous surveillance', d: 'Chacun apporte son repas ; les enfants peuvent rester à la salle pendant la pause.' },
 ];
 ---
@@ -17,7 +17,7 @@ const faits = [
     <div class="sec__head" data-rev>
       <p class="eyebrow">Pour les parents</p>
       <h2 class="sec__title" id="titre-parents">Un cadre <em>clair</em>,<br />du lundi au samedi</h2>
-      <p class="sec__lede"><Voix p="Tout ce qu’il faut savoir avant d’inscrire votre enfant, sans petites lignes." b="Ce que tes parents veulent savoir avant de t’inscrire : tout est là, sans petites lignes." /></p>
+      <p class="sec__lede"><Voix p="L’essentiel à savoir avant d’inscrire votre enfant." b="Ce que tes parents veulent savoir avant de t’inscrire : tout est là." /></p>
     </div>
     <ol class="bref">
       {faits.map((f, i) => (

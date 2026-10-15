@@ -17,8 +17,9 @@ const { id, club, inverse = false } = Astro.props;
 const p = INTERVENANTS[id];
 const c = CLUBS[club];
 const semaine = seancesDe(id);
-// le bilan chiffré remplace la ligne « Professionnel : 10 victoires… » : on ne dit pas deux fois la même chose
-const titres = p.bilan ? p.titres.filter((t: string) => !/^Professionnel(le)? :/.test(t)) : p.titres;
+// le palmarès chiffré remplace la ligne « Professionnel : 10 victoires… » ou « 12 combats amateurs » : on ne dit pas
+// deux fois la même chose
+const titres = p.bilan ? p.titres.filter((t: string) => !/^(Professionnel(le)? :|\d+ combats amateurs)/.test(t)) : p.titres;
 ---
 <article
   class:list={['fiche', `fiche--${club}`, { 'fiche--inverse': inverse, 'fiche--vedette': !!p.vedette }]}
@@ -33,7 +34,7 @@ const titres = p.bilan ? p.titres.filter((t: string) => !/^Professionnel(le)? :/
     <p class="fiche__role">{p.role}</p>
     <h3 class="fiche__nom" id={`nom-${id}`}>{p.nom}</h3>
     {p.vedette && <p class="fiche__vedette">{p.vedette}</p>}
-    {p.bilan && <p class="bilan__titre" id={`bilan-${id}`}>Bilan chez les professionnels</p>}
+    {p.bilan && <p class="bilan__titre" id={`bilan-${id}`}>{p.bilanTitre || 'Palmarès chez les professionnels'}</p>}
     {p.bilan && (
       <dl class="bilan" aria-labelledby={`bilan-${id}`}>
         {p.bilan.map(([n, l]: [number, string]) => (

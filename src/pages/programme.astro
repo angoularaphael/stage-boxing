@@ -37,8 +37,8 @@ const jsonLd = graphe(organisation(), evenement('portet'), evenement('minimes'),
       photo="minimes-cercle"
       eyebrow="Le programme"
       titre="Six jours,<br /><em>douze séances</em>"
-      lede={`${STAGE.sousTitre} Du lundi 26 à 10h au samedi 31 : chaque séance à sa vraie place dans la semaine.`}
-      ledeBoxeur="Six jours pour progresser et te dépasser, du lundi 26 à 10h au samedi 31 : chaque séance à sa vraie place dans ta semaine, jusqu’à l’interclub."
+      lede={`${STAGE.sousTitre} Du lundi 26 à 10h au samedi 31 : toutes les séances, heure par heure, avec les coachs de chaque salle.`}
+      ledeBoxeur="Six jours pour progresser et te dépasser, du lundi 26 à 10h au samedi 31 : toutes tes séances, heure par heure, jusqu’à l’interclub."
       courant="Programme"
     >
       <span class="puce"><span class="puce__point" aria-hidden="true"></span>{STAGE.datesCourt}</span>
@@ -49,9 +49,9 @@ const jsonLd = graphe(organisation(), evenement('portet'), evenement('minimes'),
     <section class="sec sec--echelle" aria-labelledby="titre-echelle">
       <div class="wrap">
         <div class="sec__head" data-rev>
-          <p class="eyebrow">Heure par heure</p>
-          <h2 class="sec__title" id="titre-echelle">Faites défiler,<br /><em>l’horloge avance</em></h2>
-          <p class="sec__lede">Chaque séance occupe sa vraie durée et chaque pause est un vrai vide. À gauche Portet, à droite les Minimes : la même séance au même moment, avec les coachs de chaque salle. Le samedi à 14h, les deux colonnes se rejoignent.</p>
+          <p class="eyebrow">Du lundi au samedi</p>
+          <h2 class="sec__title" id="titre-echelle">La semaine,<br /><em>heure par heure</em></h2>
+          <p class="sec__lede">À gauche Portet, à droite les Minimes : les mêmes séances aux mêmes horaires, avec les coachs de chaque salle. Chaque séance détaille son contenu et son objectif. Le samedi à 14h, les deux groupes se retrouvent pour l’interclub.</p>
         </div>
         <Echelle />
       </div>
