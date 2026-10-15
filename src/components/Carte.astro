@@ -27,10 +27,8 @@ const src = ph ? `/img/coachs/${p.photo}-${ph.widths[ph.widths.length - 1]}.webp
 const initiale = p.court.charAt(0);
 // sans photo, la carte ne reste pas vide : elle montre la semaine de l'intervenant, lue dans le programme
 const semaine = ph ? [] : seancesDe(id).filter((x) => x.club === club);
-// le palmarès s'affiche en chiffres sur la carte des coachs (Fayez, Lucas) : la ligne qui le disait en toutes lettres
-// s'efface. Les boxeurs pros gardent leur ligne : leur encadré « vedette » prend déjà la place des chiffres.
-const stats = !!p.bilan && !p.vedette;
-const titres = stats ? p.titres.filter((t: string) => !/^(Professionnel(le)? :|\d+ combats amateurs)/.test(t)) : p.titres;
+// la carte reste légère (Eddy, 15/10) : deux lignes au plus, sans chiffres ; le détail complet est sur la fiche
+const titres: string[] = p.carte ?? p.titres.slice(0, 2);
 ---
 <article
   class:list={['carte', { 'carte--vedette': !!p.vedette }]}
@@ -68,19 +66,6 @@ const titres = stats ? p.titres.filter((t: string) => !/^(Professionnel(le)? :|\
       <span class="carte__role">{p.role}</span>
       <Nom class="carte__nom">{p.nom}</Nom>
       {p.vedette && <p class="carte__vedette">{p.vedette}</p>}
-      {stats && (
-        <div class="carte__palmares">
-          <p class="carte__palmares-titre">Palmarès amateur</p>
-          <dl class="carte__stats">
-            {p.bilan.map(([n, l]: [number, string]) => (
-              <div>
-                <dt>{l}</dt>
-                <dd>{n}</dd>
-              </div>
-            ))}
-          </dl>
-        </div>
-      )}
       {titres.length > 0 && (
         <ul class="carte__titres">
           {titres.map((t: string) => <li>{t}</li>)}

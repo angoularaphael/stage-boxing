@@ -11,6 +11,7 @@ export const INTERVENANTS = {
     court: 'Valentin',
     role: 'Head coach du Boxing Center Portet',
     titres: ['DEJEPS mention Boxe', '9 champions de France formés avec le club', '10 ans d’expérience et plus'],
+    carte: ['DEJEPS mention Boxe', '9 champions de France formés avec le club'],
     texte: 'Il entraîne depuis plus de dix ans, des enfants aux boxeurs de l’Équipe de France.',
     photo: 'valentin',
   },
@@ -36,6 +37,7 @@ export const INTERVENANTS = {
     role: 'Boxeuse professionnelle',
     vedette: 'Challenger au titre de championne de France professionnelle',
     titres: ['Professionnelle : 2 victoires, 0 défaite', 'Près de 30 combats amateurs'],
+    carte: [],
     // le même palmarès, en chiffres, pour le bilan affiché sur sa fiche
     bilan: [[2, 'victoires'], [0, 'défaite']],
     texte: 'Considérée comme l’un des grands espoirs de la boxe professionnelle française, elle vient échanger avec les enfants le mercredi.',
@@ -48,6 +50,7 @@ export const INTERVENANTS = {
     court: 'Mehdi',
     role: 'Head coach des Minimes',
     titres: ['Responsable sportif du club', 'DEJEPS', 'BPJEPS boxe anglaise', 'BPJEPS sports de contact'],
+    carte: ['Responsable sportif du club', 'DEJEPS et BPJEPS boxe anglaise'],
     texte: 'Pur produit de l’école Boxing Center, il accompagne chaque boxeur avec exigence et pédagogie, du loisir à la compétition.',
     photo: 'mehdi',
   },
@@ -59,6 +62,7 @@ export const INTERVENANTS = {
     court: 'Fayez',
     role: 'Coach Boxing Center',
     titres: ['12 combats amateurs', 'Maîtrise la boxe anglaise', 'Encadre la préparation physique du stage'],
+    carte: ['Maîtrise la boxe anglaise', 'Encadre la préparation physique du stage'],
     // le palmarès, en chiffres, comme celui des boxeurs pros
     bilan: [[12, 'combats']],
     bilanTitre: 'Palmarès chez les amateurs',
@@ -70,6 +74,7 @@ export const INTERVENANTS = {
     court: 'Lucas',
     role: 'Coach Boxing Center',
     titres: ['21 combats amateurs, 17 victoires', 'Maîtrise la boxe anglaise', 'Encadre le perfectionnement technique du stage'],
+    carte: ['Maîtrise la boxe anglaise', 'Encadre le perfectionnement technique du stage'],
     bilan: [[21, 'combats'], [17, 'victoires']],
     bilanTitre: 'Palmarès chez les amateurs',
     texte: '',
@@ -82,6 +87,7 @@ export const INTERVENANTS = {
     vedette: 'Classé dans le top 100 mondial chez les poids moyens',
     // palmarès inscrit sur sa carte officielle de coach (saison 2026/2027)
     titres: ['Professionnel : 10 victoires, 1 défaite, 1 nul', 'Passé professionnel aux Minimes en 2018'],
+    carte: [],
     bilan: [[10, 'victoires'], [1, 'défaite'], [1, 'nul']],
     texte: 'Il vient échanger avec les enfants le mercredi.',
     photo: 'johnson',
