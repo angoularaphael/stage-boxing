@@ -153,12 +153,13 @@
       "source": "carte officielle"
     },
     "marama": {
-      "w": 995,
-      "h": 1393,
+      "w": 600,
+      "h": 840,
       "widths": [
         360,
         600
-      ]
+      ],
+      "source": "photo du gala (entrée sur le ring) ; t-shirt Boxing Center et bras croisés à la place du débardeur et des gants, personne derrière lui retirée, visage d’origine"
     },
     "anna": {
       "w": 1257,
@@ -175,7 +176,7 @@
         360,
         600
       ],
-      "source": "photo du club, Axel Derewiany"
+      "source": "photo du club, Axel Derewiany ; t-shirt Boxing Center et bras croisés à la place du sweat, visage d’origine"
     },
     "johnson": {
       "w": 525,
@@ -193,7 +194,7 @@
         360,
         600
       ],
-      "source": "photo envoyée par Eddy le 15/10/2026 (WhatsApp)"
+      "source": "photo envoyée par Eddy le 15/10/2026 (WhatsApp) ; t-shirt Boxing Center, bras croisés et haut du cadre complétés, visage d’origine"
     },
     "lucas": {
       "w": 600,
@@ -202,7 +203,7 @@
         360,
         600
       ],
-      "source": "vidéo Instagram du club, image 500 (logo incrusté effacé)"
+      "source": "vidéo Instagram du club, image à 20,3 s ; sous-titre et logo incrustés effacés"
     }
   }
 }
