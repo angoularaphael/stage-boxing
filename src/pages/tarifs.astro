@@ -34,12 +34,12 @@ const jsonLd = graphe(organisation(), evenement('portet'), evenement('minimes'),
   ogAlt="Les tarifs du stage enfants Boxing Center : 80 € et 140 €"
   page="tarifs"
   jsonLd={jsonLd}
-  preload={[precharge('portet-ecole-nb', '100vw')]}
+  preload={[precharge('portet-podium', '100vw')]}
 >
   <SiteHeader actif="tarifs" />
   <main id="contenu">
     <PageTete
-      photo="portet-ecole-nb"
+      photo="portet-podium"
       eyebrow="Tarifs"
       titre="Un prix,<br /><em>tout compris</em>"
       lede={`${euros(STAGE.prix.adherent)} pour un adhérent Boxing Center, ${euros(STAGE.prix.nonAdherent)} sinon, pour les 6 jours et les 12 séances ou activités. Les mêmes tarifs à Portet et aux Minimes.`}
