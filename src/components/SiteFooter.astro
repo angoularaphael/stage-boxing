@@ -1,5 +1,4 @@
 ---
-import Bascule from './Bascule.astro';
 import { CLUBS, EDITEUR, adresseLigne } from '../data/clubs.js';
 import { STAGE } from '../data/stage.js';
 const p = CLUBS.portet;
@@ -42,10 +41,6 @@ const m = CLUBS.minimes;
           <li><a href="https://boxe-toulouse.com/" rel="noopener">Le club des Minimes</a></li>
         </ul>
       </div>
-    </div>
-    <div class="pied__vue">
-      <span>Voir le site</span>
-      <Bascule variante="pied" />
     </div>
     <p class="pied__legal">
       Éditeur : {EDITEUR.nom}, {EDITEUR.forme}, {EDITEUR.rcs}, {EDITEUR.siege}. Directeur de la publication :

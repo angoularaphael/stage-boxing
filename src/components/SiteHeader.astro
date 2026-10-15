@@ -3,7 +3,6 @@
  * L'en-tête du site. Chaque lien ouvre une vraie page. L'en-tête garde son nom de transition :
  * il reste en place quand on change de page, seul le contenu bascule.
  */
-import Bascule from './Bascule.astro';
 import Partager from './Partager.astro';
 import { CLUBS } from '../data/clubs.js';
 
@@ -41,7 +40,6 @@ const liens = [
       <a class="btn btn--ghost hd__cta" href="/">Retour au stage</a>
     ) : (
       <>
-        <div class="hd__vue"><Bascule variante="tete" /></div>
         <a class="btn btn--rouge hd__cta voix voix--p" href={ctaHref} data-cta-hd aria-current={actif === 'choisir' ? 'page' : undefined}>{ctaTxt}</a>
         <Partager classe="btn btn--rouge hd__cta voix voix--b" court />
       </>
@@ -59,7 +57,6 @@ const liens = [
       <img src="/img/logo/bc-logo-200.webp" width="200" height="93" alt="Boxing Center" style="width:118px" />
       <button class="tiroir__fermer" type="button" aria-label="Fermer le menu" data-fermer>×</button>
     </div>
-    <div class="tiroir__vue"><Bascule variante="tiroir" /></div>
     <nav aria-label="Menu mobile">
       {liens.map((l, i) => (
         <a href={l.href} class:list={[l.salle && `hd__salle hd__salle--${l.salle}`]} aria-current={actif === l.id ? 'page' : undefined} style={`--i:${i}`}>

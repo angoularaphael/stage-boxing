@@ -1,10 +1,9 @@
 /* ==========================================================================
-   Deux directions, un site : « Je suis le boxeur » / « Je suis le parent »
-   - sans choix : le site tel que les moteurs le lisent (nuit, vouvoiement) ;
-   - boxeur : la nuit du gala, le tutoiement, la semaine et l'équipe d'abord ;
-   - parent : le jour, le vouvoiement, la sécurité, le prix et la salle d'abord.
-   Les héros photo, les cartes, l'en-tête, le tiroir, la barre et le pied restent des
-   îlots de nuit dans le jour : une photo de gala ne s'éclaire pas.
+   Une seule version du site (le coach, 15/10/2026 : la vue parent n'est pas nécessaire, il y a la page
+   Parents). Le jour ou la nuit suivent le réglage de l'appareil (prefers-color-scheme) ; en jour, les héros
+   photo, les cartes, l'en-tête, le tiroir, la barre et le pied restent des îlots de nuit : une photo de gala
+   ne s'éclaire pas. Le tunnel d'inscription et l'admin restent de nuit.
+   Les règles html[data-vue="boxeur"] qui restent plus bas ne s'appliquent plus (plus aucune vue n'est posée).
    ========================================================================== */
 
 /* ---------- la voix : un seul texte visible ---------- */
@@ -186,334 +185,172 @@ html[data-vue="boxeur"] .fo__boxeur {
   }
 }
 
-/* ---------- la bascule ---------- */
-.bascule-vue {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  padding: 4px;
-  border: 1px solid var(--trait-2);
-  border-radius: 999px;
-  background: var(--puce-fond, rgba(8, 8, 8, 0.55));
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  pointer-events: auto;
-}
-.bascule-vue__je {
-  white-space: nowrap;
-  padding: 0 0.45rem 0 0.75rem;
-  font-size: 0.75rem;
-  font-weight: 800;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--ink-2);
-}
-.bascule-vue__choix {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.45rem;
-  min-height: 40px;
-  padding: 0.35rem 0.9rem;
-  border: 0;
-  border-radius: 999px;
-  background: transparent;
-  color: var(--ink-2);
-  font-weight: 700;
-  font-size: 0.86rem;
-  white-space: nowrap;
-  cursor: pointer;
-  transition: background-color 0.3s, color 0.3s, transform 0.3s var(--ease);
-}
-.bascule-vue__choix svg {
-  width: 18px;
-  height: 18px;
-  flex: none;
-}
-.bascule-vue__choix:hover {
-  color: var(--ink);
-}
-.bascule-vue__choix:active {
-  transform: scale(0.96);
-}
-.bascule-vue__choix[aria-pressed="true"] {
-  background: var(--ink);
-  color: var(--noir);
-}
-.bascule-vue--heros .bascule-vue__choix {
-  min-height: 44px;
-  padding: 0.4rem 1.05rem;
-  font-size: 0.92rem;
-}
-/* elle entre avec le titre ; sans choix, elle appelle le geste : un halo qui respire */
-@media (prefers-reduced-motion: no-preference) {
-  .fo.is-pret .bascule-vue {
-    animation: fondu 1s var(--ease) 0.45s both;
-  }
-  html:not([data-vue]) .fo.is-pret .bascule-vue--heros {
-    animation: fondu 1s var(--ease) 0.45s both, appel 2.6s var(--ease-io) 1.8s infinite;
-  }
-}
-@keyframes appel {
-  0%,
-  100% {
-    box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
-  }
-  40% {
-    box-shadow: 0 0 0 6px rgba(255, 255, 255, 0.12);
-  }
-}
-.hd__vue {
-  display: none;
-}
-/* dans l'en-tête, la bascule tient en deux icônes ; le nom reste lu par les lecteurs d'écran */
-.bascule-vue--tete .bascule-vue__choix {
-  min-height: 38px;
-  padding: 0.3rem 0.65rem;
-}
-.bascule-vue--tete .bascule-vue__choix span {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-  clip: rect(0 0 0 0);
-  white-space: nowrap;
-}
-@media (min-width: 1180px) {
-  .hd__vue {
-    display: block;
-    margin-left: 0.5rem;
-  }
-  .hd__vue + .hd__cta {
-    margin-left: 0.5rem;
-  }
-  /* la bascule prend la place du nom du stage : le héros le dit déjà */
-  .hd__stage {
-    display: none !important;
-  }
-}
-@media (min-width: 1440px) {
-  .bascule-vue--tete .bascule-vue__choix {
-    padding: 0.35rem 0.85rem;
-  }
-  .bascule-vue--tete .bascule-vue__choix span {
-    position: static;
-    width: auto;
-    height: auto;
-    overflow: visible;
-    clip: auto;
-  }
-}
-.tiroir__vue {
-  display: flex;
-  justify-content: center;
-  padding-top: 0.6rem;
-}
-.pied__vue {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.6rem 1rem;
-  margin-top: 1.6rem;
-  font-size: 0.82rem;
-  color: var(--ink-3);
-}
-
-/* ---------- la lumière qui s'allume (ou s'éteint) depuis le bouton ---------- */
-html.vt-bascule::view-transition-old(root) {
-  animation: none;
-}
-html.vt-bascule::view-transition-new(root) {
-  animation: bascule-lumiere 0.85s var(--ease-io) both;
-}
-@keyframes bascule-lumiere {
-  from {
-    clip-path: circle(0 at var(--vx, 50%) var(--vy, 50%));
-  }
-  to {
-    clip-path: circle(150vmax at var(--vx, 50%) var(--vy, 50%));
-  }
-}
-
-/* ---------- l'accueil se réordonne selon le lecteur ---------- */
+/* ---------- l'accueil : une colonne, dans l'ordre du document ---------- */
 html[data-page="accueil"] #contenu {
   display: flex;
   flex-direction: column;
 }
-html[data-vue="boxeur"][data-page="accueil"] #contenu > #semaine-bref { order: 1; }
-html[data-vue="boxeur"][data-page="accueil"] #contenu > #equipe { order: 2; }
-html[data-vue="boxeur"][data-page="accueil"] #contenu > #piliers { order: 3; }
-html[data-vue="boxeur"][data-page="accueil"] #contenu > #clubs { order: 4; }
-html[data-vue="boxeur"][data-page="accueil"] #contenu > #tarifs { order: 5; }
-html[data-vue="boxeur"][data-page="accueil"] #contenu > #parents { order: 6; }
-html[data-vue="boxeur"][data-page="accueil"] #contenu > #faq { order: 7; }
-html[data-vue="boxeur"][data-page="accueil"] #contenu > #final { order: 8; }
-html[data-vue="parent"][data-page="accueil"] #contenu > #parents { order: 1; }
-html[data-vue="parent"][data-page="accueil"] #contenu > #semaine-bref { order: 2; }
-html[data-vue="parent"][data-page="accueil"] #contenu > #tarifs { order: 3; }
-html[data-vue="parent"][data-page="accueil"] #contenu > #clubs { order: 4; }
-html[data-vue="parent"][data-page="accueil"] #contenu > #equipe { order: 5; }
-html[data-vue="parent"][data-page="accueil"] #contenu > #piliers { order: 6; }
-html[data-vue="parent"][data-page="accueil"] #contenu > #faq { order: 7; }
-html[data-vue="parent"][data-page="accueil"] #contenu > #final { order: 8; }
 
 /* ==========================================================================
-   Le jour du parent
+   Le jour : quand l'appareil est réglé en clair
    ========================================================================== */
-html[data-vue="parent"] {
-  --noir: #f3f2ee;
-  --noir-2: #ffffff;
-  --noir-3: #e8e7e2;
-  --ink: #0c1020;
-  --ink-2: rgba(12, 16, 32, 0.76);
-  --ink-3: rgba(12, 16, 32, 0.6);
-  --trait: rgba(12, 16, 32, 0.12);
-  --trait-2: rgba(12, 16, 32, 0.24);
-  --puce-fond: rgba(255, 255, 255, 0.85);
-  /* les couleurs des salles, foncées pour rester lisibles en plein jour */
-  --minimes: #4a9a22;
-  --minimes-clair: #3c7d1a;
-  --portet-clair: #2a4fd6;
-}
-html[data-vue="parent"]:not([data-club]) {
-  --club: #0c1020;
-  --club-clair: #20254b;
-}
+@media (prefers-color-scheme: light) {
+  html:not([data-page="inscription"], [data-page="admin"]) {
+    --noir: #f3f2ee;
+    --noir-2: #ffffff;
+    --noir-3: #e8e7e2;
+    --ink: #0c1020;
+    --ink-2: rgba(12, 16, 32, 0.76);
+    --ink-3: rgba(12, 16, 32, 0.6);
+    --trait: rgba(12, 16, 32, 0.12);
+    --trait-2: rgba(12, 16, 32, 0.24);
+    --puce-fond: rgba(255, 255, 255, 0.85);
+    /* les couleurs des salles, foncées pour rester lisibles en plein jour */
+    --minimes: #4a9a22;
+    --minimes-clair: #3c7d1a;
+    --portet-clair: #2a4fd6;
+  }
+  html:not([data-page="inscription"], [data-page="admin"]):not([data-club]) {
+    --club: #0c1020;
+    --club-clair: #20254b;
+  }
 
-/* les îlots de nuit : photos de gala, cartes, en-tête, tiroir, barre, pied */
-html[data-vue="parent"] :is(.hd, .tiroir, .barre, .pied, .fo, .hero, .tete, .duel, .eq, .pilier, .salle, .carte, .apercu__dos, .feuille--partage) {
-  --noir: #080808;
-  --noir-2: #0d0e13;
-  --noir-3: #14161e;
-  --ink: #f5f5f5;
-  --ink-2: rgba(245, 245, 245, 0.74);
-  --ink-3: rgba(245, 245, 245, 0.52);
-  --trait: rgba(245, 245, 245, 0.12);
-  --trait-2: rgba(245, 245, 245, 0.22);
-  --puce-fond: rgba(8, 8, 8, 0.55);
-  --minimes: #7cc64a;
-  --minimes-clair: #b2e68b;
-  --portet-clair: #8aa6ff;
-  color: var(--ink);
-}
-html[data-vue="parent"]:not([data-club]) :is(.hd, .tiroir, .barre, .pied, .fo, .hero, .tete, .duel, .eq, .pilier, .salle, .carte, .apercu__dos, .feuille--partage) {
-  --club: #f5f5f5;
-  --club-clair: #ffffff;
-}
-html[data-vue="parent"][data-club="portet"] :is(.hd, .tiroir, .barre, .pied, .hero, .tete, .pilier, .salle, .carte) {
-  --club: #3d6bff;
-  --club-clair: #8aa6ff;
-}
-html[data-vue="parent"][data-club="minimes"] :is(.hd, .tiroir, .barre, .pied, .hero, .tete, .pilier, .salle, .carte) {
-  --club: #7cc64a;
-  --club-clair: #b2e68b;
-}
-html[data-vue="parent"] .pied,
-html[data-vue="parent"] .eq {
-  background: var(--noir);
-}
-/* les pages sans héros photo (documents, page introuvable) : l'en-tête garde son fond de nuit */
-html[data-vue="parent"][data-page="legal"] .hd {
-  background: rgba(8, 8, 8, 0.86);
-  backdrop-filter: blur(14px) saturate(140%);
-  -webkit-backdrop-filter: blur(14px) saturate(140%);
-}
+  /* les îlots de nuit : photos de gala, cartes, en-tête, tiroir, barre, pied */
+  html:not([data-page="inscription"], [data-page="admin"]) :is(.hd, .tiroir, .barre, .pied, .fo, .hero, .tete, .duel, .eq, .pilier, .salle, .carte, .apercu__dos, .feuille--partage) {
+    --noir: #080808;
+    --noir-2: #0d0e13;
+    --noir-3: #14161e;
+    --ink: #f5f5f5;
+    --ink-2: rgba(245, 245, 245, 0.74);
+    --ink-3: rgba(245, 245, 245, 0.52);
+    --trait: rgba(245, 245, 245, 0.12);
+    --trait-2: rgba(245, 245, 245, 0.22);
+    --puce-fond: rgba(8, 8, 8, 0.55);
+    --minimes: #7cc64a;
+    --minimes-clair: #b2e68b;
+    --portet-clair: #8aa6ff;
+    color: var(--ink);
+  }
+  html:not([data-page="inscription"], [data-page="admin"]):not([data-club]) :is(.hd, .tiroir, .barre, .pied, .fo, .hero, .tete, .duel, .eq, .pilier, .salle, .carte, .apercu__dos, .feuille--partage) {
+    --club: #f5f5f5;
+    --club-clair: #ffffff;
+  }
+  html:not([data-page="inscription"], [data-page="admin"])[data-club="portet"] :is(.hd, .tiroir, .barre, .pied, .hero, .tete, .pilier, .salle, .carte) {
+    --club: #3d6bff;
+    --club-clair: #8aa6ff;
+  }
+  html:not([data-page="inscription"], [data-page="admin"])[data-club="minimes"] :is(.hd, .tiroir, .barre, .pied, .hero, .tete, .pilier, .salle, .carte) {
+    --club: #7cc64a;
+    --club-clair: #b2e68b;
+  }
+  html:not([data-page="inscription"], [data-page="admin"]) .pied,
+  html:not([data-page="inscription"], [data-page="admin"]) .eq {
+    background: var(--noir);
+  }
+  /* les pages sans héros photo (documents, page introuvable) : l'en-tête garde son fond de nuit */
+  html:not([data-page="inscription"], [data-page="admin"])[data-page="legal"] .hd {
+    background: rgba(8, 8, 8, 0.86);
+    backdrop-filter: blur(14px) saturate(140%);
+    -webkit-backdrop-filter: blur(14px) saturate(140%);
+  }
 
-/* les sections déjà claires se détachent du jour en blanc pur */
-html[data-vue="parent"] .clair,
-html[data-vue="parent"] .jour-clair {
-  background: #ffffff;
-}
-html[data-vue="parent"] .jour-clair .clair {
-  background: transparent;
-}
-html[data-vue="parent"]:not([data-club]) .sec__title em {
-  -webkit-text-stroke-color: var(--encre);
-}
+  /* les sections déjà claires se détachent du jour en blanc pur */
+  html:not([data-page="inscription"], [data-page="admin"]) .clair,
+  html:not([data-page="inscription"], [data-page="admin"]) .jour-clair {
+    background: #ffffff;
+  }
+  html:not([data-page="inscription"], [data-page="admin"]) .jour-clair .clair {
+    background: transparent;
+  }
+  html:not([data-page="inscription"], [data-page="admin"]):not([data-club]) .sec__title em {
+    -webkit-text-stroke-color: var(--encre);
+  }
 
-/* ce qui était écrit en blanc ou en ambre clair, et doit rester lisible le jour */
-html[data-vue="parent"] .fiche__vedette {
-  color: #6b4100;
-  background: linear-gradient(135deg, rgba(255, 179, 71, 0.32), rgba(255, 179, 71, 0.1));
-  border-color: rgba(200, 144, 47, 0.6);
-}
-html[data-vue="parent"] .temps {
-  color: #6b4100;
-  background: rgba(255, 179, 71, 0.3);
-}
-html[data-vue="parent"] .temps--final {
-  background: linear-gradient(90deg, #3d6bff, #7cc64a);
-  color: #05060a;
-}
-html[data-vue="parent"] .questions__puce[aria-pressed="true"] {
-  background: var(--encre);
-  border-color: var(--encre);
-  color: #ffffff;
-}
-html[data-vue="parent"] .questions__puce[aria-pressed="true"] span {
-  color: rgba(255, 255, 255, 0.7);
-}
-html[data-vue="parent"] .kit label:hover {
-  background: rgba(12, 16, 32, 0.04);
-}
-html[data-vue="parent"] .trouve__champ input:focus,
-html[data-vue="parent"] .questions__saisie:focus {
-  box-shadow: 0 0 0 4px rgba(12, 16, 32, 0.08);
-}
-html[data-vue="parent"] .trouve__jauge {
-  background: rgba(12, 16, 32, 0.08);
-}
-html[data-vue="parent"] .bascule {
-  background: rgba(12, 16, 32, 0.04);
-}
+  /* ce qui était écrit en blanc ou en ambre clair, et doit rester lisible le jour */
+  html:not([data-page="inscription"], [data-page="admin"]) .fiche__vedette {
+    color: #6b4100;
+    background: linear-gradient(135deg, rgba(255, 179, 71, 0.32), rgba(255, 179, 71, 0.1));
+    border-color: rgba(200, 144, 47, 0.6);
+  }
+  html:not([data-page="inscription"], [data-page="admin"]) .temps {
+    color: #6b4100;
+    background: rgba(255, 179, 71, 0.3);
+  }
+  html:not([data-page="inscription"], [data-page="admin"]) .temps--final {
+    background: linear-gradient(90deg, #3d6bff, #7cc64a);
+    color: #05060a;
+  }
+  html:not([data-page="inscription"], [data-page="admin"]) .questions__puce[aria-pressed="true"] {
+    background: var(--encre);
+    border-color: var(--encre);
+    color: #ffffff;
+  }
+  html:not([data-page="inscription"], [data-page="admin"]) .questions__puce[aria-pressed="true"] span {
+    color: rgba(255, 255, 255, 0.7);
+  }
+  html:not([data-page="inscription"], [data-page="admin"]) .kit label:hover {
+    background: rgba(12, 16, 32, 0.04);
+  }
+  html:not([data-page="inscription"], [data-page="admin"]) .trouve__champ input:focus,
+  html:not([data-page="inscription"], [data-page="admin"]) .questions__saisie:focus {
+    box-shadow: 0 0 0 4px rgba(12, 16, 32, 0.08);
+  }
+  html:not([data-page="inscription"], [data-page="admin"]) .trouve__jauge {
+    background: rgba(12, 16, 32, 0.08);
+  }
+  html:not([data-page="inscription"], [data-page="admin"]) .bascule {
+    background: rgba(12, 16, 32, 0.04);
+  }
 
-/* l'échelle, de jour */
-html[data-vue="parent"] .ech__aiguille {
-  background: linear-gradient(90deg, rgba(12, 16, 32, 0), var(--encre));
-}
-html[data-vue="parent"] .ech__aiguille::after {
-  background: var(--encre);
-  box-shadow: none;
-}
-html[data-vue="parent"] .ech__now {
-  background: var(--encre);
-  box-shadow: none;
-}
-html[data-vue="parent"] .ech__now span,
-html[data-vue="parent"] .ech__s.is-now .ech__creneau::after {
-  background: var(--encre);
-  color: #ffffff;
-}
-html[data-vue="parent"] .ech__creux {
-  background: repeating-linear-gradient(135deg, rgba(12, 16, 32, 0.045) 0 8px, transparent 8px 16px);
-}
-html[data-vue="parent"] .ech__s--uni {
-  --c: var(--encre);
-  --c-clair: var(--encre);
-}
-html[data-vue="parent"] .ech__s.is-lu {
-  box-shadow: inset 3px 0 0 var(--c), 0 0 0 1px var(--c), 0 18px 40px -26px var(--c);
-}
+  /* l'échelle, de jour */
+  html:not([data-page="inscription"], [data-page="admin"]) .ech__aiguille {
+    background: linear-gradient(90deg, rgba(12, 16, 32, 0), var(--encre));
+  }
+  html:not([data-page="inscription"], [data-page="admin"]) .ech__aiguille::after {
+    background: var(--encre);
+    box-shadow: none;
+  }
+  html:not([data-page="inscription"], [data-page="admin"]) .ech__now {
+    background: var(--encre);
+    box-shadow: none;
+  }
+  html:not([data-page="inscription"], [data-page="admin"]) .ech__now span,
+  html:not([data-page="inscription"], [data-page="admin"]) .ech__s.is-now .ech__creneau::after {
+    background: var(--encre);
+    color: #ffffff;
+  }
+  html:not([data-page="inscription"], [data-page="admin"]) .ech__creux {
+    background: repeating-linear-gradient(135deg, rgba(12, 16, 32, 0.045) 0 8px, transparent 8px 16px);
+  }
+  html:not([data-page="inscription"], [data-page="admin"]) .ech__s--uni {
+    --c: var(--encre);
+    --c-clair: var(--encre);
+  }
+  html:not([data-page="inscription"], [data-page="admin"]) .ech__s.is-lu {
+    box-shadow: inset 3px 0 0 var(--c), 0 0 0 1px var(--c), 0 18px 40px -26px var(--c);
+  }
 
-/* la semaine d'un coup d'œil, de jour (mêmes règles que dans une section claire) */
-html[data-vue="parent"] .sem__piste {
-  background:
-    repeating-linear-gradient(90deg, rgba(12, 16, 32, 0.1) 0 1px, transparent 1px calc(100% / 8)),
-    rgba(12, 16, 32, 0.03);
-}
-html[data-vue="parent"] .sem__s--fort {
-  border-color: rgba(200, 144, 47, 0.6);
-  background: linear-gradient(180deg, rgba(255, 179, 71, 0.22), #ffffff);
-}
-html[data-vue="parent"] .sem__s--final {
-  color: #ffffff;
-  border-color: transparent;
-  background: linear-gradient(100deg, #3d6bff, var(--navy) 50%, #3c7d1a);
-}
-html[data-vue="parent"] .sem__s--final time {
-  color: rgba(255, 255, 255, 0.8);
-}
-html[data-vue="parent"] .sem__pause {
-  background: repeating-linear-gradient(90deg, rgba(12, 16, 32, 0.25) 0 4px, transparent 4px 8px);
+  /* la semaine d'un coup d'œil, de jour (mêmes règles que dans une section claire) */
+  html:not([data-page="inscription"], [data-page="admin"]) .sem__piste {
+    background:
+      repeating-linear-gradient(90deg, rgba(12, 16, 32, 0.1) 0 1px, transparent 1px calc(100% / 8)),
+      rgba(12, 16, 32, 0.03);
+  }
+  html:not([data-page="inscription"], [data-page="admin"]) .sem__s--fort {
+    border-color: rgba(200, 144, 47, 0.6);
+    background: linear-gradient(180deg, rgba(255, 179, 71, 0.22), #ffffff);
+  }
+  html:not([data-page="inscription"], [data-page="admin"]) .sem__s--final {
+    color: #ffffff;
+    border-color: transparent;
+    background: linear-gradient(100deg, #3d6bff, var(--navy) 50%, #3c7d1a);
+  }
+  html:not([data-page="inscription"], [data-page="admin"]) .sem__s--final time {
+    color: rgba(255, 255, 255, 0.8);
+  }
+  html:not([data-page="inscription"], [data-page="admin"]) .sem__pause {
+    background: repeating-linear-gradient(90deg, rgba(12, 16, 32, 0.25) 0 4px, transparent 4px 8px);
+  }
 }
 
 /* ---------- la feuille de partage (quand le téléphone n'a pas de partage natif) ---------- */
@@ -551,9 +388,4 @@ html[data-vue="parent"] .sem__pause {
   font-size: 0.84rem;
   font-weight: 600;
   color: var(--ink-2);
-}
-
-/* le tiroir gagne une rangée : la bascule, sous le logo */
-.tiroir {
-  grid-template-rows: auto auto minmax(0, 1fr) auto;
 }

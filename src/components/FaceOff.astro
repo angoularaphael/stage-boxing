@@ -5,7 +5,6 @@
  * annonce l'interclub du samedi, où les deux stages se retrouvent.
  */
 import Photo from './Photo.astro';
-import Bascule from './Bascule.astro';
 import Partager from './Partager.astro';
 import { CLUBS } from '../data/clubs.js';
 import { STAGE } from '../data/stage.js';
@@ -38,7 +37,6 @@ const m = CLUBS.minimes;
       <em>Tu boxes avec les coachs de ton club et un boxeur pro.</em>
     </p>
     <Partager classe="btn btn--rouge fo__partager" />
-    <Bascule variante="heros" />
   </div>
   <div class="fo__duo">
     <a class="fo__cote fo__cote--portet" href={p.programme} data-suivi aria-label={`${p.cta} : stage enfants au Boxing Center Portet-sur-Garonne`}>

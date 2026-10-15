@@ -16,7 +16,6 @@ import { agenda } from './agenda.js';
 import { trouveur } from './trouveur.js';
 import { questions } from './questions.js';
 import { apercuCarte } from './apercu.js';
-import { vue } from './vue.js';
 import { partage } from './partage.js';
 
 const VERROU = '__vdbDemarre';
@@ -38,7 +37,6 @@ async function demarrer() {
     admin();
     return;
   }
-  vue();
   partage();
   suivi();
   barre();

@@ -939,7 +939,7 @@ html:not([data-club]) .sec__title em {
 [data-places]:empty::before {
   content: "\200b";
 }
-/* sur téléphone, « Places limitées : 40 enfants par salle » tient sur deux lignes : les deux sont
+/* sur téléphone, « Places restantes : 16/20 » tient sur deux lignes : les deux sont
    gardées, sinon tout le bas de la colonne remonte d'un coup */
 @media (max-width: 559px) {
   .fo__cote .fo__places {
@@ -1496,6 +1496,32 @@ html:not([data-club]) .sec__title em {
   .cartes .carte__nom {
     font-size: 2rem;
   }
+}
+/* le palmarès en chiffres, à la place des lignes de texte (Lucas, Fayez) : le chiffre au-dessus de son libellé */
+.carte__stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.2rem 1.4rem;
+  margin: 0.3rem 0 0;
+}
+.carte__stats > div {
+  display: flex;
+  flex-direction: column-reverse;
+}
+.carte__stats dd {
+  margin: 0;
+  font-family: var(--f-display);
+  font-size: clamp(2rem, 5.2vw, 2.5rem);
+  line-height: 0.9;
+  color: #fff;
+}
+.carte__stats dt {
+  margin-top: 0.2rem;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--cc-clair);
 }
 .carte__vedette {
   margin-top: 0.15rem;

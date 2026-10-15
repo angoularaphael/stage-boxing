@@ -62,7 +62,9 @@ export const INTERVENANTS = {
     court: 'Fayez',
     role: 'Coach Boxing Center',
     titres: ['12 combats amateurs', 'Maîtrise la boxe anglaise', 'Encadre la préparation physique du stage'],
-    carte: ['Maîtrise la boxe anglaise', 'Encadre la préparation physique du stage'],
+    // sur la carte, son palmarès en chiffres à la place des lignes (le patron, 15/10) ; les lignes restent sur la fiche
+    carte: [],
+    carteBilan: [[12, 'combats']],
     // le palmarès, en chiffres, comme celui des boxeurs pros
     bilan: [[12, 'combats']],
     bilanTitre: 'Palmarès chez les amateurs',
@@ -74,7 +76,8 @@ export const INTERVENANTS = {
     court: 'Lucas',
     role: 'Coach Boxing Center',
     titres: ['21 combats amateurs, 17 victoires', 'Maîtrise la boxe anglaise', 'Encadre le perfectionnement technique du stage'],
-    carte: ['Maîtrise la boxe anglaise', 'Encadre le perfectionnement technique du stage'],
+    carte: [],
+    carteBilan: [[21, 'combats'], [17, 'victoires']],
     bilan: [[21, 'combats'], [17, 'victoires']],
     bilanTitre: 'Palmarès chez les amateurs',
     texte: '',
