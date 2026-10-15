@@ -109,7 +109,7 @@ export const DOCUMENTS = [
       },
       {
         h: '5. Paiement',
-        p: ['Le paiement se fait en ligne, avant le formulaire d’inscription, par carte bancaire ou par PayPal (comptant, ou en plusieurs fois avec PayPal si le parent y est éligible), et par Scalapay pour le club des Minimes.'],
+        p: ['Le paiement se fait en ligne, avant le formulaire d’inscription, par carte bancaire (comptant ou en plusieurs fois aux Minimes), ou par PayPal (comptant, ou en plusieurs fois si le parent y est éligible).'],
       },
       {
         h: '6. Inscription complète',

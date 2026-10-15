@@ -21,6 +21,7 @@
   "dependencies": {
     "astro": "^5.0.0",
     "bcryptjs": "^2.4.3",
+    "pdfkit": "^0.15.2",
     "sharp": "^0.34.5"
   }
 }

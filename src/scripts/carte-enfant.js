@@ -59,10 +59,17 @@ export async function carteEnImage(d) {
   ctx.fillStyle = g;
   ctx.fillRect(0, 0, W, H);
 
+  const portraitPourCarte = (w, h) => {
+    if (!w || !h) return false;
+    const ratio = h / w;
+    return ratio >= 0.85 && ratio <= 1.35 && w >= 200;
+  };
+
   let photoOk = false;
   if (d.photo_url) {
     try {
       const img = await chargerImage(d.photo_url);
+      if (!portraitPourCarte(img.width, img.height)) throw new Error('not_portrait');
       const hPhoto = 900;
       ctx.save();
       ctx.beginPath();

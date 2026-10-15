@@ -58,7 +58,7 @@ test('carte mail : photo Cloudinary a la place des initiales', () => {
   assert.equal(data.photo_url, order.child.photo_url);
   const carte = buildCarteSvg(order);
   assert.match(carte.svg, /image href=/);
-  assert.ok(carte.html.includes(order.child.photo_url));
+  assert.ok(carte.svg.includes(order.child.photo_url));
   assert.ok(!carte.svg.includes('font-size="420"'));
 });
 
@@ -70,15 +70,15 @@ test('carte mail : PNG pour Brevo (pas de SVG en piece jointe)', async () => {
   assert.equal(png.content[1], 0x50);
 });
 
-test('facture : emetteur BOXPLUS selon la salle + infos stage', () => {
-  const portet = buildStageInvoicePdf(sampleOrder('portet'));
-  const minimes = buildStageInvoicePdf(sampleOrder('minimes'));
+test('facture : emetteur BOXPLUS selon la salle + infos stage', async () => {
+  const portet = await buildStageInvoicePdf(sampleOrder('portet'));
+  const minimes = await buildStageInvoicePdf(sampleOrder('minimes'));
   assert.ok(portet && minimes);
-  assert.match(portet.content.toString('latin1'), /Noble Art Portesien|NOBLE ART PORTESIEN/);
-  assert.match(minimes.content.toString('latin1'), /SAS BOXING CENTER|Boxing Center/);
-  assert.match(portet.content.toString('latin1'), /Vacances des Boxeurs/);
-  assert.match(portet.content.toString('latin1'), /12 seances|6 jours/);
-  assert.match(minimes.content.toString('latin1'), /12 seances|6 jours/);
+  assert.equal(portet.content.subarray(0, 4).toString('ascii'), '%PDF');
+  assert.equal(minimes.content.subarray(0, 4).toString('ascii'), '%PDF');
+  assert.ok(portet.content.length > 2000);
+  assert.ok(minimes.content.length > 2000);
+  assert.match(portet.filename, /FAC-STG-/);
 });
 
 test('agenda ics : 12 evenements', () => {

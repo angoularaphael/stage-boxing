@@ -71,7 +71,7 @@ export default async function handler(req, res) {
     const id = String(q.invoice || q.id || '').trim();
     const order = await getOrder(id);
     if (!order) return json(res, 404, { ok: false, error: 'Inscription introuvable' });
-    const inv = buildStageInvoicePdf(order);
+    const inv = await buildStageInvoicePdf(order);
     if (!inv) {
       return json(res, 400, { ok: false, error: 'Facture disponible uniquement apres paiement.' });
     }

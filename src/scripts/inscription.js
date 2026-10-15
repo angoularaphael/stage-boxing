@@ -13,6 +13,10 @@ import { incliner, gyroscope } from './cartes.js';
 import { reduit } from './ui.js';
 import { carteEnImage, agendaIcs, telecharger } from './carte-enfant.js';
 import { padSignature } from './signature.js';
+import {
+  paymentMethodCheckoutDetail,
+  paymentMethodCheckoutLabel,
+} from '../../lib/payment-labels.js';
 import { installmentScheduleHtml } from '../../lib/installments.js';
 
 const $ = (s, r = document) => r.querySelector(s);
@@ -373,7 +377,7 @@ export async function inscription() {
     const ids = (etat.methodes[etat.club] || []).map((m) => m.id);
     const enPlusieurs = [
       ids.includes('paypal_4x') ? `en 4 fois avec PayPal (4 × ${fmt(p / 4)} €) si vous y êtes éligible` : '',
-      ids.includes('scalapay') ? 'avec Scalapay, en 3 fois sans frais ou en 4 fois avec 1,5 % de frais' : '',
+      ids.includes('scalapay') ? 'en CB en 3 fois sans frais ou en 4 fois avec 1,5 % de frais' : '',
     ].filter(Boolean);
     $('[data-p-4x]').textContent = enPlusieurs.length ? `Payable en une fois, ou ${enPlusieurs.join(', ou ')}.` : '';
     panier.classList.remove('is-ajoute');
@@ -398,11 +402,11 @@ export async function inscription() {
     if (ev.target?.name === 'method') majEcheances();
   });
   const LIBELLES = {
-    cawl_card: ['Carte bancaire', 'Paiement comptant'],
-    payplug_card: ['Carte bancaire', 'Paiement comptant'],
+    cawl_card: ['Carte bancaire', 'Paiement comptant par CB'],
+    payplug_card: ['Carte bancaire', 'Paiement comptant par CB'],
     paypal_once: ['PayPal', 'Paiement comptant'],
     paypal_4x: ['PayPal en plusieurs fois', 'Selon votre éligibilité chez PayPal'],
-    scalapay: ['Scalapay', 'Plusieurs fois — mobile 06/07 requis'],
+    scalapay: [paymentMethodCheckoutLabel('scalapay'), paymentMethodCheckoutDetail('scalapay')],
   };
   async function majPaiement() {
     const p = montant();
@@ -512,7 +516,7 @@ export async function inscription() {
     let msgTel = '';
     if (!telOk(tel)) msgTel = 'Indiquez un numéro de téléphone à 10 chiffres.';
     else if (methode === 'scalapay' && !mobileFrOk(tel)) {
-      msgTel = 'Pour Scalapay, indiquez un mobile français (06 ou 07), pas un fixe.';
+      msgTel = 'Pour le paiement CB en plusieurs fois, indiquez un mobile français (06 ou 07), pas un fixe.';
     }
     ok = erreurChamp('p-tel', msgTel) && ok;
     ok = erreurChamp('methode', methode ? '' : 'Choisissez un moyen de paiement.') && ok;
@@ -554,8 +558,8 @@ export async function inscription() {
       } else if (e.code === 'method_forbidden') {
         dire('Ce moyen de paiement n’est pas proposé pour ce club. Choisissez-en un autre.');
       } else if (e.code === 'payplug_customer_incomplete' || /mobile|06 ou 07|telephone/i.test(e.message || '')) {
-        dire(e.message || 'Pour Scalapay, indiquez un mobile français (06 ou 07).');
-        erreurChamp('p-tel', e.message || 'Mobile 06 ou 07 requis pour Scalapay.');
+        dire(e.message || 'Pour le paiement CB en plusieurs fois, indiquez un mobile français (06 ou 07).');
+        erreurChamp('p-tel', e.message || 'Mobile 06 ou 07 requis pour le paiement CB en plusieurs fois.');
         $('#p-tel')?.focus();
       } else if (e.message && e.message !== `Erreur ${e.status}`) {
         dire(`${e.message} Si le problème continue, appelez le club : ${contactClub()}.`);

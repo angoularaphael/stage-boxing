@@ -29,7 +29,7 @@ const lignes = [
   { t: 'Head coach', v: [INTERVENANTS.valentin.nom, INTERVENANTS.mehdi.nom] },
   { t: 'L’équipe', v: CLUB_IDS.map((id) => listeNoms(CLUBS[id].equipe, true)) },
   { t: 'Le boxeur pro', v: ['anna', 'johnson'].map((pid) => `${INTERVENANTS[pid].nom} : ${minuscule(INTERVENANTS[pid].vedette)}`) },
-  { t: 'Paiement', v: ['Carte, PayPal, PayPal en 4 fois si éligible', 'Carte, PayPal, PayPal en 4 fois si éligible, Scalapay'] },
+  { t: 'Paiement', v: ['Carte, PayPal, PayPal en 4 fois si éligible', 'Carte, PayPal, PayPal en 4 fois si éligible, CB en 3x ou 4x'] },
   { t: 'Contact', v: CLUB_IDS.map((id) => `${CLUBS[id].tel} · ${CLUBS[id].email}`) },
   { t: 'Le reste', v: ['Mêmes dates, horaires, programme et tarifs', 'Mêmes dates, horaires, programme et tarifs'] },
 ];
