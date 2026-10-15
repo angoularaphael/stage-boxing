@@ -1490,6 +1490,50 @@ html:not([data-club]) .sec__title em {
   background: var(--cc);
   transform: rotate(45deg);
 }
+/* quatre cartes par rangée entre 1000 et 1279 px : une carte fait 224 px, le nom au maximum passait sur deux lignes
+   et l’encadré d’un boxeur pro touchait le haut de la carte */
+@media (min-width: 1000px) and (max-width: 1279px) {
+  .cartes .carte__nom {
+    font-size: 2rem;
+  }
+}
+/* le palmarès en chiffres, sur la carte même */
+.carte__palmares {
+  display: grid;
+  gap: 0.15rem;
+  margin-top: 0.2rem;
+}
+.carte__palmares-titre {
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.62);
+}
+.carte__stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.15rem 1rem;
+  margin: 0;
+}
+.carte__stats > div {
+  display: flex;
+  flex-direction: column-reverse;
+}
+.carte__stats dd {
+  margin: 0;
+  font-family: var(--f-display);
+  font-size: clamp(1.7rem, 4.6vw, 2.2rem);
+  line-height: 0.9;
+  color: #fff;
+}
+.carte__stats dt {
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--cc-clair);
+}
 .carte__vedette {
   margin-top: 0.15rem;
   padding: 0.5rem 0.6rem;

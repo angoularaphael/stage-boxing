@@ -51,13 +51,14 @@ export const INTERVENANTS = {
     texte: 'Pur produit de l’école Boxing Center, il accompagne chaque boxeur avec exigence et pédagogie, du loisir à la compétition.',
     photo: 'mehdi',
   },
-  // le club, 13/10/2026 : leur palmarès remplace les phrases. Fayez : portrait refait avec Higgsfield d'après quatre
-  // images de la vidéo du club (désigné par Eddy, 14/10 : « il doit se ressembler ») ; Lucas : pas encore de photo
+  // le club, 13/10/2026 : leur palmarès remplace les phrases ; 15/10 : leurs vraies photos (Fayez : photo d'Eddy ;
+  // Lucas : vidéo Instagram du club), « maîtrise la boxe anglaise » (Eddy) et la partie du stage qu'ils encadrent
+  // (lue dans le programme : Fayez les deux préparations physiques, Lucas les deux perfectionnements techniques)
   fayez: {
     nom: 'Fayez Draoui',
     court: 'Fayez',
     role: 'Coach Boxing Center',
-    titres: ['12 combats amateurs'],
+    titres: ['12 combats amateurs', 'Maîtrise la boxe anglaise', 'Encadre la préparation physique du stage'],
     // le palmarès, en chiffres, comme celui des boxeurs pros
     bilan: [[12, 'combats']],
     bilanTitre: 'Palmarès chez les amateurs',
@@ -68,11 +69,11 @@ export const INTERVENANTS = {
     nom: 'Lucas Kouyate',
     court: 'Lucas',
     role: 'Coach Boxing Center',
-    titres: ['21 combats amateurs, 17 victoires'],
+    titres: ['21 combats amateurs, 17 victoires', 'Maîtrise la boxe anglaise', 'Encadre le perfectionnement technique du stage'],
     bilan: [[21, 'combats'], [17, 'victoires']],
     bilanTitre: 'Palmarès chez les amateurs',
     texte: '',
-    photo: null,
+    photo: 'lucas',
   },
   johnson: {
     nom: 'Johnson Suffo',
