@@ -26,7 +26,7 @@ const REGLAGE = {
 // Eddy, 16/10 : on presse, mais on ne dit JAMAIS « complet » tant qu'il ne l'a pas dit. Le compte s'arrête
 // à PLANCHER, et les inscriptions restent ouvertes (l'API ne bloque plus : STOCK_* très hauts sur Vercel).
 // Le jour où une salle est vraiment pleine, sur son ordre seulement : COMPLET[club] = true.
-const PLANCHER = 1;
+const PLANCHER = 5; // Eddy, 16/10 : « the lowest of lows should be like five places left »
 const COMPLET = { portet: false, minimes: false };
 
 /** Le dernier compte connu de chaque salle, que lit aussi l'encart du défilement (encart.js). */
@@ -84,7 +84,7 @@ export function jauge(el, max) {
  * s'éteint ; les derniers pas ralentissent, le compte se pose. Sans animation (réglage de l'appareil) : le vrai
  * chiffre tout de suite.
  */
-export function descendre(chiffre, barres, de, a, { pas = 75, delai = 250 } = {}) {
+export function descendre(chiffre, barres, de, a, { pas = 150, delai = 250 } = {}) {
   const poser = (n) => {
     if (chiffre) chiffre.textContent = String(n);
     barres.forEach((b, i) => b.classList.toggle('is-prise', i >= n));

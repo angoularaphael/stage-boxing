@@ -67,7 +67,7 @@ export function encartPlaces() {
     const barres = jauge(face.querySelector('[data-encart-jauge]'), v.max);
     encart.classList.add('is-la');
     // les 20 barres s'allument d'abord (CSS, 16 ms l'une après l'autre), puis les places prises s'éteignent
-    await descendre(face.querySelector('[data-encart-n]'), barres, depuis ?? v.max, v.restantes, { pas: 70, delai: 660 });
+    await descendre(face.querySelector('[data-encart-n]'), barres, depuis ?? v.max, v.restantes, { pas: 150, delai: 660 });
     await tenir(ms);
   };
 
