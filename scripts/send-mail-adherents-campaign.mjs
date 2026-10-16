@@ -19,12 +19,16 @@ process.env.BREVO_SENDER_NAME = process.env.BREVO_SENDER_NAME || 'David de Boxin
 if (!process.env.BREVO_REPLY_TO) {
   process.env.BREVO_REPLY_TO = 'boxingcentertls@gmail.com';
 }
+if (!process.env.BREVO_SENDER_EMAIL) {
+  process.env.BREVO_SENDER_EMAIL = 'suzinabot@gmail.com';
+}
+delete process.env.RESEND_API_KEY;
 
 const {
   adherentsMailPayload,
   loadAdherentRecipientEmails,
 } = await import('../lib/mail-adherents-stage.js');
-const { sendMail } = await import('../lib/mail.js');
+const { sendMailBrevo } = await import('../lib/mail.js');
 
 function parseArgs(argv) {
   const o = { test: false, run: false, now: false, start: '15:30', end: '17:30', dataRoot: '' };
@@ -113,7 +117,7 @@ const mailPayload = adherentsMailPayload();
 
 if (args.test) {
   for (const to of ['boxingcenter31@gmail.com', 'boxingcentertls@gmail.com']) {
-    const r = await sendMail({ to, subject: mailPayload.subject, ...mailPayload });
+    const r = await sendMailBrevo({ to, subject: mailPayload.subject, ...mailPayload });
     console.log(to, JSON.stringify(r));
   }
   process.exit(0);
@@ -152,7 +156,7 @@ for (let i = 0; i < pending.length; i++) {
     logLine(`Deadline ${args.end} atteinte — arret (${pending.length - i} restants)`);
     break;
   }
-  const r = await sendMail({ to, subject: mailPayload.subject, ...mailPayload });
+  const r = await sendMailBrevo({ to, subject: mailPayload.subject, ...mailPayload });
   if (r.sent) {
     state.sent[to] = { at: new Date().toISOString(), id: r.id || '' };
     ok++;
