@@ -18,6 +18,7 @@ import {
   paymentMethodCheckoutLabel,
 } from '../../lib/payment-labels.js';
 import { installmentScheduleHtml } from '../../lib/installments.js';
+import { isChildFileComplete } from '../../lib/child-file.js';
 
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
@@ -686,8 +687,8 @@ export async function inscription() {
     }
     if (order.payment?.status === 'paid') {
       // la date de naissance donnée avant le paiement n'est pas à retaper dans la fiche
-      if (!order.child && remplirDate('e', lireSession().naissance)) majAge();
-      return aller(order.child ? 'documents' : 'enfant');
+      if (!isChildFileComplete(order.child) && remplirDate('e', lireSession().naissance)) majAge();
+      return aller(isChildFileComplete(order.child) ? 'documents' : 'enfant');
     }
     majPanier();
     majPaiement();
@@ -929,6 +930,11 @@ export async function inscription() {
     ok = erreurChamp('s-nom', nom ? '' : 'Indiquez votre nom et votre prénom.') && ok;
     ok = erreurChamp('s-lieu', lieu ? '' : 'Indiquez la ville.') && ok;
     ok = erreurChamp('signature', pad.vide() ? 'Signez dans le cadre, avec le doigt ou la souris.' : '') && ok;
+    if (!isChildFileComplete(etat.order?.child)) {
+      dire('Remplissez d’abord la fiche complète de votre enfant (nom, date de naissance, poids, niveau, urgence, midi).');
+      aller('enfant');
+      return premiereErreur(formEnfant);
+    }
     if (!ok) {
       if (DOCS_CLES.some((k) => !formDocs.querySelector(`input[name="${k}"]`).checked)) {
         dire('Validez chacun des documents pour finaliser l’inscription.');

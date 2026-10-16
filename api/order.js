@@ -2,6 +2,7 @@ import '../lib/load-env.js';
 import { STAGE } from '../lib/config.js';
 import { json, methodOf, queryFromUrl, readBody } from '../lib/http.js';
 import { sendRegistrationComplete } from '../lib/mail.js';
+import { childFileMissing, isChildFileComplete } from '../lib/child-file.js';
 import { getOrderByToken, publicOrderView, saveOrder } from '../lib/orders.js';
 
 function ageFromBirthdate(iso, refIso = STAGE.start) {
@@ -101,11 +102,13 @@ export default async function handler(req, res) {
       order.child.photo_public_id = prevPhotoId;
     }
     if (body.photo_public_id) order.child.photo_public_id = String(body.photo_public_id).trim();
-    if (!order.child.first_name || !order.child.last_name) {
-      return json(res, 400, { ok: false, error: 'Nom et prenom de l enfant obligatoires.' });
-    }
-    if (!emergencyName || !emergencyPhone) {
-      return json(res, 400, { ok: false, error: 'Contact et telephone d urgence obligatoires.' });
+    const missing = childFileMissing(order.child);
+    if (missing) {
+      return json(res, 400, {
+        ok: false,
+        error: `Fiche enfant incomplete (${missing}).`,
+        code: 'child_incomplete',
+      });
     }
     if (body.parent_phone) order.parent.phone = String(body.parent_phone).trim();
     if (body.parent_email) order.parent.email = String(body.parent_email).trim().toLowerCase();
@@ -115,8 +118,12 @@ export default async function handler(req, res) {
   }
 
   if (action === 'documents') {
-    if (!order.child) {
-      return json(res, 400, { ok: false, error: 'Formulaire enfant requis.' });
+    if (!isChildFileComplete(order.child)) {
+      return json(res, 400, {
+        ok: false,
+        error: 'Remplissez d abord la fiche complete de votre enfant.',
+        code: 'child_incomplete',
+      });
     }
     const required = ['cgv', 'reglement', 'parental', 'health', 'participation'];
     for (const key of required) {

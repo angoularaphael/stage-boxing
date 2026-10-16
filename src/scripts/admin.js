@@ -31,8 +31,17 @@ export function lireNotes(notes) {
 const dateFr = (iso) => (/^\d{4}-\d{2}-\d{2}$/.test(String(iso || '')) ? iso.split('-').reverse().join('/') : iso || '');
 
 function statut(o) {
+  const ficheOk = Boolean(
+    String(o.child?.first_name || '').trim() &&
+      String(o.child?.last_name || '').trim() &&
+      String(o.child?.birthdate || '').trim() &&
+      String(o.child?.weight || '').trim() &&
+      String(o.child?.emergency_name || '').trim() &&
+      String(o.child?.lunch_break || '').trim()
+  );
+  if (o.status === 'complete' && !ficheOk) return ['fiche', 'Fiche incomplète'];
   if (o.status === 'complete') return ['complete', 'Complète'];
-  if (o.payment?.status === 'paid' && o.child) return ['docs', 'Documents à valider'];
+  if (o.payment?.status === 'paid' && ficheOk) return ['docs', 'Documents à valider'];
   if (o.payment?.status === 'paid') return ['fiche', 'Fiche à remplir'];
   return ['paiement', 'Paiement en attente'];
 }
