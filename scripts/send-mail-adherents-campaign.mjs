@@ -154,7 +154,7 @@ for (let i = 0; i < pending.length; i++) {
     logLine(`Deadline ${args.end} atteinte — arret (${pending.length - i} restants)`);
     break;
   }
-  const r = await sendMail({ to, subject, html: adherentsMailHtml() });
+  const r = await sendMail({ to, subject, html: adherentsMailHtml(), ...adherentsMailBrevoOpts() });
   if (r.sent) {
     state.sent[to] = { at: new Date().toISOString(), id: r.id || '' };
     ok++;
