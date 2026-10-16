@@ -3,7 +3,7 @@
  *
  * Usage:
  *   node scripts/send-mail-adherents-campaign.mjs --test
- *   node scripts/send-mail-adherents-campaign.mjs --run --start 14:40 --end 17:30
+ *   node scripts/send-mail-adherents-campaign.mjs --run --start 15:30 --end 17:30
  *   node scripts/send-mail-adherents-campaign.mjs --run --now
  */
 import { mkdirSync, appendFileSync, readFileSync, writeFileSync, existsSync } from 'node:fs';
@@ -16,6 +16,9 @@ const stateFile = path.join(logDir, 'adherents-stage-2026-10-16.json');
 
 import '../lib/load-env.js';
 process.env.BREVO_SENDER_NAME = 'David — Boxing Center';
+if (!process.env.BREVO_REPLY_TO) {
+  process.env.BREVO_REPLY_TO = 'boxingcentertls@gmail.com';
+}
 
 const {
   ADHERENTS_MAIL_SUBJECT,
@@ -25,7 +28,7 @@ const {
 const { sendMail } = await import('../lib/mail.js');
 
 function parseArgs(argv) {
-  const o = { test: false, run: false, now: false, start: '14:40', end: '17:30', dataRoot: '' };
+  const o = { test: false, run: false, now: false, start: '15:30', end: '17:30', dataRoot: '' };
   for (const a of argv) {
     if (a === '--test') o.test = true;
     if (a === '--run') o.run = true;
@@ -107,12 +110,11 @@ function saveState(state) {
 }
 
 const args = parseArgs(process.argv.slice(2));
-const html = adherentsMailHtml();
 const subject = ADHERENTS_MAIL_SUBJECT;
 
 if (args.test) {
   for (const to of ['boxingcenter31@gmail.com', 'boxingcentertls@gmail.com']) {
-    const r = await sendMail({ to, subject, html });
+    const r = await sendMail({ to, subject, html: adherentsMailHtml() });
     console.log(to, JSON.stringify(r));
   }
   process.exit(0);
@@ -150,7 +152,7 @@ for (let i = 0; i < pending.length; i++) {
     logLine(`Deadline ${args.end} atteinte — arret (${pending.length - i} restants)`);
     break;
   }
-  const r = await sendMail({ to, subject, html });
+  const r = await sendMail({ to, subject, html: adherentsMailHtml() });
   if (r.sent) {
     state.sent[to] = { at: new Date().toISOString(), id: r.id || '' };
     ok++;

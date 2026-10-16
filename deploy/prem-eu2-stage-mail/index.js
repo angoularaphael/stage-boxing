@@ -57,23 +57,34 @@ function ensureRepo() {
 
 ensureRepo();
 
-const start = process.env.CAMPAIGN_START || '14:40';
+const start = process.env.CAMPAIGN_START || '15:30';
 const end = process.env.CAMPAIGN_END || '17:30';
 const dataRoot = path.dirname(dataDir);
+const runNow =
+  process.env.CAMPAIGN_NOW === '1' ||
+  process.env.CAMPAIGN_NOW === 'true' ||
+  process.argv.includes('--now');
+
+const args = [
+  path.join(APP, 'scripts', 'send-mail-adherents-campaign.mjs'),
+  '--run',
+  `--start=${start}`,
+  `--end=${end}`,
+  `--data-root=${dataRoot}`,
+];
+if (runNow) args.push('--now');
 
 const child = spawn(
   process.execPath,
-  [
-    path.join(APP, 'scripts', 'send-mail-adherents-campaign.mjs'),
-    '--run',
-    `--start=${start}`,
-    `--end=${end}`,
-    `--data-root=${dataRoot}`,
-  ],
+  args,
   {
     cwd: APP,
     stdio: 'inherit',
-    env: { ...process.env, BREVO_SENDER_NAME: 'David — Boxing Center' },
+    env: {
+      ...process.env,
+      BREVO_SENDER_NAME: 'David — Boxing Center',
+      BREVO_REPLY_TO: process.env.BREVO_REPLY_TO || 'boxingcentertls@gmail.com',
+    },
   }
 );
 
