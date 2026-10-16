@@ -533,6 +533,13 @@ export async function inscription() {
     const parentSaisi = { first_name: v('p-prenom'), last_name: v('p-nom'), email: v('p-email'), phone: v('p-tel') };
     ecrireSession({ parent: parentSaisi, club: etat.club, tarif: etat.tarif, naissance });
     try {
+      let attributionSrc = 'direct';
+      try {
+        const { stageAttributionSrc } = await import('./track-src.js');
+        attributionSrc = stageAttributionSrc();
+      } catch {
+        /* ignore */
+      }
       const r = await api('/api/checkout', {
         method: 'POST',
         body: JSON.stringify({
@@ -544,6 +551,7 @@ export async function inscription() {
           parent_phone: parentSaisi.phone,
           parent_first_name: parentSaisi.first_name,
           parent_last_name: parentSaisi.last_name,
+          src: attributionSrc,
         }),
       });
       ecrireSession({ order: r.order_id, token: r.access_token });

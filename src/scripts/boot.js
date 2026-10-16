@@ -18,6 +18,7 @@ import { trouveur } from './trouveur.js';
 import { questions } from './questions.js';
 import { apercuCarte } from './apercu.js';
 import { partage } from './partage.js';
+import './track-src.js';
 
 const VERROU = '__vdbDemarre';
 

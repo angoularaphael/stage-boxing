@@ -148,7 +148,7 @@ const visages = (club: 'portet' | 'minimes') =>
             );
           })}
         </div>
-      </section>
+    </section>
 
       <!-- 2. Tarif -->
       <section class="panneau" data-panneau="tarif" aria-labelledby="q-tarif" hidden>
@@ -176,12 +176,12 @@ const visages = (club: 'portet' | 'minimes') =>
           <input type="checkbox" data-declare />
           <span class="case" aria-hidden="true"></span>
           <span>Je déclare que mon enfant est adhérent Boxing Center et bénéficie du tarif à {euros(P.adherent)}.</span>
-        </label>
+          </label>
         <div class="panneau__actions">
           <button class="btn btn--ghost" type="button" data-retour="club">← Club</button>
           <button class="btn btn--rouge" type="button" data-suite="panier" disabled>Continuer <span class="fleche" aria-hidden="true">→</span></button>
         </div>
-      </section>
+    </section>
 
       <!-- 3. Panier -->
       <section class="panneau" data-panneau="panier" aria-labelledby="q-panier" hidden>
@@ -269,8 +269,8 @@ const visages = (club: 'portet' | 'minimes') =>
             <button class="btn btn--ghost" type="button" data-retour="panier">← Panier</button>
             <button class="btn btn--rouge" type="submit" data-payer>Payer <span data-payer-montant></span> <span class="fleche" aria-hidden="true">→</span></button>
           </div>
-        </form>
-      </section>
+      </form>
+    </section>
 
       <!-- Retour du prestataire -->
       <section class="panneau panneau--attente" data-panneau="attente" aria-labelledby="q-attente" hidden>
@@ -433,8 +433,8 @@ const visages = (club: 'portet' | 'minimes') =>
           <div class="panneau__actions">
             <button class="btn btn--rouge btn--plein" type="submit" data-valider-enfant>Continuer vers les documents <span class="fleche" aria-hidden="true">→</span></button>
           </div>
-        </form>
-      </section>
+      </form>
+    </section>
 
       <!-- 6. Documents -->
       <section class="panneau" data-panneau="documents" aria-labelledby="q-docs" hidden>
@@ -500,7 +500,7 @@ const visages = (club: 'portet' | 'minimes') =>
             <button class="btn btn--rouge" type="submit" data-finaliser>Finaliser l’inscription <span class="fleche" aria-hidden="true">→</span></button>
           </div>
         </form>
-      </section>
+    </section>
 
       <!-- 7. Confirmé -->
       <section class="panneau panneau--fin" data-panneau="fin" aria-labelledby="q-fin" hidden>
@@ -537,6 +537,6 @@ const visages = (club: 'portet' | 'minimes') =>
           <a class="btn btn--ghost" href="/" data-retour-stage>Retour au stage</a>
         </div>
       </section>
-    </div>
+  </div>
   </main>
 </Base>
