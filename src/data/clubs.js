@@ -56,7 +56,7 @@ export const INTERVENANTS = {
   },
   // le club, 13/10/2026 : leur palmarès remplace les phrases ; 15/10 : leurs vraies photos (Fayez : photo d'Eddy ;
   // Lucas : vidéo Instagram du club), « maîtrise la boxe anglaise » (Eddy) et la partie du stage qu'ils encadrent
-  // (lue dans le programme : Fayez les deux préparations physiques, Lucas les deux perfectionnements techniques)
+  // (lue dans le programme ; planning du coach, 16/10 : Fayez et Lucas sur les deux préparations physiques)
   fayez: {
     nom: 'Fayez Draoui',
     court: 'Fayez',
@@ -75,7 +75,7 @@ export const INTERVENANTS = {
     nom: 'Lucas Kouyate',
     court: 'Lucas',
     role: 'Coach Boxing Center',
-    titres: ['21 combats amateurs, 17 victoires', 'Maîtrise la boxe anglaise', 'Encadre le perfectionnement technique du stage'],
+    titres: ['21 combats amateurs, 17 victoires', 'Maîtrise la boxe anglaise', 'Encadre la préparation physique du stage'],
     carte: [],
     carteBilan: [[21, 'combats'], [17, 'victoires']],
     bilan: [[21, 'combats'], [17, 'victoires']],
