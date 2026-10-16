@@ -28,6 +28,23 @@ const REGLAGE = {
 // Le jour où une salle est vraiment pleine, sur son ordre seulement : COMPLET[club] = true.
 const PLANCHER = 5; // Eddy, 16/10 : « the lowest of lows should be like five places left »
 const COMPLET = { portet: false, minimes: false };
+// Eddy, 16/10 : une fois passé sous ces chiffres, le compte repart chaque jour de 10 aux Minimes et de 13 à Portet,
+// puis chaque inscription du jour en retire une (jamais sous PLANCHER). Le « jour » commence à la première visite
+// de la journée (heure de Paris) : le site ne connaît que le total des inscriptions, pas leur date.
+const CHAQUE_JOUR = { portet: 13, minimes: 10 };
+
+function inscritsDuJour(club, enLigne) {
+  const jour = new Date().toLocaleDateString('fr-CA', { timeZone: 'Europe/Paris' });
+  const cle = `vdb-jour-${club}`;
+  try {
+    const m = JSON.parse(localStorage.getItem(cle) || 'null');
+    if (m && m.jour === jour && Number.isFinite(m.enLigne) && m.enLigne <= enLigne) return enLigne - m.enLigne;
+    localStorage.setItem(cle, JSON.stringify({ jour, enLigne }));
+  } catch {
+    /* pas de mémoire : le compte du jour part de son chiffre */
+  }
+  return 0;
+}
 
 /** Le dernier compte connu de chaque salle, que lit aussi l'encart du défilement (encart.js). */
 export const etatPlaces = {};
@@ -46,7 +63,9 @@ export async function lirePlaces(club, { frais = false } = {}) {
   const data = await res.json();
   const r = REGLAGE[club];
   const enLigne = Number(data?.stock?.max) - Number(data?.stock?.remaining);
-  const restantes = !r ? NaN : COMPLET[club] ? 0 : Math.max(PLANCHER, r.restantes - Math.max(0, enLigne - r.ancre));
+  let restantes = !r ? NaN : r.restantes - Math.max(0, enLigne - r.ancre);
+  if (r && CHAQUE_JOUR[club] && restantes < CHAQUE_JOUR[club]) restantes = CHAQUE_JOUR[club] - inscritsDuJour(club, enLigne);
+  if (r) restantes = COMPLET[club] ? 0 : Math.max(PLANCHER, restantes);
   const v = { restantes, max: r ? r.max : NaN, methodes: data.methods || [], prix: data.prices || null, studio: !!data.studio };
   try {
     sessionStorage.setItem(`${CACHE}-${club}`, JSON.stringify({ t: Date.now(), v }));
