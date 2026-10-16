@@ -2,7 +2,7 @@ import { defineConfig } from 'astro/config';
 import typoFr from './src/integrations/typo-fr.mjs';
 
 export default defineConfig({
-  site: 'https://stages.boxingcenter.fr',
+  site: 'https://stage.boxingcenter.fr',
   trailingSlash: 'never',
   // espaces insécables de la typographie française sur le HTML livré (texte seulement)
   integrations: [typoFr()],

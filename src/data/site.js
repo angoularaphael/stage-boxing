@@ -5,7 +5,7 @@
  * Le jour où le sous-domaine est branché : PUBLIC_SITE_URL=https://stages.boxingcenter.fr
  * sur Vercel, et les deux fichiers statiques public/robots.txt et public/sitemap.xml.
  */
-export const SITE_URL = String(import.meta.env.PUBLIC_SITE_URL || 'https://stage-boxing.vercel.app').replace(/\/+$/, '');
+export const SITE_URL = String(import.meta.env.PUBLIC_SITE_URL || 'https://stage.boxingcenter.fr').replace(/\/+$/, '');
 
 /** Date du dernier changement de contenu (pas la date du build). */
 export const MAJ = '2026-10-11';
