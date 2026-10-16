@@ -216,7 +216,7 @@ html[data-page="accueil"] #contenu {
   }
 
   /* les îlots de nuit : photos de gala, cartes, en-tête, tiroir, barre, pied */
-  html:not([data-page="inscription"], [data-page="admin"]) :is(.hd, .tiroir, .barre, .pied, .fo, .hero, .tete, .duel, .eq, .pilier, .salle, .carte, .apercu__dos, .feuille--partage) {
+  html:not([data-page="inscription"], [data-page="admin"]) :is(.hd, .tiroir, .barre, .encart, .pied, .fo, .hero, .tete, .duel, .eq, .pilier, .salle, .carte, .apercu__dos, .feuille--partage) {
     --noir: #080808;
     --noir-2: #0d0e13;
     --noir-3: #14161e;
@@ -231,7 +231,7 @@ html[data-page="accueil"] #contenu {
     --portet-clair: #8aa6ff;
     color: var(--ink);
   }
-  html:not([data-page="inscription"], [data-page="admin"]):not([data-club]) :is(.hd, .tiroir, .barre, .pied, .fo, .hero, .tete, .duel, .eq, .pilier, .salle, .carte, .apercu__dos, .feuille--partage) {
+  html:not([data-page="inscription"], [data-page="admin"]):not([data-club]) :is(.hd, .tiroir, .barre, .encart, .pied, .fo, .hero, .tete, .duel, .eq, .pilier, .salle, .carte, .apercu__dos, .feuille--partage) {
     --club: #f5f5f5;
     --club-clair: #ffffff;
   }

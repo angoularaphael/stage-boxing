@@ -18,3 +18,19 @@ const c = club ? CLUBS[club] : null;
   <a class="btn btn--rouge voix voix--p" href={c ? `/inscription?club=${c.id}` : '/choisir-mon-club'} tabindex="-1">{c ? 'Inscrire' : 'Choisir mon club'}</a>
   <Partager classe="btn btn--rouge voix voix--b" court />
 </div>
+{/* l'encart des places qui passe pendant le défilement (encart.js) : les Minimes, puis Portet ; le chiffre est
+    celui des lignes de la page, et les mêmes liens existent ailleurs, d'où aria-hidden */}
+<div class="encart" data-encart aria-hidden="true" hidden>
+  {(['minimes', 'portet'] as const).map((id) => (
+    <a class="encart__face" data-encart-club={id} href={`/inscription?club=${id}`} tabindex="-1" style={`--c:var(--${id});--c-clair:var(--${id}-clair)`}>
+      <span class="encart__n" data-encart-n>20</span>
+      <span class="encart__corps">
+        <span class="encart__club"><span class="encart__point"></span>Stage {CLUBS[id].a}<span class="fleche"> →</span></span>
+        <span class="encart__sur" data-encart-sur>places restantes sur 20</span>
+        <span class="encart__perte" data-encart-perte hidden>une place vient d’être prise</span>
+        <span class="encart__jauge" data-encart-jauge></span>
+      </span>
+    </a>
+  ))}
+  <button type="button" class="encart__x" data-encart-x tabindex="-1" aria-label="Masquer">×</button>
+</div>

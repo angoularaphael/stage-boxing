@@ -9,6 +9,7 @@ import { enTete, menu, barre, allumage, suivi, magnetique } from './ui.js';
 import { revelations } from './reveal.js';
 import { tarifs } from './tarif.js';
 import { places } from './places.js';
+import { encartPlaces } from './encart.js';
 import { horloge } from './horloge.js';
 import { cartes } from './cartes.js';
 import { echelle, semaineVivante } from './echelle.js';
@@ -42,6 +43,7 @@ async function demarrer() {
   barre();
   tarifs();
   places();
+  encartPlaces();
   horloge();
   cartes();
   echelle();
