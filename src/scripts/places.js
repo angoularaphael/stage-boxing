@@ -23,6 +23,11 @@ const REGLAGE = {
   portet: { max: 20, restantes: 16, ancre: 0 },
   minimes: { max: 20, restantes: 13, ancre: 1 },
 };
+// Eddy, 16/10 : on presse, mais on ne dit JAMAIS « complet » tant qu'il ne l'a pas dit. Le compte s'arrête
+// à PLANCHER, et les inscriptions restent ouvertes (l'API ne bloque plus : STOCK_* très hauts sur Vercel).
+// Le jour où une salle est vraiment pleine, sur son ordre seulement : COMPLET[club] = true.
+const PLANCHER = 1;
+const COMPLET = { portet: false, minimes: false };
 
 /** Le dernier compte connu de chaque salle, que lit aussi l'encart du défilement (encart.js). */
 export const etatPlaces = {};
@@ -41,7 +46,7 @@ export async function lirePlaces(club, { frais = false } = {}) {
   const data = await res.json();
   const r = REGLAGE[club];
   const enLigne = Number(data?.stock?.max) - Number(data?.stock?.remaining);
-  const restantes = r ? Math.max(0, r.restantes - Math.max(0, enLigne - r.ancre)) : NaN;
+  const restantes = !r ? NaN : COMPLET[club] ? 0 : Math.max(PLANCHER, r.restantes - Math.max(0, enLigne - r.ancre));
   const v = { restantes, max: r ? r.max : NaN, methodes: data.methods || [], prix: data.prices || null, studio: !!data.studio };
   try {
     sessionStorage.setItem(`${CACHE}-${club}`, JSON.stringify({ t: Date.now(), v }));
