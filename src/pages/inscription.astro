@@ -53,6 +53,7 @@ const donnees = {
   })),
   materiel: MATERIEL.map((m) => m.nom + (m.note ? ` (${m.note})` : '')),
   docs: DOCUMENTS.map((d) => ({ cle: d.cle, titre: d.titre, tampon: d.tampon })),
+  stageName: STAGE.nom,
 };
 const visages = (club: 'portet' | 'minimes') =>
   CLUBS[club].equipe.map((id) => {

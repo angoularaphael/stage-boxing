@@ -1017,6 +1017,7 @@ export async function inscription() {
     club: D.clubs[etat.club],
     serie: etat.order?.id ? String(etat.order.id).slice(-4).toUpperCase() : '',
     tampons: D.docs.map((d) => d.tampon),
+    stageName: D.stageName || 'Les Vacances des Boxeurs',
   });
   $('[data-telecharger]').addEventListener('click', async () => {
     const blob = await carteEnImage(donneesCarte());
