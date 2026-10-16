@@ -141,9 +141,11 @@ const state = loadState();
 const pending = emails.filter((e) => !state.sent[e]);
 const minsLeft = Math.max(1, minutesUntilParisDeadline(args.end));
 const budgetMs = minsLeft * 60_000;
-const minDelay = Math.max(4500, Number(process.env.ADHERENTS_MAIL_MIN_DELAY_MS) || 5500);
+const idealDelay = pending.length ? Math.floor(budgetMs / pending.length) : 0;
+const minDelay = Number(process.env.ADHERENTS_MAIL_MIN_DELAY_MS) || 2800;
+const maxDelay = Number(process.env.ADHERENTS_MAIL_MAX_DELAY_MS) || 14_000;
 const delayMs = pending.length
-  ? Math.min(14_000, Math.max(minDelay, Math.floor(budgetMs / pending.length)))
+  ? Math.min(maxDelay, Math.max(minDelay, idealDelay))
   : 0;
 
 logLine(`A envoyer: ${pending.length}, delai ${delayMs}ms, fin cible ${args.end} Paris`);
