@@ -46,7 +46,7 @@ const cron = randomBytes(24).toString('hex');
 
 const lines = [
   '# Genere depuis BOXPLUS/.env — ne pas committer',
-  'PUBLIC_URL=https://stage-boxing.vercel.app',
+  'PUBLIC_URL=https://stage.boxingcenter.fr',
   'SITE_NAME=Stages enfants Boxing Center',
   '',
   'PRICE_GUEST_CENTS=14000',
@@ -58,9 +58,12 @@ const lines = [
   `CRON_SECRET=${cron}`,
   '',
   'NOTIFY_EMAIL=boxingcenter31@gmail.com',
-  `RESEND_API_KEY=${pick(src, 'RESEND_API_KEY')}`,
   `BREVO_API_KEY=${pick(src, 'BREVO_API_KEY')}`,
-  'MAIL_FROM=Boxing Center Stages <stages@boxingcenter.fr>',
+  'MAIL_FROM=Boxing Center Stages <suzinabot@gmail.com>',
+  'MAIL_REPLY_TO=boxingcenter31@gmail.com',
+  'BREVO_SENDER_EMAIL=suzinabot@gmail.com',
+  'BREVO_SENDER_NAME=Boxing Center Stages',
+  'BREVO_REPLY_TO=boxingcenter31@gmail.com',
   '',
   `SUPABASE_URL=${pick(src, 'SUPABASE_URL')}`,
   `SUPABASE_SERVICE_ROLE_KEY=${pick(src, 'SUPABASE_SERVICE_ROLE_KEY')}`,
