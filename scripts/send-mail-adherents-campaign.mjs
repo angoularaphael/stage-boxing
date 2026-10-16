@@ -15,7 +15,7 @@ const logDir = path.join(root, 'data', 'campaign-logs');
 const stateFile = path.join(logDir, 'adherents-stage-2026-10-16.json');
 
 import '../lib/load-env.js';
-process.env.BREVO_SENDER_NAME = 'David — Boxing Center';
+process.env.BREVO_SENDER_NAME = process.env.BREVO_SENDER_NAME || 'David de Boxing Center';
 if (!process.env.BREVO_REPLY_TO) {
   process.env.BREVO_REPLY_TO = 'boxingcentertls@gmail.com';
 }
@@ -23,6 +23,7 @@ if (!process.env.BREVO_REPLY_TO) {
 const {
   ADHERENTS_MAIL_SUBJECT,
   adherentsMailHtml,
+  adherentsMailBrevoOpts,
   loadAdherentRecipientEmails,
 } = await import('../lib/mail-adherents-stage.js');
 const { sendMail } = await import('../lib/mail.js');
@@ -114,7 +115,7 @@ const subject = ADHERENTS_MAIL_SUBJECT;
 
 if (args.test) {
   for (const to of ['boxingcenter31@gmail.com', 'boxingcentertls@gmail.com']) {
-    const r = await sendMail({ to, subject, html: adherentsMailHtml() });
+    const r = await sendMail({ to, subject, html: adherentsMailHtml(), ...adherentsMailBrevoOpts() });
     console.log(to, JSON.stringify(r));
   }
   process.exit(0);
@@ -138,8 +139,9 @@ const state = loadState();
 const pending = emails.filter((e) => !state.sent[e]);
 const minsLeft = Math.max(1, minutesUntilParisDeadline(args.end));
 const budgetMs = minsLeft * 60_000;
+const minDelay = Math.max(4500, Number(process.env.ADHERENTS_MAIL_MIN_DELAY_MS) || 5500);
 const delayMs = pending.length
-  ? Math.min(12_000, Math.max(3500, Math.floor(budgetMs / pending.length)))
+  ? Math.min(14_000, Math.max(minDelay, Math.floor(budgetMs / pending.length)))
   : 0;
 
 logLine(`A envoyer: ${pending.length}, delai ${delayMs}ms, fin cible ${args.end} Paris`);
