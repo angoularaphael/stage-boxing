@@ -1,23 +1,22 @@
 /**
- * ?src=mail|sms|ig — memorise pour la session et enregistre une visite.
+ * Attribution visite : ?src=mail|sms|ig|flyer ou UTM flyer (QR affiche).
  */
+import { resolveAttributionFromQuery } from '../../lib/attribution.js';
+
 const KEY = 'bc-stage-src';
 const PV = 'bc-stage-pv';
 
-function readUtm() {
-  const p = new URLSearchParams(location.search);
-  return (p.get('src') || p.get('utm_source') || '').toLowerCase().trim();
-}
-
 function readSource() {
-  const raw = readUtm();
-  if (raw) {
+  const normalized = resolveAttributionFromQuery(
+    typeof location !== 'undefined' ? location.search : ''
+  );
+  if (normalized && normalized !== 'direct') {
     try {
-      sessionStorage.setItem(KEY, raw);
+      sessionStorage.setItem(KEY, normalized);
     } catch {
       /* ignore */
     }
-    return raw;
+    return normalized;
   }
   try {
     return sessionStorage.getItem(KEY) || 'direct';
@@ -37,8 +36,9 @@ function sendPageview() {
   } catch {
     /* ignore */
   }
+  const src = readSource();
   const body = JSON.stringify({
-    src: readSource(),
+    src,
     path: location.pathname + location.search,
   });
   try {

@@ -1,6 +1,6 @@
 import '../lib/load-env.js';
 import { json, methodOf, readBody } from '../lib/http.js';
-import { normalizeAttributionSrc } from '../lib/attribution.js';
+import { resolveAttributionFromVisit } from '../lib/attribution.js';
 import { randomUUID } from 'node:crypto';
 
 async function supabaseInsert(row) {
@@ -29,7 +29,11 @@ export default async function handler(req, res) {
     return json(res, 405, { ok: false, error: 'Method not allowed' });
   }
   const body = await readBody(req);
-  const src = normalizeAttributionSrc(body.src || body.utm_source);
+  const src = resolveAttributionFromVisit({
+    src: body.src || body.utm_source,
+    path: body.path,
+    search: body.search,
+  });
   const row = {
     id: `pv-${Date.now()}-${randomUUID().slice(0, 8)}`,
     status: 'pageview',

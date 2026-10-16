@@ -1,4 +1,4 @@
--- Visites stage (attribution ?src=mail|sms|ig) — service_role uniquement
+-- Visites stage (attribution ?src=mail|sms|ig|flyer ou UTM QR affiche) — service_role uniquement
 create table if not exists public.stage_visits (
   id text primary key,
   status text not null default 'pageview',
