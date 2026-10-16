@@ -21,9 +21,7 @@ if (!process.env.BREVO_REPLY_TO) {
 }
 
 const {
-  ADHERENTS_MAIL_SUBJECT,
-  adherentsMailHtml,
-  adherentsMailBrevoOpts,
+  adherentsMailPayload,
   loadAdherentRecipientEmails,
 } = await import('../lib/mail-adherents-stage.js');
 const { sendMail } = await import('../lib/mail.js');
@@ -111,11 +109,11 @@ function saveState(state) {
 }
 
 const args = parseArgs(process.argv.slice(2));
-const subject = ADHERENTS_MAIL_SUBJECT;
+const mailPayload = adherentsMailPayload();
 
 if (args.test) {
   for (const to of ['boxingcenter31@gmail.com', 'boxingcentertls@gmail.com']) {
-    const r = await sendMail({ to, subject, html: adherentsMailHtml(), ...adherentsMailBrevoOpts() });
+    const r = await sendMail({ to, subject: mailPayload.subject, ...mailPayload });
     console.log(to, JSON.stringify(r));
   }
   process.exit(0);
@@ -154,7 +152,7 @@ for (let i = 0; i < pending.length; i++) {
     logLine(`Deadline ${args.end} atteinte — arret (${pending.length - i} restants)`);
     break;
   }
-  const r = await sendMail({ to, subject, html: adherentsMailHtml(), ...adherentsMailBrevoOpts() });
+  const r = await sendMail({ to, subject: mailPayload.subject, ...mailPayload });
   if (r.sent) {
     state.sent[to] = { at: new Date().toISOString(), id: r.id || '' };
     ok++;
