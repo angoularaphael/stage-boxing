@@ -25,9 +25,7 @@ function slug(s) {
     .replace(/^-|-$/g, '');
 }
 
-const orders = (await listOrders({ limit: 500 })).filter(
-  (o) => o.status === 'complete' || o.payment?.status === 'paid'
-);
+const orders = (await listOrders({ limit: 500 })).filter((o) => o.status === 'complete');
 if (!orders.length) {
   console.error('aucune inscription complete');
   process.exit(1);
