@@ -115,7 +115,7 @@ export const CLUBS = {
     acces: 'Au sud de Toulouse, sur la route d’Espagne.',
     tel: '06 87 90 02 16',
     telHref: '+33687900216',
-    email: 'boxingcenterportet@gmail.com',
+    email: 'vgsportmanagement@gmail.com',
     accent: 'portet',
     hero: 'portet-walkout',
     photos: ['portet-educative', 'portet-ecole-nb', 'portet-podium', 'portet-pads'],

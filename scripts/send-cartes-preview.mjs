@@ -1,7 +1,7 @@
 /**
  * Envoie les cartes boxeur regenerees.
  * Defaut : angoularaphael05@gmail.com seulement (validation).
- * --parents : parents + boxingcenter31 (apres validation Raphael).
+ * --parents : parents + copie club (Minimes boxingcenter31, Portet vgsportmanagement).
  */
 import '../lib/load-env.js';
 import { mkdirSync, writeFileSync } from 'node:fs';
@@ -15,7 +15,14 @@ const root = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
 const outDir = path.join(root, 'data', 'cartes-preview');
 const toParents = process.argv.includes('--parents');
 const PREVIEW_TO = 'angoularaphael05@gmail.com';
-const CLUB_NOTIFY = 'boxingcenter31@gmail.com';
+const CLUB_NOTIFY_MINIMES = 'boxingcenter31@gmail.com';
+const CLUB_NOTIFY_PORTET = 'vgsportmanagement@gmail.com';
+
+function clubNotify(order) {
+  return String(order?.club || '').toLowerCase() === 'portet'
+    ? CLUB_NOTIFY_PORTET
+    : CLUB_NOTIFY_MINIMES;
+}
 
 function slug(s) {
   return String(s || 'boxeur')
@@ -92,7 +99,7 @@ for (const b of built) {
     pour <strong>Les Vacances des Boxeurs</strong> (26-31 octobre 2026) a <strong>${b.order.club_label}</strong>.</p>
     <p>La version precedente recouvrait la photo : celle-ci est la bonne, a conserver (telephone ou impression).</p>
     ${b.html}
-    <p>Contact : boxingcenter31@gmail.com</p>
+    <p>Contact : ${clubNotify(b.order)}</p>
     <p>A tres bientot.</p>
     <p>Boxing Center</p>`;
   const r = await sendMail({
@@ -100,7 +107,8 @@ for (const b of built) {
     subject: `Carte boxeur corrigee — ${child.first_name || 'votre enfant'} — Les Vacances des Boxeurs`,
     html,
     attachments: [b.png],
-    cc: [CLUB_NOTIFY],
+    cc: [clubNotify(b.order)],
+    replyToEmail: clubNotify(b.order),
     tags: ['stage-cartes-parents'],
   });
   if (r.sent) sent += 1;
