@@ -74,6 +74,17 @@
   justify-items: end;
   gap: 4px;
 }
+.carte--enfant.has-photo .tampons {
+  top: auto;
+  bottom: 4.4rem;
+  left: 0.7rem;
+  right: 0.7rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  justify-items: start;
+  gap: 4px;
+}
 .tampon {
   padding: 2px 6px;
   border: 1.5px dashed rgba(255, 255, 255, 0.18);
@@ -131,13 +142,28 @@
   box-shadow: 0 10px 30px -8px rgba(0, 0, 0, 0.6);
   pointer-events: none;
 }
+.carte--enfant.has-photo .sceau {
+  top: auto;
+  left: auto;
+  right: 0.75rem;
+  bottom: 7.6rem;
+  width: 22%;
+  transform: rotate(-12deg) scale(0);
+}
 .carte.is-scelle .sceau {
   opacity: 1;
   transform: translate(-50%, -50%) rotate(-12deg) scale(1);
 }
+.carte--enfant.has-photo.is-scelle .sceau {
+  opacity: 1;
+  transform: rotate(-12deg) scale(1);
+}
 @media (prefers-reduced-motion: no-preference) {
   .carte.is-scelle .sceau {
     animation: sceau 0.7s var(--ease) both;
+  }
+  .carte--enfant.has-photo.is-scelle .sceau {
+    animation: none;
   }
   .carte.is-scelle {
     animation: secousse 0.5s var(--ease) 0.18s;

@@ -5,6 +5,7 @@ dist/
 .env.local
 .env.production
 data/orders.json
+data/cartes-preview/
 .DS_Store
 *.log
 

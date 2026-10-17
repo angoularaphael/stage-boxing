@@ -6,6 +6,8 @@ import { buildCartePng, cardDataFromOrder } from '../lib/carte-mail.js';
 test('portraitPourCarte : selfie oui, scan Pass Sport non', () => {
   assert.equal(portraitPourCarte(800, 1000), true);
   assert.equal(portraitPourCarte(595, 842), false);
+  assert.equal(portraitPourCarte(1080, 1920), true);
+  assert.equal(portraitPourCarte(1920, 1080), false);
 });
 
 test('carte PNG serveur : meme pipeline que le canvas navigateur', async () => {
