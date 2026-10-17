@@ -5,6 +5,9 @@
   "framework": null,
   "cleanUrls": true,
   "trailingSlash": false,
+  "functions": {
+    "api/**/*.js": { "includeFiles": "lib/fonts/**" }
+  },
   "crons": [
     {
       "path": "/api/cron-relances",
