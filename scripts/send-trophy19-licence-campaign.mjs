@@ -36,6 +36,11 @@ const {
   trophy19ReplyEmail,
   loadTrophy19CombatRecipients,
   loadTrophy19AttenteRecipients,
+  TROPHY19_CAMPAIGN_RAPPEL,
+  TROPHY19_SUBJECT_RAPPEL,
+  trophy19RappelBrevoOpts,
+  trophy19RappelMailText,
+  loadTrophy19RappelRecipients,
 } = await import('../lib/mail-trophy19-licence.js');
 const { sendMailBrevo } = await import('../lib/mail.js');
 
@@ -48,7 +53,7 @@ function parseArgs(argv) {
     if (a === '--preview') o.preview = true;
     if (a === '--test') o.test = true;
     if (a === '--run') o.run = true;
-    if (a === 'combat' || a === 'attente') o.cohort = a;
+    if (a === 'combat' || a === 'attente' || a === 'rappel') o.cohort = a;
   }
   return o;
 }
@@ -102,7 +107,16 @@ function cohortConfig(cohort) {
       body: trophy19AttenteMailText,
     };
   }
-  throw new Error('Cohorte requise: combat | attente');
+  if (cohort === 'rappel') {
+    return {
+      campaign: TROPHY19_CAMPAIGN_RAPPEL,
+      subject: TROPHY19_SUBJECT_RAPPEL,
+      recipients: loadTrophy19RappelRecipients(),
+      opts: trophy19RappelBrevoOpts,
+      body: trophy19RappelMailText,
+    };
+  }
+  throw new Error('Cohorte requise: combat | attente | rappel');
 }
 
 const args = parseArgs(process.argv.slice(2));
