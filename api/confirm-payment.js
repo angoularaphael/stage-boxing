@@ -12,6 +12,16 @@ import {
 import { isPayplugPaymentPaid, retrievePayment } from '../lib/payplug.js';
 import { ensurePaypalCaptured, isPaypalOrderPaid } from '../lib/paypal.js';
 import { withStudioContext } from '../lib/studio.js';
+import { verifyOrderPayment } from '../lib/payment-verify.js';
+
+const PAYMENT_DEPS = {
+  payplug: { retrieve: retrievePayment, isPaid: isPayplugPaymentPaid },
+  paypal: {
+    capture: (id, order) => ensurePaypalCaptured(id, { gym: order.club }),
+    isPaid: isPaypalOrderPaid,
+  },
+  cawl: { get: getHostedCheckout, isPaid: isCawlCheckoutPaid },
+};
 
 export default async function handler(req, res) {
   return withStudioContext(req, async () => {
@@ -39,21 +49,16 @@ export default async function handler(req, res) {
       }
 
       const provider = order.payment?.provider;
-      const providerId = body.provider_id || order.payment?.provider_id;
-      let paid = false;
+      // Jamais l'id envoye par le navigateur : seul l'id stocke a la creation du paiement compte.
+      const providerId = order.payment?.provider_id;
 
       order.payment = { ...(order.payment || {}), status: 'confirming' };
       await saveOrder(order);
 
-      if (provider === 'paypal' && providerId) {
-        const captured = await ensurePaypalCaptured(providerId, { gym: order.club });
-        paid = isPaypalOrderPaid(captured);
-      } else if (provider === 'payplug' && providerId) {
-        const payment = await retrievePayment(providerId);
-        paid = isPayplugPaymentPaid(payment);
-      } else if (provider === 'cawl' && providerId) {
-        const checkout = await getHostedCheckout(providerId);
-        paid = isCawlCheckoutPaid(checkout);
+      const check = await verifyOrderPayment(order, PAYMENT_DEPS);
+      const paid = check.paid === true;
+      if (check.reason === 'mismatch') {
+        console.error('[confirm-payment] paiement non rattache a la commande', order.id, provider);
       }
 
       if (!paid) {
