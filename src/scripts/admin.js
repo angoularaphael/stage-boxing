@@ -212,7 +212,7 @@ export function admin() {
       location.replace('/admin/login?next=/admin');
       throw new Error('unauthorized');
     }
-    const data = await res.json();
+  const data = await res.json();
     const sess = $('#admin-session');
     if (sess && data.user) {
       sess.hidden = false;

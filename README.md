@@ -37,7 +37,7 @@ En studio, les paiements passent par les cles `*_TEST_*` (PayPal sandbox, PayPlu
 | **URL prod actuelle** | https://stage-boxing.vercel.app |
 | **Domaine cible** | https://stages.boxingcenter.fr |
 
-Variables importantes en production : Supabase, Brevo (`suzinabot@gmail.com`), prestataires de paiement, **Cloudinary** (photos enfant sur la carte).
+Variables importantes en production : Supabase, Brevo (`contact@boxingcenter.fr`), prestataires de paiement, **Cloudinary** (photos enfant sur la carte).
 
 ```bash
 # 1. Connexion CLI (une fois)

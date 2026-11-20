@@ -18,7 +18,7 @@ const logDir = path.join(root, 'data', 'campaign-logs');
 
 import '../lib/load-env.js';
 process.env.BREVO_SENDER_NAME = process.env.BREVO_SENDER_NAME || 'Boxing Center Portet';
-process.env.BREVO_SENDER_EMAIL = process.env.BREVO_SENDER_EMAIL || 'suzinabot@gmail.com';
+process.env.BREVO_SENDER_EMAIL = process.env.BREVO_SENDER_EMAIL || 'contact@boxingcenter.fr';
 process.env.BREVO_REPLY_TO_PORTET =
   process.env.BREVO_REPLY_TO_PORTET || 'vgsportmanagement@gmail.com';
 delete process.env.RESEND_API_KEY;
@@ -159,7 +159,7 @@ if (args.preview || (!args.test && !args.run)) {
         cohort: args.cohort,
         destinataires: cfg.recipients.length,
         avec_email: cfg.recipients.filter((r) => r.email).length,
-        expediteur: `Boxing Center Portet <suzinabot@gmail.com>`,
+        expediteur: `Boxing Center Portet <contact@boxingcenter.fr>`,
         reply_to: trophy19ReplyEmail(),
         objet: cfg.subject,
         lien_licence: args.cohort === 'combat' ? TROPHY19_LICENCE_URL : null,

@@ -20,7 +20,7 @@ if (!process.env.BREVO_REPLY_TO) {
   process.env.BREVO_REPLY_TO = 'boxingcentertls@gmail.com';
 }
 if (!process.env.BREVO_SENDER_EMAIL) {
-  process.env.BREVO_SENDER_EMAIL = 'suzinabot@gmail.com';
+  process.env.BREVO_SENDER_EMAIL = 'contact@boxingcenter.fr';
 }
 delete process.env.RESEND_API_KEY;
 
